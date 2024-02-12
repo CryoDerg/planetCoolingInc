@@ -257,6 +257,68 @@ function initBuildings()
 				end
 				print("Radiator Transferred "..heatTransferred.." Degrees...\nNew Network Heat: "..pipeNetworks.networkHeat[tile.onPipeNetwork])
 			end
+		},
+
+		--Item Storage[7]
+		{
+			--Stores items and allows for drones to manage the items if powered
+			name = "Item Storage",
+			description = "Stores items",
+
+			--when placed
+			placeBuilding = function(tile)
+				--Associate builing with tile
+				tile.building = buildingBlueprints[7]
+
+				--Connect to electric network
+				if not tile.onElectricNetwork then
+					connectElectric(tile)
+				end
+			end
+			,
+
+			removeBuilding = function(tile)
+				tile.building = false
+
+				--split electric network
+				splitElectric(tile)
+			end
+			,
+
+			--passive operation
+			buildingFunction = function(tile)
+				--Act as a storage
+			end
+		},
+
+		--Drone Hub[8]
+		{
+			--Contains three drone slots which allows them to charge or be idle. A drone must be assigned to a slot to be active
+			name = "Drone Hub",
+			description = "Acts as a control and charging center for up to three drones",
+			placeBuilding = function(tile)
+				--Associate builing with tile
+				tile.building = buildingBlueprints[8]
+
+				--Connect to electric network
+				if not tile.onElectricNetwork then
+					connectElectric(tile)
+				end
+			end
+			,
+
+			removeBuilding = function(tile)
+				tile.building = false
+
+				--split electric network
+				splitElectric(tile)
+			end
+			,
+
+			--passive operation
+			buildingFunction = function(tile)
+				--Act as a drone hub
+			end
 		}
 	}
 end
