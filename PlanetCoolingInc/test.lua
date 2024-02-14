@@ -14,6 +14,7 @@ function test()
     argument and then concatenates them into a string]]
     fullString=""
 	for x=#list,1,-1 do
-        fullString=fullString+list[x]
+        fullString=fullString..list[x]
     end
+    print(fullString)
 end
