@@ -26,4 +26,5 @@ function test()
 	funkyTable={baba=3,booie=4}
 
 	--now print the second value of the table
+	print(funkyTable[booie])
 end
