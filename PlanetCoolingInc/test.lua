@@ -24,4 +24,6 @@ function test()
 
 	--Write a table that a string as the key and a number as the value
 	funkyTable={baba=3,booie=4}
+
+	--now print the second value of the table
 end
