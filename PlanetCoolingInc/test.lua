@@ -3,4 +3,13 @@ function test()
 
 	--Iterate though the table and print each value
 	table.foreach(list,print)
+	--[[
+		Can also be written as:
+		for key, value in pairs(list) do
+			print(value)
+		end
+	]]
+
+	--Write a function that takes the table as an argument and then concatenates them into a string
+	
 end
