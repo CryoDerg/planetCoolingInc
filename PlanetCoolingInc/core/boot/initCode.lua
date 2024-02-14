@@ -15,5 +15,5 @@ function fileLoad()
 	require("core/utils/mathFunctions")
 
 	require("test")
-	
+	test()
 end
