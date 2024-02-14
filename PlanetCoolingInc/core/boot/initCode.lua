@@ -13,4 +13,7 @@ function fileLoad()
 
 	require("core/utils/debugTools")
 	require("core/utils/mathFunctions")
+
+	require("test")
+	
 end
