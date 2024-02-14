@@ -1,7 +1,7 @@
 function settingsSetup()
 	settings = {}
 	settings.defaults = {
-		fullscreenState = 0,
+		fullscreenState = false,
 		controls = {
 			genWorld = "g",
 			toggleTempOverlay = "t",
