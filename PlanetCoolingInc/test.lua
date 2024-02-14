@@ -10,6 +10,10 @@ function test()
 		end
 	]]
 
-	--Write a function that takes the table as an argument and then concatenates them into a string
-	
+	--[[Write a function that takes the table as an 
+    argument and then concatenates them into a string]]
+    fullString=""
+	for x=#list,1,-1 do
+        fullString=fullString+list[x]
+    end
 end
