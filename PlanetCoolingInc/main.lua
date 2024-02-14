@@ -13,8 +13,7 @@ Cooling Methods:
 	Ice Delivery
 	Deliver heat to space
 	Wormholes to throw heat into (maybe)
-	Implosion Bomb(?)
-	
+
 
 
 TODO
