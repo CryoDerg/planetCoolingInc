@@ -23,5 +23,5 @@ function test()
 	--YOURE WRONG LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
 
 	--Write a table that a string as the key and a number as the value
-	
+	funkyTable={baba=3,booie=4}
 end
