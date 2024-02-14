@@ -10,10 +10,18 @@ function test()
 		end
 	]]
 
-	--[[Write a function that takes the table as an 
-    argument and then concatenates them into a string]]
-    fullString=""
-	for x=#list,1,-1 do
-        fullString=fullString+list[x]
-    end
+	--Write a function that takes the table as an argument and then concatenates them into a string
+	function concatTable(table)
+   	fullString=""
+		for x = 1, #table do
+   	   fullString=fullString..list[x]
+		end
+		print(fullString)
+   end
+	concatTable(list)
+
+	--YOURE WRONG LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+
+	--Write a table that a string as the key and a number as the value
+	
 end
