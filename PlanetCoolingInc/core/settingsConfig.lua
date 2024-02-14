@@ -11,7 +11,7 @@ function settingsSetup()
 		}
 	}
 
-
+	print(love.filesystem.getInfo("settings.txt"))
 	if love.filesystem.getInfo("settings.txt") then
 		settingsValues = love.filesystem.read("settings.txt")
 
