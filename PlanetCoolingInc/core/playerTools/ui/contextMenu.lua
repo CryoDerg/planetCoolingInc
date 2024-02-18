@@ -59,32 +59,5 @@ function clickContextMenu(x, y)
   end
 end
 
-function drawContextMenu()
-  --Draw the context menu
-  --Background
-  love.graphics.setColor(0, 0, 0, 0.5)
-  --print(math.findDistanceBetweenPoints(contextMenu.x, contextMenu.y, focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale)))
-  print(contextMenu.x - focusPointX + (centerWidth/scale), contextMenu.y - focusPointY + (centerHeight/scale))
-  --On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale), contextMenu.y - focusPointY + (centerHeight/scale), 200, 300
-  love.graphics.rectangle("fill", contextMenu.x, contextMenu.y - (300/scale), 200/scale, 300/scale)
 
-  --Top Bar
-  love.graphics.setColor(1, 1, 1, 1)
-  --On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale), contextMenu.y - focusPointY + (centerHeight/scale), 200, 10
-  love.graphics.rectangle("fill", contextMenu.x, contextMenu.y - (300/scale), 200/scale, 10/scale)
-
-  --Text
-  love.graphics.setColor(1, 1, 1, 1)
-  --On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale) + (10/scale), contextMenu.y - focusPointY + (centerHeight/scale) - (280/scale)
-  love.graphics.print(contextMenu.text, contextMenu.x + (10/scale), contextMenu.y - (280/scale), 0, 1/scale, 1/scale)
-
-  --Close Button
-  love.graphics.setColor(1, 0, 0, 1)
-  --On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale) + (180/scale), contextMenu.y - focusPointY + (centerHeight/scale) - (300/scale), 20, 10
-  love.graphics.rectangle("fill", contextMenu.x + (180/scale), contextMenu.y - (300/scale), 20/scale, 10/scale) 
-
-  --Move Player Button
-
-  
-end
   

@@ -1,5 +1,6 @@
 function genNewWorld(size, seed)
 	initBuildings()
+	initInventories()
 	--set up world variables and tables
 	gameTime = 0
 	updateTime = 0
@@ -63,7 +64,8 @@ function genNewWorld(size, seed)
 				onElectricNetwork = false,
 				wireID = false,
 				onPipeNetwork = false,
-				pipeID = false
+				pipeID = false,
+				inventoryID = false,
 			}
 		end
 	end

@@ -69,95 +69,10 @@ table.merge = function(tbl1, tbl2)
   end
 end
 
-table.find = function(tbl, value)
-  for key, val in pairs(tbl) do
-    if val == value then
-      return key
-    end
+table.countKeys = function(tbl)
+  local count = 0
+  for key, value in pairs(tbl) do
+    count = count + 1
   end
-  return nil
+  return count
 end
-
-table.findNested = function(tbl, value)
-  for key, val in pairs(tbl) do
-    if type(val) == "table" then
-      local result = table.findNested(val, value)
-      if result then
-        return key, result
-      end
-    elseif val == value then
-      return key
-    end
-  end
-  return nil
-end
-
-table.findKey = function(tbl, key)
-  for k, v in pairs(tbl) do
-    if k == key then
-      return v
-    end
-  end
-  return nil
-end
-
-table.findNestedKey = function(tbl, key)
-  for k, v in pairs(tbl) do
-    if type(v) == "table" then
-      local result = table.findNestedKey(v, key)
-      if result then
-        return k, result
-      end
-    elseif k == key then
-      return v
-    end
-  end
-  return nil
-end
-
-table.findValue = function(tbl, value)
-  for k, v in pairs(tbl) do
-    if v == value then
-      return k
-    end
-  end
-  return nil
-end
-
-table.findNestedValue = function(tbl, value)
-  for k, v in pairs(tbl) do
-    if type(v) == "table" then
-      local result = table.findNestedValue(v, value)
-      if result then
-        return k, result
-      end
-    elseif v == value then
-      return k
-    end
-  end
-  return nil
-end
-
-table.findKeyByValue = function(tbl, value)
-  for k, v in pairs(tbl) do
-    if v == value then
-      return k
-    end
-  end
-  return nil
-end
-
-table.findNestedKeyByValue = function(tbl, value)
-  for k, v in pairs(tbl) do
-    if type(v) == "table" then
-      local result = table.findNestedKeyByValue(v, value)
-      if result then
-        return k, result
-      end
-    elseif v == value then
-      return k
-    end
-  end
-  return nil
-end
-

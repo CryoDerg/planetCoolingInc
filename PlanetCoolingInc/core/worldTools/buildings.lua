@@ -274,6 +274,17 @@ function initBuildings()
 				if not tile.onElectricNetwork then
 					connectElectric(tile)
 				end
+
+				--Register Inventory
+				local inventory = {
+					size = 20,
+					itemAmount = 0,
+					items = {},
+				}
+				table.insert(inventories, inventory)
+				tile.inventoryID = #inventories
+				print("Item Storage placed, Inventory ID: "..tile.inventoryID)
+				
 			end
 			,
 
@@ -282,6 +293,11 @@ function initBuildings()
 
 				--split electric network
 				splitElectric(tile)
+
+				--Drop all items on the ground
+				for slot, item in pairs(inventories[tile.inventoryID].items) do
+					transferItemToInventory(inventories[tile.inventoryID], slot, inventories.ground)
+				end
 			end
 			,
 

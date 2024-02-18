@@ -1,10 +1,13 @@
 function fileLoad()
-	require("core/draw")
+	require("core/draw/mainDraw")
+	require("core/draw/uiDraw")
 
 	require("core/worldTools/buildings")
 	require("core/worldTools/buildWorld")
 	require("core/worldTools/heatSimulation")
 	require("core/worldTools/networkManager")
+	require("core/worldTools/droneUtils")
+	require("core/worldTools/itemManage")
 
 	require("core/playerTools/movement")
 	
@@ -13,7 +16,6 @@ function fileLoad()
 
 	require("core/utils/debugTools")
 	require("core/utils/mathFunctions")
+	require("core/utils/tableFunctions")
 
-	require("test")
-	test()
 end
