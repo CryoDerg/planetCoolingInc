@@ -1,32 +1,36 @@
-function drawContextMenu()
-	--Draw the context menu
-	--Background
-	love.graphics.setColor(0, 0, 0, 0.5)
-	--print(math.findDistanceBetweenPoints(contextMenu.x, contextMenu.y, focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale)))
-	print(contextMenu.x - focusPointX + (centerWidth/scale), contextMenu.y - focusPointY + (centerHeight/scale))
-	--On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale), contextMenu.y - focusPointY + (centerHeight/scale), 200, 300
-	love.graphics.rectangle("fill", contextMenu.x, contextMenu.y - (300/scale), 200/scale, 300/scale)
- 
-	--Top Bar
-	love.graphics.setColor(1, 1, 1, 1)
-	--On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale), contextMenu.y - focusPointY + (centerHeight/scale), 200, 10
-	love.graphics.rectangle("fill", contextMenu.x, contextMenu.y - (300/scale), 200/scale, 10/scale)
- 
-	--Text
-	love.graphics.setColor(1, 1, 1, 1)
-	--On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale) + (10/scale), contextMenu.y - focusPointY + (centerHeight/scale) - (280/scale)
-	love.graphics.print(contextMenu.text, contextMenu.x + (10/scale), contextMenu.y - (280/scale), 0, 1/scale, 1/scale)
- 
-	--Close Button
-	love.graphics.setColor(1, 0, 0, 1)
-	--On Screen Coords: contextMenu.x - focusPointX + (centerWidth/scale) + (180/scale), contextMenu.y - focusPointY + (centerHeight/scale) - (300/scale), 20, 10
-	love.graphics.rectangle("fill", contextMenu.x + (180/scale), contextMenu.y - (300/scale), 20/scale, 10/scale) 
- 
-	--Move Player Button
- 
-	
+--Drawing Context Menu
+function drawContextMenus()
+	for ID, menu in ipairs(contextMenus) do
+		--Draw the background
+		love.graphics.setColor(0, 0, 0, 0.5)
+		--On Screen Coords: menu.x, menu.y, 200, 200
+		love.graphics.rectangle("fill", menu.x, menu.y, 200, 200)
+		--Draw the elements
+		for i, element in ipairs(menu.elements) do
+			if element.type == "btn" then
+				--Draw a button
+				love.graphics.setColor(1, 1, 1, 1)
+				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
+				love.graphics.rectangle("fill", menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20)
+				love.graphics.setColor(1, 1, 1, 1)
+				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
+				love.graphics.print(element.text, menu.x + 10, menu.y + 10 + (i - 1) * 30)
+			elseif element.type == "text" then
+				--Draw text
+				love.graphics.setColor(1, 1, 1, 1)
+				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
+				love.graphics.print(element.text, menu.x + 10, menu.y + 10 + (i - 1) * 30)
+			elseif element.type == "inventory" then
+				--Draw an inventory
+				love.graphics.setColor(1, 1, 1, 1)
+				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
+				love.graphics.print("Inventory", menu.x + 10, menu.y + 10 + (i - 1) * 30)
+			end
+		end
+	end
 end
 
+--Drawing Building Menu
 function drawBuildingUI()
 	--Check to see if the building menu is open
 	if buildingMenuOpen then
@@ -70,6 +74,7 @@ function drawBuildingUI()
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (31.25/scale), focusPointY + (centerHeight/scale) - (125/scale), (50/scale), (100/scale))
 end
 
+--Drawing Building Placement
 function constructionUI()
 	--Draw the building being placed
 	love.graphics.setColor(1, 1, 1, 1)
@@ -77,4 +82,9 @@ function constructionUI()
 	tileX = math.floor((mX - camX)/60)
 	tileY = math.floor((mY - camY)/60)
 	love.graphics.rectangle("fill", tileX * 60, tileY * 60, 60, 60)
+end
+
+--Drawing Inventory
+function drawInventory(inventory)
+	--Draw an inventory in the from of a context menu
 end

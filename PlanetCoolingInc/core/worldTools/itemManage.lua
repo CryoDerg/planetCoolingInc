@@ -1,61 +1,101 @@
 --Manages every item that is currently in the world, from items that are on the ground to items that are in inventories
+--Each inventory has a capacity that only allows a certain amount of items to be stored in it
+--Each slot of an inventory corresponds to a specific item type that is being stored with the same x and y coordinates (x and y are tiles, not pixels)
+
+--[[
+	Slot Example (in the items table):
+
+	items = {
+		coal = {
+			itemName = "coal",
+			amount = 5,
+		}
+	}
+]]
 
 function initInventories()
-  --inventories is a table that holds all the inventories in the world
+  --inventories is a table that holds all the inventories in the world (except for ones on the ground)
 	inventories = {
 		player = {
-			size = 20,
+			capacity = 20,
 			itemAmount = 0,
 			items = {},
 		},
-		ground = {
-			size = 999,
-			itemAmount = 0,
-			items = {},
-		},
+		
 		--More inventories can be added during gameplay
 
 	}
+	--groundInventories is a table that holds all the inventories that are on the ground
+	groundInventories = {
+		--[[
+			Example:
+			[1] = {
+				capacity = 20,
+				itemAmount = 0,
+				items = {},
+				onTile = grid.tiles[1][1],
+			}
+		
+		]]
+	}
 end
 
-function transferItemToInventory(fromInventory, slot, toInventory)
-	--Transfers an item from one inventory to another
+function transferItemToInventory(fromInventory, toInventory, itemName, amount)
+	--Transfers an item(s) from one inventory to another
 	
-	if fromInventory.items[slot] and inventories.ground.itemAmount < inventories.ground.size then
+	if fromInventory.items[slot] then
 		addItemToInventory(fromInventory.items[slot], toInventory)
 		removeItemFromInventory(fromInventory, slot)
 	end
 end
 
-function addItemToInventory(item, inventory, slot)
-	--Adds an item to an inventory
-	--If slot is nil, it will add the item to the first available slot
+function addItemToInventory(itemName, amount, inventory)
+	--Adds an item(s) to an inventory
+	--If the inventory is full, the item is added to the ground inventory
 
-	if inventory.itemAmount < inventory.size then
-		if slot == nil then
-			for itemSlot = 1, inventory.size do
-				if inventory.items[itemSlot] == nil then
-					inventory.items[itemSlot] = item
-					return
-				end
-			end
+	if inventory.itemAmount < inventory.capacity then
+		local slot = toInventory[itemName]
+		if slot then
+			slot.amount = slot.amount + amount
 		else
-			inventory.items[slot] = item
+			inventory.items[itemName] = {
+				itemName = itemName,
+				amount = amount,
+			}
 		end
-	elseif inventories.ground.itemAmount < inventories.ground.size then
-		addItemToInventory(item, inventories.ground)
+		inventory.itemAmount = inventory.itemAmount + amount
+	else
+		putItemOnGround(itemName, amount, inventory.onTile)
 	end
 end
 
-function removeItemFromInventory(inventory, slot)
-	--Removes an item from a specified slot in an inventory
+function removeItemFromInventory(inventory, itemName, amount)
+	--Removes an item(s) from a specified slot in an inventory
 
-	if inventory.items[slot] ~= nil then
-		inventory.items[slot] = nil
+	local slot = inventory.items[itemName]
+	local amountRemoved = 0
+
+	if slot then
+		if slot.amount > amount then
+			slot.amount = slot.amount - amount
+			amountRemoved = amount
+		else
+			amountRemoved = slot.amount
+			inventory.items[itemName] = nil
+		end
 	end
 end
 
+function putItemOnGround(itemName, amount, tile)
+	--Create new ground inventory
+	local inventory = {
+		capacity = amount,
+		itemAmount = 0,
+		items = {},
+		onTile = tile,
+	}
+	table.insert(groundInventories, inventory)
 
-
-
-
+	--Add item(s) to ground inventory
+	addItemToInventory(itemName, amount, groundInventories[#groundInventories])
+end

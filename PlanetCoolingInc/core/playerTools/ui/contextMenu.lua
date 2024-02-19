@@ -1,15 +1,102 @@
---Handle the context menu that appears when the player right clicks on a tile\
---The context menu will include info about the tile like temperature, wire connections, pipe connections, etc. as well as some options
---[[
-  Context Menu:
-    -Temperature
-    -Wire Connections
-    -Pipe Connections
-    -Building
-    -Options
-      -Move player to tile
-]]
-function updateContextMenu(x, y)
+--Handles the creation of and interactions with context menus
+
+function initContextMenu()
+  contextMenus = {}
+  --[[Context Menu Example:
+    {
+      ID = 1,
+      x = 0,
+      y = 0,
+      rootX = 75,
+      rootY = 72,
+      elements = {
+        {
+          type = "btn",
+          text = "Move Player Here",
+          func = movePlayerTo,
+          funcArgs = {x = 0, y = 0},
+        },
+        {
+          type = "text",
+          text = "Tile: (0,0)\nTemperature: 25\n",
+        },
+        {
+          type = "inventory",
+          inventory = inventories[7],
+        }
+      }
+    }
+  ]]
+  --The elements of the context menu are drawn in the order they are in the table
+end
+
+function createContextMenu(x, y)
+  --Check if click is on something other than tile (like the player or a drone)
+  --Checking for player
+  if math.checkIfPointInCircle(x, y, player.x, player.y, 15) then
+    local contextMenu = {
+      ID = #contextMenus + 1,
+      x = x,
+      y = y,
+      rootX = x,
+      rootY = y,
+      elements = {
+        {
+          type = "text",
+          text = "Player Coords: ("..player.x..","..player.y..")\n",
+        },
+        {
+          type = "text",
+          text = "Health: "..player.health.."\n",
+        },
+        {
+          type = "inventory",
+          inventory = inventories.player,
+        }
+      }
+    }
+    table.insert(contextMenus, contextMenu)
+  --[[elseif for ID, drone in pairs(drones) do if math.checkIfPointInCircle(x, y, drone.x, drone.y, 15) then return true end end then
+    local contextMenu = {
+      ID = #contextMenus + 1,
+      x = x,
+      y = y,
+      rootX = x,
+      rootY = y,
+      elements = {
+        {
+          type = "text",
+          text = "Drone Coords: ("..drone.x..","..drone.y..")\n",
+        },
+        {
+          type = "inventory",
+          inventory = drone.inventory,
+        }
+      }
+    }
+    table.insert(contextMenus, contextMenu)
+  ]]
+  else
+    --Create context menu for tile
+    local tile = grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)]
+    local contextMenu = {
+      ID = #contextMenus + 1,
+      x = x,
+      y = y,
+      rootX = x,
+      rootY = y,
+      elements = {
+        {
+          type = "text",
+          text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n",
+        }
+      }
+    }
+    table.insert(contextMenus, contextMenu)
+  end
+end
+
+--[[function updateContextMenu(x, y)
   --Open context menu on tile
   local tile = nil
   if contextMenu.isOpen then
@@ -37,7 +124,7 @@ function updateContextMenu(x, y)
     text = text,
     dragging = contextMenu.dragging
   }
-end
+end]]
 
 function clickContextMenu(x, y)
   --Check if context menu is open

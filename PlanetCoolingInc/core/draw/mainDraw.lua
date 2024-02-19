@@ -39,8 +39,6 @@ function drawUI()
 		constructionUI()
 	end
 
-	if contextMenu.isOpen then
-		drawContextMenu()
-	end
+	drawContextMenus()
 	drawBuildingUI()
 end

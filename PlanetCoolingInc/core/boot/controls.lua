@@ -62,8 +62,7 @@ function updateControls(k)
   end
 
   if k == settings.controls.openContextMenu and clickTile(mX, mY) then
-    contextMenu.dragging = false
-    updateContextMenu(mX, mY)
+    createContextMenu(mX, mY)
   end
 
   if k == "escape" then

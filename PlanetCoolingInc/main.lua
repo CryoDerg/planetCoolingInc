@@ -24,6 +24,9 @@ TODO
 	Buildings 
 	Weather
 
+	Context Menu System - Have a list of context menus that display different bits of info depending on the data it is given
+	Inventories - Have a list of inventories that hold a certain amount of items as well as having functions to transfer items between them
+
 ]]
 
 
@@ -49,10 +52,6 @@ function love.update(dt)
 
 		if gameTime - updateTime >= 1 then
 			updateImportantTiles()
-
-			if contextMenu.isOpen then
-				updateContextMenu(contextMenu.x + camX, contextMenu.y + camY)
-			end
 
 			updateElectric()
 
