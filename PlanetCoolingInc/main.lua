@@ -125,10 +125,12 @@ function love.mousemoved(x, y, dx, dy)
 		focusPointY = focusPointY - dy/scale
 	end
 
+	--[[
 	if contextMenu.dragging then
 		contextMenu.x = contextMenu.x + dx
 		contextMenu.y = contextMenu.y + dy
 	end
+	]]
 end
 
 function love.wheelmoved(x, y)

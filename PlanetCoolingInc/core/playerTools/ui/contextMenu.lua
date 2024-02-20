@@ -33,7 +33,7 @@ end
 function createContextMenu(x, y)
   --Check if click is on something other than tile (like the player or a drone)
   --Checking for player
-  if math.checkIfPointInCircle(x, y, player.x, player.y, 15) then
+  if math.checkIfPointInCircle(x - camX, y - camY, player.x, player.y, 15) and not player.hasContextMenu then
     local contextMenu = {
       ID = #contextMenus + 1,
       x = x,
@@ -56,7 +56,9 @@ function createContextMenu(x, y)
       }
     }
     table.insert(contextMenus, contextMenu)
-  --[[elseif for ID, drone in pairs(drones) do if math.checkIfPointInCircle(x, y, drone.x, drone.y, 15) then return true end end then
+    player.hasContextMenu = true
+  --[[
+    elseif for ID, drone in pairs(drones) do if math.checkIfPointInCircle(x, y, drone.x, drone.y, 15) and not drone.hasContextMenu then return true end end then
     local contextMenu = {
       ID = #contextMenus + 1,
       x = x,
@@ -75,8 +77,9 @@ function createContextMenu(x, y)
       }
     }
     table.insert(contextMenus, contextMenu)
+    drone.hasContextMenu = true
   ]]
-  else
+  elseif not grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)].hasContextMenu then
     --Create context menu for tile
     local tile = grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)]
     local contextMenu = {
@@ -87,12 +90,30 @@ function createContextMenu(x, y)
       rootY = y,
       elements = {
         {
+          type = "btn",
+          text = "Move Player Here",
+          func = movePlayerTo,
+          funcArgs = {x = tile.x, y = tile.y},
+        }
+        {
           type = "text",
           text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n",
         }
       }
     }
+
+    if tile.building then
+      local buildingContext = {
+        {
+          type = "text",
+          text = "Building: "..tile.building.name.."\n",
+        },
+      }
+
+      table.insert(contextMenu.elements, 2, buildingContext)
+    end
     table.insert(contextMenus, contextMenu)
+    tile.hasContextMenu = true
   end
 end
 

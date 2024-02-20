@@ -40,13 +40,6 @@ function boot()
 	focusPointY = camY - centerHeight
 	hoverInfo = ""
 	clickedButton = {}
-	contextMenu = {
-		isOpen = false,
-		x = 0,
-		y = 0,
-		text = "",
-		dragging = false,
-	}
 
 	gamestate = 0
 	gridSize = 0
@@ -67,6 +60,7 @@ function boot()
 		healthRegen = 0.1,
 		isIdle = false,
 		isMoving = false,
+		hasContextMenu = false,
 		moveInfo = {
 			targetX = 0,
 			targetY = 0,

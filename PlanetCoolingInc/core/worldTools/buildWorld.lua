@@ -67,6 +67,7 @@ function genNewWorld(size, seed)
 				onPipeNetwork = false,
 				pipeID = false,
 				inventoryID = false,
+				hasContextMenu = false,
 			}
 		end
 	end
