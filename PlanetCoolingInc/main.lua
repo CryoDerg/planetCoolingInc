@@ -79,7 +79,7 @@ function love.mousepressed(x, y, k)
 	updateControls("M"..k)
 	if k == 1 then
     --When clicked, check if on button. If not on button, drag the camera
-    if not clickedButton[1] and not contextMenu.dragging then
+    if not clickedButton[1] then
       dragCam = true
     end
 	end
@@ -110,7 +110,7 @@ end
 function love.mousereleased(x, y, k)
 	dragCam = false
 	clickedButton = {}
-	contextMenu.dragging = false
+	--contextMenu.dragging = false
 end
 
 function love.mousemoved(x, y, dx, dy)

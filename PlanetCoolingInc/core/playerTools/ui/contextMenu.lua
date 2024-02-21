@@ -94,7 +94,7 @@ function createContextMenu(x, y)
           text = "Move Player Here",
           func = movePlayerTo,
           funcArgs = {x = tile.x, y = tile.y},
-        }
+        },
         {
           type = "text",
           text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n",
@@ -147,6 +147,7 @@ end
   }
 end]]
 
+--[[
 function clickContextMenu(x, y)
   --Check if context menu is open
   if contextMenu.isOpen then
@@ -166,6 +167,6 @@ function clickContextMenu(x, y)
 
   end
 end
-
+]]
 
   

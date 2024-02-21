@@ -54,7 +54,7 @@ function updateControls(k)
 
   if k == settings.controls.placeBuilding then
     clickBuildingUI(screenMX, screenMY)
-    clickContextMenu(screenMX, screenMY)
+    --clickContextMenu(screenMX, screenMY)
     if placingBuilding and not clickedButton[1] then
       local x, y = math.floor((mX - camX)/60), math.floor((mY - camY)/60)
       buildingBlueprints[selectBuilding].placeBuilding(grid.tiles[x][y])
