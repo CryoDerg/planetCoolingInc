@@ -38,8 +38,8 @@ function createContextMenu(x, y)
       ID = #contextMenus + 1,
       x = x,
       y = y,
-      rootX = x,
-      rootY = y,
+      rootX = player.x,
+      rootY = player.y,
       elements = {
         {
           type = "text",
@@ -63,8 +63,8 @@ function createContextMenu(x, y)
       ID = #contextMenus + 1,
       x = x,
       y = y,
-      rootX = x,
-      rootY = y,
+      rootX = drone.x,
+      rootY = drone.y,
       elements = {
         {
           type = "text",
@@ -86,8 +86,8 @@ function createContextMenu(x, y)
       ID = #contextMenus + 1,
       x = x,
       y = y,
-      rootX = x,
-      rootY = y,
+      rootX = tile.x,
+      rootY = tile.y,
       elements = {
         {
           type = "btn",

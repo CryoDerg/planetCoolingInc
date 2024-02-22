@@ -5,10 +5,22 @@ function drawContextMenus()
 		love.graphics.setColor(1, 1, 1, 1)
 		--On Screen Coords: menu.rootX, menu.rootY, menu.x - menu.rootX, menu.y - menu.rootY
 		love.graphics.line(focusPointX - (centerWidth/scale) + (menu.rootX/scale), focusPointY - (centerHeight/scale) + (menu.rootY/scale), focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale))
+
 		--Draw the background
 		love.graphics.setColor(0, 0, 0, 0.5)
 		--On Screen Coords: menu.x, menu.y, 200, 200
 		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale), (200/scale), (200/scale))
+
+		--Draw the top bar
+		love.graphics.setColor(1, 1, 1, 1)
+		--On Screen Coords: menu.x, menu.y, 200, 10
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale), (200/scale), (10/scale))
+
+		--Draw the close button
+		love.graphics.setColor(1, 0, 0, 1)
+		--On Screen Coords: menu.x + 190, menu.y, 10, 10
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale) + (190/scale), focusPointY - (centerHeight/scale) + (menu.y/scale), (10/scale), (10/scale))
+		
 		--Draw the elements
 		for i, element in ipairs(menu.elements) do
 			if element.type == "btn" then
