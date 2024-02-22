@@ -1,30 +1,34 @@
 --Drawing Context Menu
 function drawContextMenus()
 	for ID, menu in ipairs(contextMenus) do
+		--Draw Line from root to menu
+		love.graphics.setColor(1, 1, 1, 1)
+		--On Screen Coords: menu.rootX, menu.rootY, menu.x - menu.rootX, menu.y - menu.rootY
+		love.graphics.line(focusPointX - (centerWidth/scale) + (menu.rootX/scale), focusPointY - (centerHeight/scale) + (menu.rootY/scale), focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale))
 		--Draw the background
 		love.graphics.setColor(0, 0, 0, 0.5)
 		--On Screen Coords: menu.x, menu.y, 200, 200
-		love.graphics.rectangle("fill", menu.x, menu.y, 200, 200)
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale), (200/scale), (200/scale))
 		--Draw the elements
 		for i, element in ipairs(menu.elements) do
 			if element.type == "btn" then
 				--Draw a button
 				love.graphics.setColor(1, 1, 1, 1)
 				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.rectangle("fill", menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20)
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)), (180/scale), (20/scale))
 				love.graphics.setColor(1, 1, 1, 1)
 				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.print(element.text, menu.x + 10, menu.y + 10 + (i - 1) * 30)
+				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)))
 			elseif element.type == "text" then
 				--Draw text
 				love.graphics.setColor(1, 1, 1, 1)
 				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.print(element.text, menu.x + 10, menu.y + 10 + (i - 1) * 30)
+				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)))
 			elseif element.type == "inventory" then
 				--Draw an inventory
 				love.graphics.setColor(1, 1, 1, 1)
 				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.print("Inventory", menu.x + 10, menu.y + 10 + (i - 1) * 30)
+				love.graphics.print("Inventory", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)))
 			end
 		end
 	end
