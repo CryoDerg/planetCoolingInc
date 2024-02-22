@@ -21,7 +21,6 @@ TODO
 	Thermal system (DONE)
 	Player Control
 	Buildings 
-	ooga booga
 
 ]]
 
