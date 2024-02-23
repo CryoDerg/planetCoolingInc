@@ -110,6 +110,10 @@ end
 function love.mousereleased(x, y, k)
 	dragCam = false
 	clickedButton = {}
+
+	if draggedMenu then
+		draggedMenu = false
+	end
 	--contextMenu.dragging = false
 end
 
@@ -119,7 +123,10 @@ function love.mousemoved(x, y, dx, dy)
 		hoverBuildingUI(x, y)
 	end
 
-	if dragCam then
+	if draggedMenu then
+		draggedMenu.x = draggedMenu.x + dx
+		draggedMenu.y = draggedMenu.y + dy
+	elseif dragCam then
 		--drag the camera by measuring the distance the mouse moves each frame
 		focusPointX = focusPointX - dx/scale
 		focusPointY = focusPointY - dy/scale

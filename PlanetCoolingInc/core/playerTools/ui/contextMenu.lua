@@ -35,9 +35,10 @@ function createContextMenu(x, y)
   --Checking for player
   if math.checkIfPointInCircle(x - camX, y - camY, player.x, player.y, 15) and not player.hasContextMenu then
     local contextMenu = {
+      type = "player",
       ID = #contextMenus + 1,
-      x = x,
-      y = y,
+      x = x*scale,
+      y = y*scale,
       rootX = player.x,
       rootY = player.y,
       elements = {
@@ -60,6 +61,7 @@ function createContextMenu(x, y)
   --[[
     elseif for ID, drone in pairs(drones) do if math.checkIfPointInCircle(x, y, drone.x, drone.y, 15) and not drone.hasContextMenu then return true end end then
     local contextMenu = {
+      type = "drone",
       ID = #contextMenus + 1,
       x = x,
       y = y,
@@ -83,17 +85,19 @@ function createContextMenu(x, y)
     --Create context menu for tile
     local tile = grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)]
     local contextMenu = {
+      type = "tile",
+      tile = tile,
       ID = #contextMenus + 1,
-      x = x,
-      y = y,
-      rootX = tile.x,
-      rootY = tile.y,
+      x = x*scale,
+      y = y*scale,
+      rootX = tile.x*60 + 30,
+      rootY = tile.y*60 + 30,
       elements = {
         {
           type = "btn",
           text = "Move Player Here",
-          func = movePlayerTo,
-          funcArgs = {x = tile.x, y = tile.y},
+          func = movePlayerTo, --movePlayerTo(x, y)
+          funcArgs = {tile.x*60+30, tile.y*60+30},
         },
         {
           type = "text",
@@ -117,56 +121,47 @@ function createContextMenu(x, y)
   end
 end
 
---[[function updateContextMenu(x, y)
-  --Open context menu on tile
-  local tile = nil
-  if contextMenu.isOpen then
-    tile = grid.tiles[math.floor((contextMenu.x)/60)][math.floor((contextMenu.y)/60)]
-    x = contextMenu.x + camX
-    y = contextMenu.y + camY
-  else
-    tile = grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)]
-  end
-
-  local text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n"
-  if tile.onElectricNetwork then
-    text = text.."On Electric Network "..tile.onElectricNetwork.."\n"..electricNetworks.networkCharge[tile.onElectricNetwork].." Watts\n"
-  end
-  if tile.onPipeNetwork then
-    text = text.."On Pipe Network "..tile.onPipeNetwork.."\n"..pipeNetworks.networkHeat[tile.onPipeNetwork].." Celsius\n"
-  end
-  if tile.building then
-    text = text.."Building: "..tile.building.name.."\n"
-  end
-  contextMenu = {
-    isOpen = true,
-    x = x - camX,
-    y = y - camY,
-    text = text,
-    dragging = contextMenu.dragging
-  }
-end]]
-
---[[
-function clickContextMenu(x, y)
-  --Check if context menu is open
-  if contextMenu.isOpen then
-    --Check what the player clicked
-    --Clicked top bar
-    
-    if math.checkIfPointInRect(x, y, (contextMenu.x/scale) - focusPointX + (centerWidth/scale), (contextMenu.x/scale) - focusPointX + (centerWidth/scale) + 200, (contextMenu.y/scale) - focusPointY + (centerHeight/scale) - 300, (contextMenu.y/scale) - focusPointY + (centerHeight/scale) - 290) then
-      --Drag the context menu
-      contextMenu.dragging = true
-    end
-
-    --Clicked Close Button
-
-
-    --Clicked Move Player Button
-
-
+function updateContextMenu(menuID)
+  if contextMenus[menuID] then
+    --Update displayed values of context menu
   end
 end
-]]
+
+function clickContextMenu(x, y)
+  --Iterate through context menus backwards to check if clicked on
+  for menuID = #contextMenus, 1, -1 do
+    local menu = contextMenus[menuID]
+    if x > menu.x and x < menu.x + 200 and y > menu.y and y < menu.y + 200 then
+
+      --Check if clicked on close button
+      if x > menu.x + 190 and x < menu.x + 200 and y > menu.y and y < menu.y + 10 then
+        --Close the context menu
+        if menu.type == "player" then
+          player.hasContextMenu = false
+        elseif menu.type == "drone" then
+          --drone.hasContextMenu = false
+        elseif menu.type == "tile" then
+          menu.tile.hasContextMenu = false
+        end
+        table.remove(contextMenus, menuID)
+        return
+      elseif x > menu.x and x < menu.x + 200 and y > menu.y and y < menu.y + 10 then
+        --Drag the context menu
+        draggedMenu = menu
+        return
+      else
+        --Check if clicked on a button
+        for i, element in ipairs(menu.elements) do
+          if element.type == "btn" and x > menu.x + 10 and x < menu.x + 190 and y > menu.y + 20 + ((i - 1) * 40) and y < menu.y + 40 + ((i - 1) * 40) then
+            --Run the function
+            element.func(unpack(element.funcArgs))
+            return
+          end
+        end
+      end
+    end
+  end 
+end
+
 
   
