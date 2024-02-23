@@ -58,6 +58,7 @@ function createContextMenu(x, y)
     }
     table.insert(contextMenus, contextMenu)
     player.hasContextMenu = true
+    player.contextMenuID = #contextMenus
   --[[
     elseif for ID, drone in pairs(drones) do if math.checkIfPointInCircle(x, y, drone.x, drone.y, 15) and not drone.hasContextMenu then return true end end then
     local contextMenu = {
@@ -80,6 +81,7 @@ function createContextMenu(x, y)
     }
     table.insert(contextMenus, contextMenu)
     drone.hasContextMenu = true
+    drone.contextMenuID = #contextMenus
   ]]
   elseif not grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)].hasContextMenu then
     --Create context menu for tile
@@ -118,12 +120,22 @@ function createContextMenu(x, y)
     end
     table.insert(contextMenus, contextMenu)
     tile.hasContextMenu = true
+    tile.contextMenuID = #contextMenus
   end
 end
 
 function updateContextMenu(menuID)
   if contextMenus[menuID] then
     --Update displayed values of context menu
+    local menu = contextMenus[menuID]
+    if menu.type == "player" then
+      menu.elements[1].text = "Player Coords: ("..player.x..","..player.y..")\n"
+      menu.elements[2].text = "Health: "..player.health.."\n"
+    elseif menu.type == "drone" then
+      menu.elements[1].text = "Drone Coords: ("..drone.x..","..drone.y..")\n"
+    elseif menu.type == "tile" then
+      menu.elements[2].text = "Tile: ("..menu.tile.x..","..menu.tile.y..")\nTemperature: "..math.round(menu.tile.temp, 2).."\n"
+    end
   end
 end
 

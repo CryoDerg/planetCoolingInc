@@ -151,6 +151,8 @@ function updateImportantTiles()
 	for x, vX in pairs(grid.updateTiles) do
 		for y, vY in pairs(vX) do
 			updateTileHeat(x,y)
+			if grid.tiles[x][y].hasContextMenu then
+				updateContextMenu(grid.tiles[x][y].contextMenuID)
 		end
 	end
 end

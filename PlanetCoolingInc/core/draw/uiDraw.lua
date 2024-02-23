@@ -43,6 +43,15 @@ function drawContextMenus()
 				love.graphics.setColor(1, 1, 1, 1)
 				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
 				love.graphics.print("Inventory", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), 0, 1/scale, 1/scale)
+
+				--Draw the inventory
+				--On Screen Coords: menu.x + 10, menu.y + 20 + (i) * 30, 180, 20
+				for itemName, item in pairs(element.inventory.items) do
+					love.graphics.setColor(1, 1, 1, 1)
+					--On Screen Coords: menu.x + 10, menu.y + 20 + (i) * 30 + j * 10, 180, 20
+					love.graphics.print(itemName..": "..item.amount, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i) * (30/scale)) + (j * (10/scale)), 0, 1/scale, 1/scale)
+					j = j + 1
+				end
 			end
 		end
 	end

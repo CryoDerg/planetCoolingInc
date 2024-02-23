@@ -21,6 +21,9 @@ function updatePlayerPosition(dt)
 			player.moveInfo.yDist = 0
 			player.moveInfo.timeToMove = 0
 		end
+		if player.hasContextMenu then
+			updateContextMenu(player.contextMenuID)
+		end
 	end
 end
 
