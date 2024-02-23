@@ -3,8 +3,8 @@ function drawContextMenus()
 	for ID, menu in ipairs(contextMenus) do
 		--Draw Line from root to menu
 		love.graphics.setColor(1, 1, 1, 1)
-		--On Screen Coords: menu.rootX, menu.rootY, menu.x - menu.rootX, menu.y - menu.rootY
-		love.graphics.line(focusPointX - (centerWidth/scale) + (menu.rootX/scale), focusPointY - (centerHeight/scale) + (menu.rootY/scale), focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale))
+		--On Screen Coords: onActualGrid(menu.rootX, menu.rootY), menu.x - menu.rootX, menu.y - menu.rootY
+		love.graphics.line(menu.rootX, menu.rootY, focusPointX - (centerWidth/scale) + (menu.x/scale), focusPointY - (centerHeight/scale) + (menu.y/scale))
 
 		--Draw the background
 		love.graphics.setColor(0, 0, 0, 0.5)
@@ -26,21 +26,23 @@ function drawContextMenus()
 			if element.type == "btn" then
 				--Draw a button
 				love.graphics.setColor(1, 1, 1, 1)
-				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)), (180/scale), (20/scale))
-				love.graphics.setColor(1, 1, 1, 1)
-				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)))
+				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), (180/scale), (20/scale))
+
+				--Draw button text
+				love.graphics.setColor(0, 0, 0, 1)
+				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
+				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), 0, 1/scale, 1/scale)
 			elseif element.type == "text" then
 				--Draw text
 				love.graphics.setColor(1, 1, 1, 1)
-				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)))
+				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
+				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), 0, 1/scale, 1/scale)
 			elseif element.type == "inventory" then
 				--Draw an inventory
 				love.graphics.setColor(1, 1, 1, 1)
-				--On Screen Coords: menu.x + 10, menu.y + 10 + (i - 1) * 30, 180, 20
-				love.graphics.print("Inventory", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (10/scale) + ((i - 1) * (30/scale)))
+				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
+				love.graphics.print("Inventory", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), 0, 1/scale, 1/scale)
 			end
 		end
 	end
