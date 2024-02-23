@@ -44,7 +44,7 @@ function createContextMenu(x, y)
       elements = {
         {
           type = "text",
-          text = "Player Coords: ("..player.x..","..player.y..")\n",
+          text = "Player Coords: ("..math.ceil(player.x)..","..math.ceil(player.y)..")\n",
         },
         {
           type = "text",
@@ -129,7 +129,9 @@ function updateContextMenu(menuID)
     --Update displayed values of context menu
     local menu = contextMenus[menuID]
     if menu.type == "player" then
-      menu.elements[1].text = "Player Coords: ("..player.x..","..player.y..")\n"
+      menu.rootX = player.x
+      menu.rootY = player.y
+      menu.elements[1].text = "Player Coords: ("..math.ceil(player.x)..","..math.ceil(player.y)..")\n"
       menu.elements[2].text = "Health: "..player.health.."\n"
     elseif menu.type == "drone" then
       menu.elements[1].text = "Drone Coords: ("..drone.x..","..drone.y..")\n"

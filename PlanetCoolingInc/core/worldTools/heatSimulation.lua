@@ -153,6 +153,7 @@ function updateImportantTiles()
 			updateTileHeat(x,y)
 			if grid.tiles[x][y].hasContextMenu then
 				updateContextMenu(grid.tiles[x][y].contextMenuID)
+			end
 		end
 	end
 end
