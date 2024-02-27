@@ -1,4 +1,6 @@
 function drawWorld()
+	--draw the grid
+	tilesWithBuildings = {}
 	for x, vX in pairs(grid.tiles) do
 		for y, vY in pairs(vX) do
 			if tempOverlay then
@@ -13,18 +15,35 @@ function drawWorld()
 				love.graphics.setColor(vY.temp/700, vY.temp/1000, 0.2)
 				
 			end
+			
 			if vY.update and showHotTiles then
 				love.graphics.setColor(0,1,0)
 			end
+			love.graphics.rectangle("fill", x*60, y*60, 60, 60)
+
 			if networkOverlay then
-				if vY.onElectricNetwork then
-					love.graphics.setColor(vY.onElectricNetwork/#electricNetworks.networks,vY.onElectricNetwork/#electricNetworks.networks,0)
-				end
 				if vY.onPipeNetwork then
 					love.graphics.setColor(0,vY.onPipeNetwork/#pipeNetworks.networks,vY.onPipeNetwork/#pipeNetworks.networks)
+					buildingBlueprints[2].drawBuilding(vY)
+				end
+				if vY.onElectricNetwork then
+					love.graphics.setColor(vY.onElectricNetwork/#electricNetworks.networks,vY.onElectricNetwork/#electricNetworks.networks,0)
+					buildingBlueprints[1].drawBuilding(vY)
 				end
 			end
-			love.graphics.rectangle("fill", x*60, y*60, 60, 60)
+			
+			if vY.building then
+				if not vY.building.name == "wire" and not vY.building.name == "pipe" then
+					table.insert(tilesWithBuildings, vY)
+				end
+			end
+		end
+	end
+
+	--draw the buildings
+	for i, tile in pairs(tilesWithBuildings) do
+		if tile.building then
+			tile.building.drawBuilding(tile)
 		end
 	end
 end

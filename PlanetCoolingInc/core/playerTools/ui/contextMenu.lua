@@ -109,14 +109,12 @@ function createContextMenu(x, y)
     }
 
     if tile.building then
-      local buildingContext = {
-        {
-          type = "text",
-          text = "Building: "..tile.building.name.."\n",
-        },
-      }
-
-      table.insert(contextMenu.elements, 2, buildingContext)
+      local buildingContext = tile.building.contextMenu(tile)
+      for i, element in ipairs(buildingContext) do
+        table.insert(contextMenu.elements, element)
+      end
+      
+      table.print(contextMenu)
     end
     table.insert(contextMenus, contextMenu)
     tile.hasContextMenu = true

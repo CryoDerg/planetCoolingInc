@@ -26,6 +26,7 @@ TODO
 
 	Context Menu System - Have a list of context menus that display different bits of info depending on the data it is given (DONE)
 	Inventories - Have a list of inventories that hold a certain amount of items as well as having functions to transfer items between them
+	Drones - Have a list of drones that can be programmed by the player to do certain tasks
 
 ]]
 

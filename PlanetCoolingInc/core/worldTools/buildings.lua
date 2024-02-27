@@ -18,6 +18,40 @@ function initBuildings()
 				splitElectric(tile)
 				tile.building = false
 			end
+			,
+
+			drawBuilding = function(tile)
+				--draw wire that connects to surrounding wires
+				love.graphics.rectangle("fill", tile.x*60+29.5, tile.y*60+29.5, 1, 1)
+				--check four surrounding tiles for wires
+				if grid.tiles[tile.x+1][tile.y].onElectricNetwork == tile.onElectricNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60+90, tile.y*60+30)
+				end
+				if grid.tiles[tile.x-1][tile.y].onElectricNetwork == tile.onElectricNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60-30, tile.y*60+30)
+				end
+				if grid.tiles[tile.x][tile.y+1].onElectricNetwork == tile.onElectricNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60+30, tile.y*60+90)
+				end
+				if grid.tiles[tile.x][tile.y-1].onElectricNetwork == tile.onElectricNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60+30, tile.y*60-30)
+				end
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Wire"
+					},
+					{
+						type = "text",
+						text = "Wire ID: "..tile.wireID.."\nNetwork ID: "..tile.onElectricNetwork.."\n",
+					}
+				}
+				return elements
+			end
 		},
 
 		--Pipe[2]
@@ -35,6 +69,42 @@ function initBuildings()
 			removeBuilding = function(tile)
 				splitPipe(tile)
 				tile.building = false
+			end
+			,
+
+			drawBuilding = function(tile)
+				--draw pipe that connects to surrounding pipes
+				love.graphics.setLineWidth(5)
+				love.graphics.rectangle("fill", tile.x*60+27.5, tile.y*60+27.5, 5, 5)
+				--check four surrounding tiles for pipes
+				if grid.tiles[tile.x+1][tile.y].onPipeNetwork == tile.onPipeNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60+90, tile.y*60+30)
+				end
+				if grid.tiles[tile.x-1][tile.y].onPipeNetwork == tile.onPipeNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60-30, tile.y*60+30)
+				end
+				if grid.tiles[tile.x][tile.y+1].onPipeNetwork == tile.onPipeNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60+30, tile.y*60+90)
+				end
+				if grid.tiles[tile.x][tile.y-1].onPipeNetwork == tile.onPipeNetwork then
+					love.graphics.line(tile.x*60+30, tile.y*60+30, tile.x*60+30, tile.y*60-30)
+				end
+				love.graphics.setLineWidth(1)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Pipe"
+					},
+					{
+						type = "text",
+						text = "Pipe ID: "..tile.pipeID.."\nNetwork ID: "..tile.onPipeNetwork.."\n",
+					}
+				}
+				return elements
 			end
 		},
 
@@ -86,6 +156,29 @@ function initBuildings()
 				splitElectric(tile)
 				splitPipe(tile)
 				tile.building = false
+			end
+			,
+
+			drawBuilding = function(tile)
+				--draw drop pod
+				love.graphics.setColor(1,1,1)
+				love.graphics.circle("fill", tile.x*60+30, tile.y*60+30, 20)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Drop Pod"
+					},
+					
+					{
+						type = "text",
+						text = "Power Generation: "..buildingBlueprints[3].powerGeneration.." Watts\nPower Consumption: "..buildingBlueprints[3].powerConsumption.." Watts\n",
+					}
+				}
+				return elements
 			end
 			,
 			
@@ -154,6 +247,30 @@ function initBuildings()
 			end
 			,
 
+			drawBuilding = function(tile)
+				--draw heat collector
+				love.graphics.setColor(1,1,1)
+				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.setColor(0,0,1)
+				love.graphics.circle("fill", tile.x*60+30, tile.y*60+30, 15)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Heat Collector"
+					},
+					{
+						type = "text",
+						text = "Power Consumption: "..buildingBlueprints[4].powerConsumption.." Watts\n",
+					}
+				}
+				return elements
+			end
+			,
+
 			--passive operation
 			buildingFunction = function(tile)
 				--Collects heat from the tile and puts it into the pipe network
@@ -207,6 +324,31 @@ function initBuildings()
 			end
 			,
 
+			drawBuilding = function(tile)
+				--draw solar panel
+				love.graphics.setColor(0.2,0.2,0.2)
+				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.setColor(0.7,0.7,0.7)
+				love.graphics.line(tile.x*60+20, tile.y*60+10, tile.x*60+20, tile.y*60+50)
+				love.graphics.line(tile.x*60+40, tile.y*60+10, tile.x*60+40, tile.y*60+50)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Solar Panel"
+					},
+					{
+						type = "text",
+						text = "Power Generation: "..buildingBlueprints[5].powerGeneration.." Watts\n",
+					}
+				}
+				return elements
+			end
+			,
+
 			--passive operation
 			buildingFunction = function(tile)
 				--Act as a generator
@@ -242,6 +384,27 @@ function initBuildings()
 			removeBuilding = function(tile)
 				splitPipe(tile)
 				tile.building = false
+			end
+			,
+
+			drawBuilding = function(tile)
+				--draw radiator
+				love.graphics.setColor(1,1,1)
+				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.setColor(1,0.3,0)
+				love.graphics.line(tile.x*60+10, tile.y*60+10, tile.x*60+50, tile.y*60+50)
+				love.graphics.line(tile.x*60+50, tile.y*60+10, tile.x*60+10, tile.y*60+50)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Radiator"
+					}
+				}
+				return elements
 			end
 			,
 
@@ -295,9 +458,32 @@ function initBuildings()
 				splitElectric(tile)
 
 				--Drop all items on the ground
-				for slot, item in pairs(inventories[tile.inventoryID].items) do
-					transferItemToInventory(inventories[tile.inventoryID], slot, inventories.ground)
-				end
+				table.insert(groundInventories, inventories[tile.inventoryID])
+				table.remove(inventories, tile.inventoryID)
+			end
+			,
+
+			drawBuilding = function(tile)
+				--draw item storage
+				love.graphics.setColor(1,1,1)
+				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.setColor(0,1,0)
+				love.graphics.rectangle("line", tile.x*60+10, tile.y*60+10, 40, 40)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Item Storage"
+					},
+					{
+						type = "inventory",
+						inventory = inventories[tile.inventoryID],
+					}
+				}
+				return elements
 			end
 			,
 
@@ -328,6 +514,28 @@ function initBuildings()
 
 				--split electric network
 				splitElectric(tile)
+			end
+			,
+
+			drawBuilding = function(tile)
+				--draw drone hub
+				love.graphics.setColor(1,1,1)
+				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.setColor(0.3,0.3,0.3)
+				love.graphics.rectangle("fill", tile.x*60+11, tile.y*60+11, 10, 38)
+				love.graphics.rectangle("fill", tile.x*60+25, tile.y*60+11, 10, 38)
+				love.graphics.rectangle("fill", tile.x*60+39, tile.y*60+11, 10, 38)
+			end
+			,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						text = "\nBuilding: Drone Hub"
+					}
+				}
+				return elements
 			end
 			,
 
