@@ -121,3 +121,13 @@ end
 function drawInventory(inventory)
 	--Draw an inventory in the from of a context menu
 end
+
+--Drawing Drone Program menu
+function droneProgramUI()
+	--Draw the drone program menu
+	--Background
+	love.graphics.setColor(0, 0, 0, 0.5)
+	--On Screen Coords: 0, 0, windowWidth, windowHeight
+	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale), (windowWidth/scale), (windowHeight/scale))
+	--
+end
