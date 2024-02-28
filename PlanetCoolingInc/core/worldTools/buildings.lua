@@ -9,7 +9,6 @@ function initBuildings()
 			placeBuilding = function(tile)
 				if not tile.onElectricNetwork then
 					connectElectric(tile)
-					tile.building = buildingBlueprints[1]
 				end
 			end
 			,
@@ -61,7 +60,6 @@ function initBuildings()
 			placeBuilding = function(tile)
 				if not tile.onPipeNetwork then
 					connectPipes(tile)
-					tile.building = buildingBlueprints[2]
 				end
 			end
 			,

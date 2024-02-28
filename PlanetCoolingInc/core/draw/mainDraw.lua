@@ -33,9 +33,7 @@ function drawWorld()
 			end
 			
 			if vY.building then
-				if not vY.building.name == "wire" and not vY.building.name == "pipe" then
-					table.insert(tilesWithBuildings, vY)
-				end
+				table.insert(tilesWithBuildings, vY)
 			end
 		end
 	end
