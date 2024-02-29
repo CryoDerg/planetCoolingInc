@@ -541,7 +541,17 @@ function initBuildings()
 			buildingFunction = function(tile)
 				--Act as a drone hub
 			end
-		}
+		},
+		--Drone[9]
+		{
+			--Drone that can be programmed to perform tasks
+			name = "Drone",
+			description = "A drone that can be programmed to perform tasks",
+			placeBuilding = function(tile)
+				--Create new drone on the tile
+				createDrone(tile.x * 60, tile.y * 60)
+			end,
+		},
 	}
 end
 

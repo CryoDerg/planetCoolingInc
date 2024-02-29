@@ -8,11 +8,13 @@ function fileLoad()
 	require("core/worldTools/networkManager")
 	require("core/worldTools/droneUtils")
 	require("core/worldTools/itemManage")
+	require("core/worldTools/droneManage")
 
 	require("core/playerTools/movement")
 	
 	require("core/playerTools/ui/buildingUI")
 	require("core/playerTools/ui/contextMenu")
+	require("core/playerTools/ui/droneProgramUI")
 
 	require("core/utils/debugTools")
 	require("core/utils/mathFunctions")

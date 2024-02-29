@@ -59,66 +59,75 @@ function createContextMenu(x, y)
     table.insert(contextMenus, contextMenu)
     player.hasContextMenu = true
     player.contextMenuID = #contextMenus
-  --[[
-    elseif for ID, drone in pairs(drones) do if math.checkIfPointInCircle(x, y, drone.x, drone.y, 15) and not drone.hasContextMenu then return true end end then
-    local contextMenu = {
-      type = "drone",
-      ID = #contextMenus + 1,
-      x = x,
-      y = y,
-      rootX = drone.x,
-      rootY = drone.y,
-      elements = {
-        {
-          type = "text",
-          text = "Drone Coords: ("..drone.x..","..drone.y..")\n",
-        },
-        {
-          type = "inventory",
-          inventory = drone.inventory,
+  else
+    local foundDrone = false
+    for ID, drone in pairs(drones) do 
+      print(drone.x, drone.y, x, y, math.checkIfPointInCircle(x, y, drone.x, drone.y, 15))
+      if math.checkIfPointInCircle(x - camX, y - camY, drone.x, drone.y, 15) and not drone.hasContextMenu then 
+        local contextMenu = {
+          type = "drone",
+          ID = #contextMenus + 1,
+          x = x,
+          y = y,
+          rootX = drone.x,
+          rootY = drone.y,
+          elements = {
+            {
+              type = "text",
+              text = "Drone Coords: ("..drone.x..","..drone.y..")\n",
+            },
+            {
+              type = "inventory",
+              inventory = drone.inventory,
+            }
+          }
+        }
+        table.insert(contextMenus, contextMenu)
+        drone.hasContextMenu = true
+        drone.contextMenuID = #contextMenus
+        foundDrone = true
+        break
+      end 
+    end 
+    
+    
+    if not grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)].hasContextMenu and not foundDrone then
+      --Create context menu for tile
+      local tile = grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)]
+      local contextMenu = {
+        type = "tile",
+        tile = tile,
+        ID = #contextMenus + 1,
+        x = x*scale,
+        y = y*scale,
+        rootX = tile.x*60 + 30,
+        rootY = tile.y*60 + 30,
+        elements = {
+          {
+            type = "btn",
+            text = "Move Player Here",
+            func = movePlayerTo, --movePlayerTo(x, y)
+            funcArgs = {tile.x*60+30, tile.y*60+30},
+          },
+          {
+            type = "text",
+            text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n",
+          }
         }
       }
-    }
-    table.insert(contextMenus, contextMenu)
-    drone.hasContextMenu = true
-    drone.contextMenuID = #contextMenus
-  ]]
-  elseif not grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)].hasContextMenu then
-    --Create context menu for tile
-    local tile = grid.tiles[math.floor((x - camX)/60)][math.floor((y - camY)/60)]
-    local contextMenu = {
-      type = "tile",
-      tile = tile,
-      ID = #contextMenus + 1,
-      x = x*scale,
-      y = y*scale,
-      rootX = tile.x*60 + 30,
-      rootY = tile.y*60 + 30,
-      elements = {
-        {
-          type = "btn",
-          text = "Move Player Here",
-          func = movePlayerTo, --movePlayerTo(x, y)
-          funcArgs = {tile.x*60+30, tile.y*60+30},
-        },
-        {
-          type = "text",
-          text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n",
-        }
-      }
-    }
 
-    if tile.building then
-      local buildingContext = tile.building.contextMenu(tile)
-      for i, element in ipairs(buildingContext) do
-        table.insert(contextMenu.elements, element)
+      if tile.building then
+        local buildingContext = tile.building.contextMenu(tile)
+        for i, element in ipairs(buildingContext) do
+          table.insert(contextMenu.elements, element)
+        end
+        
+        table.print(contextMenu)
       end
-      
-      table.print(contextMenu)
+      table.insert(contextMenus, contextMenu)
+      tile.hasContextMenu = true
+      tile.contextMenuID = #contextMenus
     end
-    table.insert(contextMenus, contextMenu)
-    tile.hasContextMenu = true
-    tile.contextMenuID = #contextMenus
   end
 end
 

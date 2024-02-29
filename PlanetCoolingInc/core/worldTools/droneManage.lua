@@ -40,6 +40,14 @@ function initDrones()
 end
 
 function createDrone(x, y)
+	--init the inventory
+	local inventory = {
+		capacity = 10,
+		itemAmount = 0,
+		items = {},
+	}
+	table.insert(inventories, inventory)
+
 	local drone = {
 		x = x,
 		y = y,
@@ -47,9 +55,10 @@ function createDrone(x, y)
 		charging = false,
 		power = 100,
 		maxPower = 100,
-		inventoryID = #inventories + 1,
-		inventory = inventories[#inventories + 1],
+		inventoryID = #inventories,
+		inventory = inventories[#inventories],
 		droneID = #drones + 1,
+		hasContextMenu = false,
 	}
 	table.insert(drones, drone)
 end

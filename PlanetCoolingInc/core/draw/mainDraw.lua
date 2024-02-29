@@ -51,6 +51,13 @@ function drawPlayer()
 	love.graphics.circle("fill", player.x, player.y, 15)
 end
 
+function drawDrones()
+	for i, drone in pairs(drones) do
+		love.graphics.setColor(0,1,0)
+		love.graphics.circle("fill", drone.x, drone.y, 5)
+	end
+end
+
 function drawUI()
 	if placingBuilding then
 		constructionUI()

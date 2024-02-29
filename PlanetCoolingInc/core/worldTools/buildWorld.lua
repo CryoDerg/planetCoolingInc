@@ -2,6 +2,7 @@ function genNewWorld(size, seed)
 	initBuildings()
 	initInventories()
 	initContextMenu()
+	initDrones()
 	--set up world variables and tables
 	gameTime = 0
 	updateTime = 0

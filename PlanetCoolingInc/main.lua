@@ -176,6 +176,7 @@ function love.draw()
 
 	if gamestate == 1 then
 		drawPlayer()
+		drawDrones()
 		drawUI()
 	end
 end
