@@ -49,7 +49,8 @@ function updateControls(k)
   end
 
   if k == "d" then
-    settingDefaults()
+    buildingBlueprints[9].placeBuilding(grid.tiles[math.floor((mX - camX)/60)][math.floor((mY - camY)/60)])
+    openProgramMenu(drones[1])
   end
 
   if k == settings.controls.placeBuilding then

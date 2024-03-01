@@ -65,6 +65,7 @@ function createContextMenu(x, y)
       print(drone.x, drone.y, x, y, math.checkIfPointInCircle(x, y, drone.x, drone.y, 15))
       if math.checkIfPointInCircle(x - camX, y - camY, drone.x, drone.y, 15) and not drone.hasContextMenu then 
         local contextMenu = {
+          drone = drone,
           type = "drone",
           ID = #contextMenus + 1,
           x = x,
@@ -73,8 +74,18 @@ function createContextMenu(x, y)
           rootY = drone.y,
           elements = {
             {
+              type = "btn",
+              text = "Program Drone",
+              func = openProgramMenu, --openProgramMenu(drone)
+              funcArgs = {drone},
+            },
+            {
               type = "text",
               text = "Drone Coords: ("..drone.x..","..drone.y..")\n",
+            },
+            {
+              type = "text",
+              text = "Power: "..drone.power.."\n",
             },
             {
               type = "inventory",
@@ -160,7 +171,7 @@ function clickContextMenu(x, y)
         if menu.type == "player" then
           player.hasContextMenu = false
         elseif menu.type == "drone" then
-          --drone.hasContextMenu = false
+          menu.drone.hasContextMenu = false
         elseif menu.type == "tile" then
           menu.tile.hasContextMenu = false
         end
@@ -175,6 +186,7 @@ function clickContextMenu(x, y)
         for i, element in ipairs(menu.elements) do
           if element.type == "btn" and x > menu.x + 10 and x < menu.x + 190 and y > menu.y + 20 + ((i - 1) * 40) and y < menu.y + 40 + ((i - 1) * 40) then
             --Run the function
+            print("Clicked on button "..i)
             element.func(unpack(element.funcArgs))
             return
           end

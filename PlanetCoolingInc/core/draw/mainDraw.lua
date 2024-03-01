@@ -65,4 +65,5 @@ function drawUI()
 
 	drawContextMenus()
 	drawBuildingUI()
+	droneProgramUI()
 end
