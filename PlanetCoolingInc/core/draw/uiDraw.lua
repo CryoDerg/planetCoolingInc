@@ -124,28 +124,29 @@ end
 
 --Drawing Drone Program menu
 function droneProgramUI()
-	--Draw the drone program menu
-	--Background
-	love.graphics.setColor(0, 0, 0, 0.5)
-	--On Screen Coords: 0, 0, windowWidth, windowHeight
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale), (windowWidth/scale), (windowHeight/scale))
+	if droneProgramOpen then
+		--Draw the drone program menu
+		--Background
+		love.graphics.setColor(0, 0, 0, 0.5)
+		--On Screen Coords: 0, 0, windowWidth, windowHeight
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale), (windowWidth/scale), (windowHeight/scale))
 
-	--Draw program events menu
-	love.graphics.setColor(0.5, 0.5, 0.5, 1)
-	--On Screen Coords: 0, windowHeight - 150, windowWidth, 150
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY + (centerHeight/scale) - (150/scale), (windowWidth/scale), (150/scale))
+		--Draw program events menu
+		love.graphics.setColor(0.5, 0.5, 0.5, 1)
+		--On Screen Coords: 0, windowHeight - 150, windowWidth, 150
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY + (centerHeight/scale) - (150/scale), (windowWidth/scale), (150/scale))
 
-	--Draw 5 draggable events in menu
-	love.graphics.setColor(1, 1, 1, 1)
-	--On Screen Coords: 50, windowHeight - 125, 100, 100
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (50/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-	--On Screen Coords: 175, windowHeight - 125, 100, 100
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (175/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-	--On Screen Coords: 300, windowHeight - 125, 100, 100
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (300/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-	--On Screen Coords: 425, windowHeight - 125, 100, 100
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (425/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-	--On Screen Coords: 550, windowHeight - 125, 100, 100
-	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (550/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-	
+		--Draw 5 draggable events in menu
+		love.graphics.setColor(1, 1, 1, 1)
+		--On Screen Coords: 50, windowHeight - 125, 100, 100
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (50/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
+		--On Screen Coords: 175, windowHeight - 125, 100, 100
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (175/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
+		--On Screen Coords: 300, windowHeight - 125, 100, 100
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (300/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
+		--On Screen Coords: 425, windowHeight - 125, 100, 100
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (425/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
+		--On Screen Coords: 550, windowHeight - 125, 100, 100
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (550/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
+	end
 end
