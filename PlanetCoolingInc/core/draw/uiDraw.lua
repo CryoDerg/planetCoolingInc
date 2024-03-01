@@ -131,22 +131,50 @@ function droneProgramUI()
 		--On Screen Coords: 0, 0, windowWidth, windowHeight
 		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale), (windowWidth/scale), (windowHeight/scale))
 
-		--Draw program events menu
+		--Draw program events section
 		love.graphics.setColor(0.5, 0.5, 0.5, 1)
-		--On Screen Coords: 0, windowHeight - 150, windowWidth, 150
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY + (centerHeight/scale) - (150/scale), (windowWidth/scale), (150/scale))
+		--On Screen Coords: 0, 0, windowWidth, 200
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale), (windowWidth/scale), (200/scale))
 
-		--Draw 5 draggable events in menu
+		--Draw the 5 program events
 		love.graphics.setColor(1, 1, 1, 1)
-		--On Screen Coords: 50, windowHeight - 125, 100, 100
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (50/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-		--On Screen Coords: 175, windowHeight - 125, 100, 100
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (175/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-		--On Screen Coords: 300, windowHeight - 125, 100, 100
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (300/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-		--On Screen Coords: 425, windowHeight - 125, 100, 100
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (425/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
-		--On Screen Coords: 550, windowHeight - 125, 100, 100
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (550/scale), focusPointY + (centerHeight/scale) - (125/scale), (100/scale), (100/scale))
+		--On Screen Coords: 205, 10, 150, 80
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (205/scale), focusPointY - (centerHeight/scale) + (10/scale), (150/scale), (80/scale))
+		--On Screen Coords: 365, 10, 150, 80
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (365/scale), focusPointY - (centerHeight/scale) + (10/scale), (150/scale), (80/scale))
+		--On Screen Coords: 525, 10, 150, 80
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (525/scale), focusPointY - (centerHeight/scale) + (10/scale), (150/scale), (80/scale))
+		--On Screen Coords: 685, 10, 150, 80
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (685/scale), focusPointY - (centerHeight/scale) + (10/scale), (150/scale), (80/scale))
+		--On Screen Coords: 845, 10, 150, 80
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (845/scale), focusPointY - (centerHeight/scale) + (10/scale), (150/scale), (80/scale))
+		
+
+		--Draw the program events text
+		love.graphics.setColor(0, 0, 0, 1)
+		--On Screen Coords: 210, 15
+		love.graphics.print("Move To Tile", focusPointX - (centerWidth/scale) + (210/scale), focusPointY - (centerHeight/scale) + (15/scale), 0, 1/scale, 1/scale)
+		--On Screen Coords: 370, 15
+		love.graphics.print("Pick up Items", focusPointX - (centerWidth/scale) + (370/scale), focusPointY - (centerHeight/scale) + (15/scale), 0, 1/scale, 1/scale)
+		--On Screen Coords: 530, 15
+		love.graphics.print("Drop Items", focusPointX - (centerWidth/scale) + (530/scale), focusPointY - (centerHeight/scale) + (15/scale), 0, 1/scale, 1/scale)
+		--On Screen Coords: 690, 15
+		love.graphics.print("Go Idle", focusPointX - (centerWidth/scale) + (690/scale), focusPointY - (centerHeight/scale) + (15/scale), 0, 1/scale, 1/scale)
+		--On Screen Coords: 850, 15
+		love.graphics.print("Return to Hub", focusPointX - (centerWidth/scale) + (850/scale), focusPointY - (centerHeight/scale) + (15/scale), 0, 1/scale, 1/scale)
+
+		--Draw already programmed events
+		for i, event in ipairs(programDrone.program) do
+			love.graphics.setColor(1, 1, 1, 1)
+			--On Screen Coords: 10 + (i - 1) * 160, 300, 150, 80
+			love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (10/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (300/scale), (150/scale), (80/scale))
+			love.graphics.setColor(0, 0, 0, 1)
+			--On Screen Coords: 15 + (i - 1) * 160, 305
+			love.graphics.print(event.eventText, focusPointX - (centerWidth/scale) + (15/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (305/scale), 0, 1/scale, 1/scale)
+			--Delete Button
+			love.graphics.setColor(1, 0, 0, 1)
+			--On Screen Coords: 135 + (i - 1) * 160, 355, 20, 20
+			love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (135/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (355/scale), (20/scale), (20/scale))
+		end
 	end
 end
