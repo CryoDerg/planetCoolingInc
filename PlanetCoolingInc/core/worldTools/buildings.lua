@@ -42,10 +42,12 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Wire"
 					},
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "Wire ID: "..tile.wireID.."\nNetwork ID: "..tile.onElectricNetwork.."\n",
 					}
 				}
@@ -95,10 +97,12 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Pipe"
 					},
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "Pipe ID: "..tile.pipeID.."\nNetwork ID: "..tile.onPipeNetwork.."\n",
 					}
 				}
@@ -168,11 +172,13 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Drop Pod"
 					},
 					
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "Power Generation: "..buildingBlueprints[3].powerGeneration.." Watts\nPower Consumption: "..buildingBlueprints[3].powerConsumption.." Watts\n",
 					}
 				}
@@ -258,10 +264,12 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Heat Collector"
 					},
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "Power Consumption: "..buildingBlueprints[4].powerConsumption.." Watts\n",
 					}
 				}
@@ -336,10 +344,12 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Solar Panel"
 					},
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "Power Generation: "..buildingBlueprints[5].powerGeneration.." Watts\n",
 					}
 				}
@@ -399,6 +409,7 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Radiator"
 					}
 				}
@@ -474,6 +485,7 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Item Storage"
 					},
 					{
@@ -530,6 +542,7 @@ function initBuildings()
 				local elements = {
 					{
 						type = "text",
+						textColor = {1, 1, 1},
 						text = "\nBuilding: Drone Hub"
 					}
 				}

@@ -25,17 +25,17 @@ function drawContextMenus()
 		for i, element in ipairs(menu.elements) do
 			if element.type == "btn" then
 				--Draw a button
-				love.graphics.setColor(1, 1, 1, 1)
+				love.graphics.setColor(unpack(element.btnColor))
 				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
 				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), (180/scale), (20/scale))
 
 				--Draw button text
-				love.graphics.setColor(0, 0, 0, 1)
+				love.graphics.setColor(unpack(element.textColor))
 				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
 				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), 0, 1/scale, 1/scale)
 			elseif element.type == "text" then
 				--Draw text
-				love.graphics.setColor(1, 1, 1, 1)
+				love.graphics.setColor(unpack(element.textColor))
 				--On Screen Coords: menu.x + 10, menu.y + 20 + (i - 1) * 30, 180, 20
 				love.graphics.print(element.text, focusPointX - (centerWidth/scale) + (menu.x/scale) + (10/scale), focusPointY - (centerHeight/scale) + (menu.y/scale) + (20/scale) + ((i - 1) * (30/scale)), 0, 1/scale, 1/scale)
 			elseif element.type == "inventory" then

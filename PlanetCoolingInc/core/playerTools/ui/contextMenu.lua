@@ -44,10 +44,12 @@ function createContextMenu(x, y)
       elements = {
         {
           type = "text",
+          textColor = {1, 1, 1},
           text = "Player Coords: ("..math.ceil(player.x)..","..math.ceil(player.y)..")\n",
         },
         {
           type = "text",
+          textColor = {1, 1, 1},
           text = "Health: "..player.health.."\n",
         },
         {
@@ -74,6 +76,7 @@ function createContextMenu(x, y)
           elements = {
             {
               type = "text",
+              textColor = {1, 1, 1},
               text = "Drone Coords: ("..drone.x..","..drone.y..")\n",
             },
             {
@@ -106,11 +109,14 @@ function createContextMenu(x, y)
           {
             type = "btn",
             text = "Move Player Here",
+            btnColor = {1, 1, 0},
+            textColor = {0, 0, 0},
             func = movePlayerTo, --movePlayerTo(x, y)
             funcArgs = {tile.x*60+30, tile.y*60+30},
           },
           {
             type = "text",
+            textColor = {1, 1, 1},
             text = "Tile: ("..tile.x..","..tile.y..")\nTemperature: "..math.round(tile.temp, 2).."\n",
           }
         }
