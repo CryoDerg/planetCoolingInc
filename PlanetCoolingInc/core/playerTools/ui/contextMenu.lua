@@ -78,6 +78,8 @@ function createContextMenu(x, y)
             {
               type = "btn",
               text = "Program Drone",
+              btnColor = {1, 1, 1},
+              textColor = {0, 0, 0},
               func = openProgramMenu, --openProgramMenu(drone)
               funcArgs = {drone},
             },
@@ -88,6 +90,7 @@ function createContextMenu(x, y)
             },
             {
               type = "text",
+              textColor = {1, 1, 1},
               text = "Power: "..drone.power.."\n",
             },
             {
@@ -120,7 +123,7 @@ function createContextMenu(x, y)
           {
             type = "btn",
             text = "Move Player Here",
-            btnColor = {1, 1, 0},
+            btnColor = {1, 1, 1},
             textColor = {0, 0, 0},
             func = movePlayerTo, --movePlayerTo(x, y)
             funcArgs = {tile.x*60+30, tile.y*60+30},
