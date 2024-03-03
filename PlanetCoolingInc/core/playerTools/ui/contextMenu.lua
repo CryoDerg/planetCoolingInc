@@ -33,6 +33,7 @@ end
 function createContextMenu(x, y)
   --Check if click is on something other than tile (like the player or a drone)
   --Checking for player
+  
   if math.checkIfPointInCircle(x - camX, y - camY, player.x, player.y, 15) and not player.hasContextMenu then
     local contextMenu = {
       type = "player",
@@ -64,7 +65,6 @@ function createContextMenu(x, y)
   else
     local foundDrone = false
     for ID, drone in pairs(drones) do 
-      print(drone.x, drone.y, x, y, math.checkIfPointInCircle(x, y, drone.x, drone.y, 15))
       if math.checkIfPointInCircle(x - camX, y - camY, drone.x, drone.y, 15) and not drone.hasContextMenu then 
         local contextMenu = {
           drone = drone,

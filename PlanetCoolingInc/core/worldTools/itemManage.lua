@@ -7,11 +7,30 @@
 
 	items = {
 		coal = {
-			itemName = "coal",
+			itemName = "Coal",
 			amount = 5,
 		}
 	}
 ]]
+
+function initItems()
+	--Initialize all the items in the game
+	itemList = {
+		{
+			name = "Coal",
+			internalName = "coal",
+		},
+		{
+			name = "Iron",
+			internalName = "iron",
+		},
+		{
+			name = "Uranium",
+			internalName = "uranium",
+		},
+		--More items will be added later (these are just placeholders)
+	}
+end
 
 function initInventories()
   --inventories is a table that holds all the inventories in the world (except for ones on the ground)

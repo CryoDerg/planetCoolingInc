@@ -117,11 +117,6 @@ function constructionUI()
 	love.graphics.rectangle("fill", tileX * 60, tileY * 60, 60, 60)
 end
 
---Drawing Inventory
-function drawInventory(inventory)
-	--Draw an inventory in the from of a context menu
-end
-
 --Drawing Drone Program menu
 function droneProgramUI()
 	if droneProgramOpen then
@@ -135,6 +130,11 @@ function droneProgramUI()
 		love.graphics.setColor(0.5, 0.5, 0.5, 1)
 		--On Screen Coords: 0, 0, windowWidth, 200
 		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY - (centerHeight/scale), (windowWidth/scale), (200/scale))
+
+		--Draw Exit Button
+		love.graphics.setColor(1, 0, 0, 1)
+		--On Screen Coords: windowWidth - 75, windowHeight - 125, 50, 100
+		love.graphics.rectangle("fill", focusPointX + (centerWidth/scale) - (75/scale), focusPointY + (centerHeight/scale) - (125/scale), (50/scale), (100/scale))
 
 		--Draw the 5 program events
 		love.graphics.setColor(1, 1, 1, 1)
@@ -175,6 +175,101 @@ function droneProgramUI()
 			love.graphics.setColor(1, 0, 0, 1)
 			--On Screen Coords: 135 + (i - 1) * 160, 355, 20, 20
 			love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (135/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (355/scale), (20/scale), (20/scale))
+
+			--Draw event specific actions
+			if event.event == "MoveTo" then
+				--Draw the tile to move to
+				love.graphics.setColor(0, 0, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 325
+				love.graphics.print("Move To: ("..event.x..","..event.y..")", focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (325/scale), 0, 1/scale, 1/scale)
+
+				--Draw the select tile button
+				love.graphics.setColor(0, 1, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 350, 50, 20
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (350/scale), (50/scale), (20/scale))
+
+			elseif event.event == "PickupItem" then
+				--Draw the item to pick up
+				love.graphics.setColor(0, 0, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 325
+				local itemText = "Pick up: "
+				if event.item == "" then
+					itemText = itemText.."Any"
+				else
+					itemText = itemText..event.item.name
+				end
+				love.graphics.print(itemText, focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (325/scale), 0, 1/scale, 1/scale)
+
+				--Draw the select item button
+				love.graphics.setColor(0, 1, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 350, 50, 20
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (350/scale), (50/scale), (20/scale))
+
+				if event.selectItem then
+					--Draw the item selection menu
+					love.graphics.setColor(1, 1, 1, 1)
+					--On Screen Coords: 10 + (i - 1) * 160, 390, 100, 250
+					love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (10/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (390/scale), (100/scale), (250/scale))
+
+					--draw item selection
+					for itemID, item in ipairs(itemList) do
+						love.graphics.setColor(0.6, 0.6, 0.6, 1)
+						--On Screen Coords: 15 + (i - 1) * 160, 396 + (itemID - 1) * 20, 90, 18
+						love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (15/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (396/scale) + ((itemID - 1) * (20/scale)), (90/scale), (18/scale))
+
+						love.graphics.setColor(0, 0, 0, 1)
+						--On Screen Coords: 15 + (i - 1) * 160, 395 + (itemID - 1) * 20
+						love.graphics.print(item.name, focusPointX - (centerWidth/scale) + (15/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (395/scale) + ((itemID - 1) * (20/scale)), 0, 1/scale, 1/scale)
+					end
+				end
+			elseif event.event == "DropItem" then
+				--Draw the item to drop
+				love.graphics.setColor(0, 0, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 325
+				local itemText = "Drop: "
+				if event.item == "" then
+					itemText = itemText.."Any"
+				else
+					itemText = itemText..event.item.name
+				end
+				love.graphics.print(itemText, focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (325/scale), 0, 1/scale, 1/scale)
+
+				--Draw the select item button
+				love.graphics.setColor(0, 1, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 350, 50, 20
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (350/scale), (50/scale), (20/scale))
+
+				if event.selectItem then
+					--Draw the item selection menu
+					love.graphics.setColor(1, 1, 1, 1)
+					--On Screen Coords: 10 + (i - 1) * 160, 390, 100, 250
+					love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (10/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (390/scale), (100/scale), (250/scale))
+
+					--draw item selection
+					for itemID, item in ipairs(itemList) do
+						love.graphics.setColor(0.6, 0.6, 0.6, 1)
+						--On Screen Coords: 15 + (i - 1) * 160, 396 + (itemID - 1) * 20, 90, 18
+						love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (15/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (396/scale) + ((itemID - 1) * (20/scale)), (90/scale), (18/scale))
+
+						love.graphics.setColor(0, 0, 0, 1)
+						--On Screen Coords: 15 + (i - 1) * 160, 395 + (itemID - 1) * 20
+						love.graphics.print(item.name, focusPointX - (centerWidth/scale) + (15/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (395/scale) + ((itemID - 1) * (20/scale)), 0, 1/scale, 1/scale)
+					end
+				end
+			elseif event.event == "idle" then
+				--Draw the time to idle
+				love.graphics.setColor(0, 0, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 325
+				love.graphics.print("Idle for: "..event.time.." seconds", focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (325/scale), 0, 1/scale, 1/scale)
+
+				--Draw the time selection buttons
+				love.graphics.setColor(0, 1, 0, 1)
+				--On Screen Coords: 20 + (i - 1) * 160, 350, 20, 20
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (20/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (350/scale), (20/scale), (20/scale))
+				--On Screen Coords: 45 + (i - 1) * 160, 350, 20, 20
+				love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + (45/scale) + ((i - 1) * (160/scale)), focusPointY - (centerHeight/scale) + (350/scale), (20/scale), (20/scale))
+
+			end
 		end
 	end
 end

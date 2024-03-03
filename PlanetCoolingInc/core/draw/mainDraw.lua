@@ -59,11 +59,14 @@ function drawDrones()
 end
 
 function drawUI()
-	if placingBuilding then
+	if placingBuilding or tileSelectionOpen then
 		constructionUI()
 	end
 
 	drawContextMenus()
-	drawBuildingUI()
-	droneProgramUI()
+
+	if not tileSelectionOpen then
+		drawBuildingUI()
+		droneProgramUI()
+	end
 end

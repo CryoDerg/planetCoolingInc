@@ -28,6 +28,12 @@ TODO
 	Inventories - Have a list of inventories that hold a certain amount of items as well as having functions to transfer items between them
 	Drones - Have a list of drones that can be programmed by the player to do certain tasks
 
+
+FUTURE IDEAS
+	Sector expansion - Have the player be able to expand the grid to a new sector of the planet
+	New planets - Have the player be able to unlock new assigned planets that they can go to and cool down. This would be enabled by cooling off previous planets and gaining good reputation with the company
+	Previous employees - Have the player be able to find the remains of previous employees in new sectors (including the starting sector) which would give the player new items and information about the planet
+
 ]]
 
 
@@ -77,11 +83,13 @@ function love.keypressed(k)
 end
 
 function love.mousepressed(x, y, k)
+	mDown = true
 	updateControls("M"..k)
-	if k == 1 then
+	if k == 2 then
     --When clicked, check if on button. If not on button, drag the camera
     if not clickedButton[1] then
       dragCam = true
+		camMovedX, camMovedY, camMoved = 0, 0 ,0
     end
 	end
 
@@ -109,9 +117,12 @@ function love.mousepressed(x, y, k)
 end
 
 function love.mousereleased(x, y, k)
+	mDown = false
 	dragCam = false
+	camMoved = math.findHyptenuse(camMovedX, camMovedY)
 	clickedButton = {}
 
+	updateControls("M"..k.."R")
 	if draggedMenu then
 		draggedMenu = false
 	end
@@ -131,6 +142,8 @@ function love.mousemoved(x, y, dx, dy)
 		--drag the camera by measuring the distance the mouse moves each frame
 		focusPointX = focusPointX - dx/scale
 		focusPointY = focusPointY - dy/scale
+		camMovedX = camMovedX + dx
+		camMovedY = camMovedY + dy
 	end
 
 	--[[

@@ -1,5 +1,6 @@
 function genNewWorld(size, seed)
 	initBuildings()
+	initItems()
 	initInventories()
 	initContextMenu()
 	initDrones()

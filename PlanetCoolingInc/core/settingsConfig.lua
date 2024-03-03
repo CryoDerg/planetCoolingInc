@@ -7,7 +7,7 @@ function settingsSetup()
 			toggleTempOverlay = "t",
 			toggleNetworkOverlay = "x",
 			placeBuilding = "M1",
-			openContextMenu = "M2"
+			openContextMenu = "M2R"
 		}
 	}
 

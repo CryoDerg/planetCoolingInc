@@ -32,6 +32,7 @@ function boot()
 	showHotTiles = false
 	networkOverlay = false
 	camX, camY = centerWidth, centerHeight
+	camMovedX, camMovedY, camMoved = 0, 0, 0
 	runTime = 0
 	gameTime = 0
 	updateTime = 0
@@ -46,6 +47,10 @@ function boot()
 	buildingMenuOpen = false
 	contextMenuOpen = false
 	placingBuilding = false
+	tileSelectionOpen = false
+	tileSelectionEvent = nil
+	tileSelectionType = nil
+	tileSelectionDrone = nil
 	
 
 	player = {

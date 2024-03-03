@@ -1,5 +1,5 @@
 --Configure controls and keybindings
-function configControls(controls)
+function configControls(controls) --Controls for Mouse: M1, M2... add "R" to indicate release
   --If the controls are not set, set them to the default
   if controls == nil then
     return {
@@ -54,16 +54,26 @@ function updateControls(k)
   end
 
   if k == settings.controls.placeBuilding then
-    clickBuildingUI(screenMX, screenMY)
-    clickContextMenu(screenMX, screenMY)
-    clickProgramMenu(screenMX, screenMY)
-    if placingBuilding and not clickedButton[1] then
-      local x, y = math.floor((mX - camX)/60), math.floor((mY - camY)/60)
-      buildingBlueprints[selectBuilding].placeBuilding(grid.tiles[x][y])
+    if tileSelectionOpen then
+      local tile = clickTile(mX, mY)
+      if tile then
+        tileSelectionDrone.program[tileSelectionEvent] = {event = "MoveTo", eventText = "Move To Tile", x = tile.x, y = tile.y, tile = tile}
+        tileSelectionOpen = false
+        droneProgramOpen = true
+      end
+    else
+      clickBuildingUI(screenMX, screenMY)
+      clickContextMenu(screenMX, screenMY)
+      clickProgramMenu(screenMX, screenMY)
+    
+      if placingBuilding and not clickedButton[1] then
+        local x, y = math.floor((mX - camX)/60), math.floor((mY - camY)/60)
+        buildingBlueprints[selectBuilding].placeBuilding(grid.tiles[x][y])
+      end
     end
   end
 
-  if k == settings.controls.openContextMenu and clickTile(mX, mY) then
+  if k == settings.controls.openContextMenu and clickTile(mX, mY) and camMoved < 8 then
     createContextMenu(mX, mY)
   end
 
