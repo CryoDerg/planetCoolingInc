@@ -512,6 +512,13 @@ function initBuildings()
 				--Associate builing with tile
 				tile.building = buildingBlueprints[8]
 
+				--associate tile with drone hub
+				tile.droneHubInfo = {
+					hasHub = true,
+					slots = {},
+					droneCapacity = 3,
+				}
+
 				--Connect to electric network
 				if not tile.onElectricNetwork then
 					connectElectric(tile)
@@ -535,6 +542,11 @@ function initBuildings()
 				love.graphics.rectangle("fill", tile.x*60+11, tile.y*60+11, 10, 38)
 				love.graphics.rectangle("fill", tile.x*60+25, tile.y*60+11, 10, 38)
 				love.graphics.rectangle("fill", tile.x*60+39, tile.y*60+11, 10, 38)
+
+				if hubLinkOpen then
+					love.graphics.setColor(0,1,0,0.5)
+					love.graphics.circle("fill", tile.x*60+30, tile.y*60+30, 30)
+				end
 			end
 			,
 

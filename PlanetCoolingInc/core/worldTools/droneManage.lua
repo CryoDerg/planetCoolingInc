@@ -25,6 +25,12 @@ function initDrones()
 		inventoryID = 3,
 		inventory = inventories[3],
 		droneID = 1,
+		linkedHubInfo = {
+			hubX = 0,
+			hubY = 0,
+			hubTile = grid.tiles[0][0],
+			hubSlot = 1,
+		},
 	}
 	]]
 
@@ -59,6 +65,13 @@ function createDrone(x, y)
 		inventory = inventories[#inventories],
 		droneID = #drones + 1,
 		hasContextMenu = false,
+		linkedHubInfo = {
+			linked = false,
+			hubX = nil,
+			hubY = nil,
+			hubTile = nil,
+			hubSlot = nil,
+		},
 	}
 	table.insert(drones, drone)
 end

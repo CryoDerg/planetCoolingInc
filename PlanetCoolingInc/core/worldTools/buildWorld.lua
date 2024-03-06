@@ -70,6 +70,18 @@ function genNewWorld(size, seed)
 				pipeID = false,
 				inventoryID = false,
 				hasContextMenu = false,
+				droneHubInfo = {
+					hasHub = false,
+					slots = {
+						--[[
+						[1] = {
+							linkedDrone = nil,
+							linkedDroneID = nil,
+						}
+						]]
+					},
+					droneCapacity = nil,
+				},
 			}
 		end
 	end

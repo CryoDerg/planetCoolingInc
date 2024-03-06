@@ -19,5 +19,6 @@ function fileLoad()
 	require("core/utils/debugTools")
 	require("core/utils/mathFunctions")
 	require("core/utils/tableFunctions")
+	require("core/utils/inGameMessage")
 
 end

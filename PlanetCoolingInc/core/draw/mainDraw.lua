@@ -59,7 +59,7 @@ function drawDrones()
 end
 
 function drawUI()
-	if placingBuilding or tileSelectionOpen then
+	if placingBuilding or tileSelectionOpen or hubLinkOpen then
 		constructionUI()
 	end
 
@@ -69,4 +69,6 @@ function drawUI()
 		drawBuildingUI()
 		droneProgramUI()
 	end
+
+	drawGameMessages()
 end

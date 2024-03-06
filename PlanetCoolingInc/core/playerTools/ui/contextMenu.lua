@@ -99,6 +99,29 @@ function createContextMenu(x, y)
             }
           }
         }
+
+        if not drone.linkedHubInfo.linked then
+          local element = {
+            type = "btn",
+            text = "link to hub",
+            btnColor = {1, 1, 1},
+            textColor = {0, 0, 0},
+            func = openHubLinkMenu, --openHubLinkMenu(drone)
+            funcArgs = {drone},
+          }
+          table.insert(contextMenu.elements, 1, element)
+        else
+          local element = {
+            type = "btn",
+            text = "Linked to Hub - Unlink",
+            btnColor = {1, 1, 1},
+            textColor = {0, 0, 0},
+            func = unlinkDroneFromHub, --unlinkDroneFromHub(drone)
+            funcArgs = {drone},
+          }
+          table.insert(contextMenu.elements, 1, element)
+        end
+
         table.insert(contextMenus, contextMenu)
         drone.hasContextMenu = true
         drone.contextMenuID = #contextMenus

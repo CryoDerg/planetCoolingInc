@@ -61,6 +61,14 @@ function updateControls(k)
         tileSelectionOpen = false
         droneProgramOpen = true
       end
+    elseif hubLinkOpen then
+      local tile = clickTile(mX, mY)
+      if tile then
+        if tile.droneHubInfo.hasHub then
+          linkDroneToHub(linkDrone, tile)
+          hubLinkOpen = false
+        end
+      end
     else
       clickBuildingUI(screenMX, screenMY)
       clickContextMenu(screenMX, screenMY)
@@ -79,6 +87,10 @@ function updateControls(k)
 
   if k == "escape" then
     buildingMenuOpen = false
+  end
+
+  if k == "1" then
+    createGameMessage("Hewwo", mX - camX, mY - camY, 5)
   end
 end
 
