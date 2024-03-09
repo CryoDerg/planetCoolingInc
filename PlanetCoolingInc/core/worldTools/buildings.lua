@@ -449,7 +449,7 @@ function initBuildings()
 
 				--Register Inventory
 				local inventory = {
-					size = 20,
+					capacity  = 20,
 					itemAmount = 0,
 					items = {},
 				}

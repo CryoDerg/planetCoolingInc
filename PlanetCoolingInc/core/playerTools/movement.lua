@@ -36,14 +36,8 @@ function movePlayerTo(tX, tY)
 	local yDist = tY - pY
 	local dist = math.findDistanceBetweenPoints(tX, tY, pX, pY)
 
-	local xDir = 0
-	local yDir = 0
-
 	local timeToMove = dist / player.speed
 	
-	xDist = xDist
-	yDist = yDist
-
 	--Set variables to be updated each frame to move the player character
 	player.isMoving = true
 	player.moveInfo.targetX = tX

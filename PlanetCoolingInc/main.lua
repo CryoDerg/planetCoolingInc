@@ -56,6 +56,13 @@ function love.update(dt)
 	
 	if gamestate == 1 then
 		updatePlayerPosition(dt)
+		updateDronesPosition(dt)
+
+		for droneID, drone in pairs(drones) do
+			if drone.timeToProgramUpdate <= gameTime and drone.onEvent then
+				updateDroneProgram(drone)
+			end
+		end
 
 		if gameTime - updateTime >= 1 then
 			updateImportantTiles()

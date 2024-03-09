@@ -51,6 +51,9 @@ function updateControls(k)
   if k == "d" then
     buildingBlueprints[9].placeBuilding(grid.tiles[math.floor((mX - camX)/60)][math.floor((mY - camY)/60)])
     openProgramMenu(drones[1])
+
+    buildingBlueprints[7].placeBuilding(grid.tiles[1][1])
+    addItemToInventory("Uranium", 100, inventories[grid.tiles[1][1].inventoryID])
   end
 
   if k == settings.controls.placeBuilding then
@@ -66,6 +69,7 @@ function updateControls(k)
       if tile then
         if tile.droneHubInfo.hasHub then
           linkDroneToHub(linkDrone, tile)
+          moveDroneTo(linkDrone, tile.x*60 + 30, tile.y*60 + 30)
           hubLinkOpen = false
         end
       end

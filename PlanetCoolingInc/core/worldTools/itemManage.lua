@@ -59,36 +59,39 @@ function initInventories()
 	}
 end
 
-function transferItemToInventory(fromInventory, toInventory, itemName, amount)
+function transferItemToInventory(itemName, amount, fromInventory, toInventory)
 	--Transfers an item(s) from one inventory to another
 	
-	if fromInventory.items[slot] then
-		addItemToInventory(fromInventory.items[slot], toInventory)
-		removeItemFromInventory(fromInventory, slot)
+	if fromInventory.items[itemName] then
+		addItemToInventory(itemName, amount, toInventory)
+		removeItemFromInventory(itemName, amount, fromInventory)
 	end
 end
 
 function addItemToInventory(itemName, amount, inventory)
 	--Adds an item(s) to an inventory
 	--If the inventory is full, the item is added to the ground inventory
-
-	if inventory.itemAmount < inventory.capacity then
-		local slot = toInventory[itemName]
+	local fitAmount = math.min(inventory.capacity - inventory.itemAmount, amount)
+	if fitAmount > 0 then
+		local slot = inventory[itemName]
 		if slot then
-			slot.amount = slot.amount + amount
+			slot.amount = slot.amount + fitAmount
 		else
 			inventory.items[itemName] = {
 				itemName = itemName,
 				amount = amount,
 			}
 		end
-		inventory.itemAmount = inventory.itemAmount + amount
+		inventory.itemAmount = inventory.itemAmount + fitAmount
+		if amount > fitAmount then
+			putItemOnGround(itemName, amount - fitAmount, inventory.onTile)
+		end
 	else
 		putItemOnGround(itemName, amount, inventory.onTile)
 	end
 end
 
-function removeItemFromInventory(inventory, itemName, amount)
+function removeItemFromInventory(itemName, amount, inventory)
 	--Removes an item(s) from a specified slot in an inventory
 
 	local slot = inventory.items[itemName]

@@ -17,16 +17,24 @@ function clickProgramMenu(x, y)
 			--Close the program menu
 			droneProgramOpen = false
 
+			if #programDrone.program > 0 then
+				--If the program is not empty, set the drone to the first event
+				programDrone.onEvent = 1
+			else
+				--If the program is empty, set the drone to idle
+				programDrone.onEvent = false
+			end
+
 		--Check for clicks on the 5 events in the program menu
 		elseif x > 205 and x < 355 and y > 10 and y < 90 then
 			--MoveTo
 			table.insert(programDrone.program, {event = "MoveTo", eventText = "Move To Tile", x = 0, y = 0, tile = grid.tiles[0][0]})
 		elseif x > 365 and x < 515 and y > 10 and y < 90 then
 			--PickupItem
-			table.insert(programDrone.program, {event = "PickupItem", eventText = "Pick up Items", item = "", selectItem = false, selectScroll = 0,})
+			table.insert(programDrone.program, {event = "PickupItem", eventText = "Pick up Items", item = "", selectItem = false, selectScroll = 0, time = 5,})
 		elseif x > 525 and x < 675 and y > 10 and y < 90 then
 			--DropItem
-			table.insert(programDrone.program, {event = "DropItem", eventText = "Drop Items", item = "", selectItem = false, selectScroll = 0,})
+			table.insert(programDrone.program, {event = "DropItem", eventText = "Drop Items", item = "", selectItem = false, selectScroll = 0, time = 5})
 		elseif x > 685 and x < 835 and y > 10 and y < 90 then
 			--Idle
 			table.insert(programDrone.program, {event = "idle", eventText = "Go Idle", time = 5})
