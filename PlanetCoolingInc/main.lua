@@ -41,6 +41,7 @@ function love.load()
 	jit.off()
 	require("core/boot/boot")
 	boot()
+	logMessage("Boot Complete")
 end
 
 function love.update(dt)

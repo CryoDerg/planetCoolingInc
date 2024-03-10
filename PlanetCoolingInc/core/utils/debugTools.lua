@@ -83,10 +83,32 @@ function stringToTable(string)
 	end
 end
 
-function log(message)
+logTable = {}
+
+function initLogTable()
+	--Check for log folder
+	if not love.filesystem.getInfo("log") then
+		love.filesystem.createDirectory("log")
+	end
+	--Create log file
+	local fileName = "log"..os.date("%Y-%m-%d-%H-%M-%S")..".txt"
+	logTable.logFile = love.filesystem.newFile("log/"..fileName)
+	logTable.logFile:open("w")
+	logTable.logFile:write("Log file for "..os.date("%Y-%m-%d %H:%M:%S").."\n")
+	logTable.logFile:close()
+	io.write("Log file created: "..fileName.."\n")
+end
+
+function logMessage(message)
 	--Log message to file
-	local logFile = love.filesystem.newFile("log.txt")
-	logFile:open("a")
-	logFile:write(message.."\n")
-	logFile:close()
+	if not logTable.logFile then
+		initLogTable()
+	end
+	logTable.logFile:open("a")
+	logTable.logFile:write((math.floor(runTime*100)/100)..": "..message.."\n")
+	logTable.logFile:close()
+end
+
+function logError(err)
+	logMessage("ERROR:\n"..err)
 end

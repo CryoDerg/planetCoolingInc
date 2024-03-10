@@ -39,6 +39,8 @@ function initInventories()
 			capacity = 20,
 			itemAmount = 0,
 			items = {},
+			x = player.x,
+			y = player.y,
 		},
 		
 		--More inventories can be added during gameplay
@@ -52,6 +54,8 @@ function initInventories()
 				capacity = 20,
 				itemAmount = 0,
 				items = {},
+				x = 0,
+				y = 0,
 				onTile = grid.tiles[1][1],
 			}
 		
@@ -72,22 +76,22 @@ function addItemToInventory(itemName, amount, inventory)
 	--Adds an item(s) to an inventory
 	--If the inventory is full, the item is added to the ground inventory
 	local fitAmount = math.min(inventory.capacity - inventory.itemAmount, amount)
-	if fitAmount > 0 then
-		local slot = inventory[itemName]
-		if slot then
-			slot.amount = slot.amount + fitAmount
-		else
-			inventory.items[itemName] = {
-				itemName = itemName,
-				amount = amount,
-			}
-		end
-		inventory.itemAmount = inventory.itemAmount + fitAmount
-		if amount > fitAmount then
-			putItemOnGround(itemName, amount - fitAmount, inventory.onTile)
-		end
+	logMessage("Adding " .. fitAmount .. " " .. itemName .. " to inventory")
+	local slot = inventory.items[itemName]
+	if slot then
+		logMessage("Slot: \n" .. table.toString(slot))
+		slot.amount = slot.amount + fitAmount
+		logMessage("Slot After: \n" .. table.toString(slot))
 	else
-		putItemOnGround(itemName, amount, inventory.onTile)
+		inventory.items[itemName] = {
+			itemName = itemName,
+			amount = fitAmount,
+		}
+	end
+	inventory.itemAmount = inventory.itemAmount + fitAmount
+	logMessage("Inventory: \n" .. table.toString(inventory))
+	if amount > fitAmount then
+		putItemOnGround(itemName, amount - fitAmount, grid.tiles[math.floor(inventory.x/60)][math.floor(inventory.y/60)])
 	end
 end
 
@@ -105,6 +109,9 @@ function removeItemFromInventory(itemName, amount, inventory)
 			amountRemoved = slot.amount
 			inventory.items[itemName] = nil
 		end
+		logMessage("Removing " .. amountRemoved .. " " .. itemName .. " from inventory")
+		logMessage("Inventory: \n" .. table.toString(inventory))
+		inventory.itemAmount = inventory.itemAmount - amountRemoved
 	end
 end
 
@@ -114,10 +121,12 @@ function putItemOnGround(itemName, amount, tile)
 		capacity = amount,
 		itemAmount = 0,
 		items = {},
+		x = tile.x,
+		y = tile.y,
 		onTile = tile,
 	}
 	table.insert(groundInventories, inventory)
-
+	logMessage("Adding " .. amount .. " " .. itemName .. " to ground inventory on tile " .. tile.x .. ", " .. tile.y)
 	--Add item(s) to ground inventory
 	addItemToInventory(itemName, amount, groundInventories[#groundInventories])
 end

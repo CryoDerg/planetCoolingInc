@@ -452,6 +452,8 @@ function initBuildings()
 					capacity  = 20,
 					itemAmount = 0,
 					items = {},
+					x = tile.x,
+					y = tile.y,
 				}
 				table.insert(inventories, inventory)
 				tile.inventoryID = #inventories
@@ -483,6 +485,16 @@ function initBuildings()
 
 			contextMenu = function(tile)
 				local elements = {
+					{
+						type = "btn",
+						text = "Add 5 Uranium",
+						btnColor = {0, 1, 0},
+						textColor = {0, 0, 0},
+						func = function()
+							addItemToInventory("uranium", 5, inventories[tile.inventoryID])
+						end,
+						funcArgs = {}
+					},
 					{
 						type = "text",
 						textColor = {1, 1, 1},

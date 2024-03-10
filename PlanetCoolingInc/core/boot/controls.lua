@@ -53,7 +53,7 @@ function updateControls(k)
     openProgramMenu(drones[1])
 
     buildingBlueprints[7].placeBuilding(grid.tiles[1][1])
-    addItemToInventory("Uranium", 100, inventories[grid.tiles[1][1].inventoryID])
+    addItemToInventory("uranium", 100, inventories[grid.tiles[1][1].inventoryID])
   end
 
   if k == settings.controls.placeBuilding then

@@ -89,8 +89,11 @@ function updateDroneProgram(drone)
 				local inventory = inventories[tile.inventoryID]
 				--drop the item
 				local transferAmount = math.min(drone.inventory.items[event.item].amount, inventory.capacity - inventory.itemAmount)
-				transferItemToInventory(event.item, transferAmount, drone.inventory, inventory)
+				transferItemToInventory(event.item.internalName, transferAmount, drone.inventory, inventory)
 				createGameMessage("Deposited "..event.item.."x"..transferAmount, drone.x, drone.y - 30, 2)
+			else
+				removeItemFromInventory(event.item.internalName, drone.inventory.items[event.item].amount, drone.inventory)
+				putItemOnGround(event.item.internalName, drone.inventory.items[event.item].amount, tile)
 			end
 		elseif event.item == "" then
 			--drop any item
@@ -104,6 +107,11 @@ function updateDroneProgram(drone)
 					if inventory.itemAmount >= inventory.capacity then
 						break
 					end
+				end
+			else
+				for itemName, item in pairs(drone.inventory.items) do
+					removeItemFromInventory(itemName, item.amount, drone.inventory)
+					putItemOnGround(itemName, item.amount, tile)
 				end
 			end
 		

@@ -46,7 +46,8 @@ function genNewWorld(size, seed)
 	if seed then
 		math.randomseed(seed)
 	else
-		math.randomseed(os.time() / math.random(1, 982))
+		seed = os.time() / math.random(1, 982)
+		math.randomseed(seed)
 	end
 
 	--create grid
@@ -110,10 +111,10 @@ function genNewWorld(size, seed)
 		updateImportantTiles()
 	end
 
-
-	print(#grid.updateTiles)
-
 	gamestate = 1
+
+	logMessage("World Generated - Seed: "..seed)
+	logMessage("GameState Set to 1")
 end
 
 function loadWorld()
