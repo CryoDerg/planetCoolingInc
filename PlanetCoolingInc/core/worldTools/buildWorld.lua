@@ -117,6 +117,63 @@ function genNewWorld(size, seed)
 	logMessage("GameState Set to 1")
 end
 
-function loadWorld()
+function loadWorld(fileName)
+	--Open file
+	local fileData
+	if love.filesystem.getInfo("saves/"..fileName..".sav") then
+		fileData = love.filesystem.read("saves/"..fileName..".sav")
+	else
+		print("File not found")
+		return
+	end
+	--Load tiles individually
+	grid.tiles = {}
+	local s, e = string.find(fileData, "&grid.tiles")
+	
 
+
+
+end
+
+function saveWorld(fileName)
+	--Things to save:
+	--grid.tiles
+	--Inventories
+	--Ground Inventory
+	--Drones
+	--Player
+
+	local saveData
+	--Save grid.tiles
+	saveData = "&grid.tiles = {\n"..table.toString(grid.tiles, 1).."}\n"
+	--Save Inventories
+	saveData = saveData.."&inventories = {\n"..table.toString(inventories, 1).."}\n"
+	--Save Ground Inventory
+	saveData = saveData.."&groundInventories = {\n"..table.toString(groundInventories, 1).."}\n"
+	--Save Drones
+	saveData = saveData.."&drones = {\n"..table.toString(drones, 1).."}\n"
+	--Save Player
+	saveData = saveData.."&player = {\n"..table.toString(player, 1).."}\n" 
+
+	
+
+
+
+	--Open file if none specified
+	local file
+	if not fileName then
+		if not love.filesystem.getInfo("saves") then
+			love.filesystem.createDirectory("saves")
+		end
+		file = love.filesystem.newFile("saves/save"..os.date("%m-%d-%Y_%H-%M-%S")..".sav")
+		local s, e = file:open("w")
+		print(s, e)
+	else
+		file = io.open("saves/"..fileName..".sav", "w")
+	end
+	--Write to file
+	file:write(saveData)
+	print("World Saved")
+	--Close the file
+	file:close()
 end

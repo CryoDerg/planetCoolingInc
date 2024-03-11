@@ -96,6 +96,10 @@ function updateControls(k)
   if k == "1" then
     createGameMessage("Hewwo", mX - camX, mY - camY, 5)
   end
+
+  if k == "s" then
+    saveWorld()
+  end
 end
 
 function clickTile(x, y)
