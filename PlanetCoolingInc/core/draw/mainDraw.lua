@@ -41,7 +41,8 @@ function drawWorld()
 	--draw the buildings
 	for i, tile in pairs(tilesWithBuildings) do
 		if tile.building then
-			tile.building.drawBuilding(tile)
+			local building = buildingBlueprints[tile.building]
+			building.drawBuilding(tile)
 		end
 	end
 end

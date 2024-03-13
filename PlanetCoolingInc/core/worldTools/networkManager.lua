@@ -5,12 +5,14 @@ function updateElectric()
 		--reset charge on network
 		electricNetworks.networkCharge[netID] = 0
 		for genID, generator in pairs(electricNetworks.networkBuildings[netID].generators) do
-			electricNetworks.networkCharge[netID] = electricNetworks.networkCharge[netID] + generator.building.powerGeneration
+			local gen = buildingBlueprints[generator.building]
+			electricNetworks.networkCharge[netID] = electricNetworks.networkCharge[netID] + gen.powerGeneration
 		end
 	
 		--update consumers
 		for conID, consumer in pairs(electricNetworks.networkBuildings[netID].consumers) do
-			electricNetworks.networkCharge[netID] = electricNetworks.networkCharge[netID] - consumer.building.powerConsumption
+			local con = buildingBlueprints[consumer.building]
+			electricNetworks.networkCharge[netID] = electricNetworks.networkCharge[netID] - con.powerConsumption
 		end
 		print("Charge of Network "..netID..": "..electricNetworks.networkCharge[netID])
 	end
@@ -271,14 +273,16 @@ function updatePipes()
 	for netID, net in pairs(pipeNetworks.networks) do
 		for radID, radiator in pairs(pipeNetworks.networkBuildings[netID].radiators) do
 			--Act as a radiator
-			print("Radiator "..radiator.building.name.." on Network "..netID.." is transferring heat")
-			radiator.building.buildingFunction(grid.tiles[radiator.x][radiator.y])
+			local rad = buildingBlueprints[radiator.building]
+			print("Radiator "..rad.name.." on Network "..netID.." is transferring heat")
+			rad.buildingFunction(grid.tiles[radiator.x][radiator.y])
 		end
 
 		for colID, collector in pairs(pipeNetworks.networkBuildings[netID].collectors) do
 			--Act as a collector
-			print("Collector "..collector.building.name.." on Network "..netID.." is collecting heat")
-			collector.building.buildingFunction(grid.tiles[collector.x][collector.y])
+			local col = buildingBlueprints[collector.building]
+			print("Collector "..col.name.." on Network "..netID.." is collecting heat")
+			col.buildingFunction(grid.tiles[collector.x][collector.y])
 		end
 	end
 end
@@ -550,7 +554,7 @@ function transferNetwork(netID, toNetID, netType)
 		--move generators
 		print("	Moving Generators")
 		for ID, building in pairs(electricNetworks.networkBuildings[netID].generators) do
-			print(building.building.name)
+			print(buildingBlueprints[building.building].name)
 			--put building in desired network
 			table.insert(electricNetworks.networkBuildings[toNetID].generators, building)
 			electricNetworks.networks[toNetID][grid.tiles[building.x][building.y].wireID].onGenerator = #electricNetworks.networkBuildings[toNetID].generators
@@ -558,7 +562,7 @@ function transferNetwork(netID, toNetID, netType)
 		--move consumers
 		print("	Moving Consumers")
 		for ID, building in pairs(electricNetworks.networkBuildings[netID].consumers) do
-			print(building.building.name)
+			print(buildingBlueprints[building.building].name)
 			--put building in desired network
 			table.insert(electricNetworks.networkBuildings[toNetID].consumers, building)
 			electricNetworks.networks[toNetID][grid.tiles[building.x][building.y].wireID].onConsumer = #electricNetworks.networkBuildings[toNetID].consumers
@@ -566,7 +570,7 @@ function transferNetwork(netID, toNetID, netType)
 		--move storage
 		print("	Moving Storage")
 		for ID, building in pairs(electricNetworks.networkBuildings[netID].storage) do
-			print(building.building.name)
+			print(buildingBlueprints[building.building].name)
 			--put building in desired network
 			table.insert(electricNetworks.networkBuildings[toNetID].storage, building)
 			electricNetworks.networks[toNetID][grid.tiles[building.x][building.y].wireID].onStorage = #electricNetworks.networkBuildings[toNetID].storage
@@ -617,7 +621,7 @@ function transferNetwork(netID, toNetID, netType)
 		--move radiators
 		print("	Moving Radiators")
 		for ID, building in pairs(pipeNetworks.networkBuildings[netID].radiators) do
-			print(building.building.name)
+			print(buildingBlueprints[building.building].name)
 			--put building in desired network
 			table.insert(pipeNetworks.networkBuildings[toNetID].radiators, building)
 			pipeNetworks.networks[toNetID][grid.tiles[building.x][building.y].pipeID].onRadiator = #pipeNetworks.networkBuildings[toNetID].radiators
@@ -626,7 +630,7 @@ function transferNetwork(netID, toNetID, netType)
 		--move collectors
 		print("	Moving Collectors")
 		for ID, building in pairs(pipeNetworks.networkBuildings[netID].collectors) do
-			print(building.building.name)
+			print(buildingBlueprints[building.building].name)
 			--put building in desired network
 			table.insert(pipeNetworks.networkBuildings[toNetID].collectors, building)
 			pipeNetworks.networks[toNetID][grid.tiles[building.x][building.y].pipeID].onCollector = #pipeNetworks.networkBuildings[toNetID].collectors

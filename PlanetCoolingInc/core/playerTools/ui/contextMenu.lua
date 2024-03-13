@@ -160,7 +160,7 @@ function createContextMenu(x, y)
       }
 
       if tile.building then
-        local buildingContext = tile.building.contextMenu(tile)
+        local buildingContext = buildingBlueprints[tile.building].contextMenu(tile)
         for i, element in ipairs(buildingContext) do
           table.insert(contextMenu.elements, element)
         end

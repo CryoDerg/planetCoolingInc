@@ -138,27 +138,30 @@ function loadWorld(fileName)
 	local numOfTiles = 0
 	while iter do
 		s, e = string.find(fileData, "#", e + 1)
-		print(s, e)
+		--print(s, e)
 		local s2 = string.find(fileData, "#", e + 1) or tileEnd
 		
-		if s2 < tileEnd then
-			local tileData = string.sub(fileData, e + 1, s2 - 1)
-			--load tile
-			local x  = tonumber(string.sub(tileData, 2, string.find(tileData, "]") - 1))
-			if not grid.tiles[x] then
-				grid.updateTiles[x] = {}
-				loadstring("grid.tiles"..string.sub(tileData, 1, string.find(tileData, "]")).." = {}")()
-			end
-			loadstring("grid.tiles"..tileData)()
-			numOfTiles = numOfTiles + 1
-		else
+		
+		local tileData = string.sub(fileData, e + 1, s2 - 1)
+		--load tile
+		local x  = tonumber(string.sub(tileData, 2, string.find(tileData, "]") - 1))
+		local y = string.sub(tileData, string.find(tileData, "]" ) + 2, string.find(tileData, "]", string.find(tileData, "]") + 1) - 1)
+		if x == -2 then
+			print("Tile "..x..", "..y.." found")
+		end
+		if not grid.tiles[x] then
+			grid.updateTiles[x] = {}
+			loadstring("grid.tiles"..string.sub(tileData, 1, string.find(tileData, "]")).." = {}")()
+		end
+		loadstring("grid.tiles"..tileData)()
+		numOfTiles = numOfTiles + 1
+		if s2 >= tileEnd then
 			iter = false
 		end
 	end
 	
 	print(numOfTiles)
-	table.print(grid.tiles[-3])
-	table.print(grid.tiles[-2][-2])
+	
 	--[[
 		#[x][y] = {
 
@@ -196,6 +199,11 @@ function loadWorld(fileName)
 
 	--find important tiles
 	fullGridUpdate()
+
+	--Init other important things
+	initBuildings()
+	initItems()
+	initContextMenu()
 	--Set gamestate
 	gamestate = 1
 	

@@ -18,11 +18,11 @@ table.toString = function(tbl, indent)
   local output = "{"..(indent and "\n" or "")
   for key, value in pairs(tbl) do
     if type(value) == "table" then
-      output = output..string.rep("\t", indent or 0)..key.." = "
+      output = output..string.rep("\t", indent or 0)..(tonumber(key) and "["..key.."]" or key).." = "
       output = output..table.toString(value, indent and indent + 1)
       output = output..string.rep("\t", indent or 0)..(indent and "},\n" or "},")
     else
-      output = output..string.rep("\t", indent or 0)..key.." = "..tostring(value)..(indent and ",\n" or ",")
+      output = output..string.rep("\t", indent or 0)..(tonumber(key) and "["..key.."]" or key).." = "..tostring(value)..(indent and ",\n" or ",")
     end
   end
   return output..string.rep("\t", (indent or 1) - 1)

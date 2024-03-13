@@ -124,7 +124,7 @@ function initBuildings()
 			--when placed
 			placeBuilding = function(tile)
 				--Associate builing with tile
-				tile.building = buildingBlueprints[3]
+				tile.building = 3
 
 				--Connect to electric network
 				if not tile.onElectricNetwork then
@@ -132,8 +132,8 @@ function initBuildings()
 				end
 				
 				--Put building in the network
-				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].generators, {building = buildingBlueprints[3], x=tile.x, y=tile.y})
-				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].consumers, {building = buildingBlueprints[3], x=tile.x, y=tile.y})
+				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].generators, {building = 3, x=tile.x, y=tile.y})
+				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].consumers, {building = 3, x=tile.x, y=tile.y})
 
 				--associate building ID with the wire it is on
 				local wire = electricNetworks.networks[tile.onElectricNetwork][tile.wireID]
@@ -146,7 +146,7 @@ function initBuildings()
 				end
 
 				--Put building in the network
-				table.insert(pipeNetworks.networkBuildings[tile.onPipeNetwork].radiators, {building = buildingBlueprints[3], x=tile.x, y=tile.y})
+				table.insert(pipeNetworks.networkBuildings[tile.onPipeNetwork].radiators, {building = 3, x=tile.x, y=tile.y})
 
 				--associate building ID with the pipe it is on
 				local pipe = pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID]
@@ -215,7 +215,7 @@ function initBuildings()
 			--when placed
 			placeBuilding = function(tile)
 				--Associate builing with tile
-				tile.building = buildingBlueprints[4]
+				tile.building = 4
 
 				--Connect to electric network
 				if not tile.onElectricNetwork then
@@ -223,7 +223,7 @@ function initBuildings()
 				end
 				
 				--Put building in the network
-				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].consumers, {building = buildingBlueprints[4], x=tile.x, y=tile.y})
+				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].consumers, {building = 4, x=tile.x, y=tile.y})
 
 				--associate building ID with the wire it is on
 				local wire = electricNetworks.networks[tile.onElectricNetwork][tile.wireID]
@@ -235,7 +235,7 @@ function initBuildings()
 				end
 
 				--Put building in the network
-				table.insert(pipeNetworks.networkBuildings[tile.onPipeNetwork].collectors, {building = buildingBlueprints[4], x=tile.x, y=tile.y})
+				table.insert(pipeNetworks.networkBuildings[tile.onPipeNetwork].collectors, {building = 4, x=tile.x, y=tile.y})
 
 				--associate building ID with the pipe it is on
 				local pipe = pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID]
@@ -308,7 +308,7 @@ function initBuildings()
 			--when placed
 			placeBuilding = function(tile)
 				--Associate builing with tile
-				tile.building = buildingBlueprints[5]
+				tile.building = 5
 
 				--Connect to electric network
 				if not tile.onElectricNetwork then
@@ -316,7 +316,7 @@ function initBuildings()
 				end
 				
 				--Put building in the network
-				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].generators, {building = buildingBlueprints[5], x=tile.x, y=tile.y})
+				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].generators, {building = 5, x=tile.x, y=tile.y})
 
 				--associate building ID with the wire it is on
 				local wire = electricNetworks.networks[tile.onElectricNetwork][tile.wireID]
@@ -373,7 +373,7 @@ function initBuildings()
 			--when placed
 			placeBuilding = function(tile)
 				--Associate builing with tile
-				tile.building = buildingBlueprints[6]
+				tile.building = 6
 
 				--Connect to pipe network
 				if not tile.onPipeNetwork then
@@ -381,7 +381,7 @@ function initBuildings()
 				end
 
 				--Put building in the network
-				table.insert(pipeNetworks.networkBuildings[tile.onPipeNetwork].radiators, {building = buildingBlueprints[6], x=tile.x, y=tile.y})
+				table.insert(pipeNetworks.networkBuildings[tile.onPipeNetwork].radiators, {building = 6, x=tile.x, y=tile.y})
 
 				--associate building ID with the pipe it is on
 				local pipe = pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID]
@@ -440,12 +440,10 @@ function initBuildings()
 			--when placed
 			placeBuilding = function(tile)
 				--Associate builing with tile
-				tile.building = buildingBlueprints[7]
+				tile.building = 7
 
 				--Connect to electric network
-				if not tile.onElectricNetwork then
-					connectElectric(tile)
-				end
+				
 
 				--Register Inventory
 				local inventory = {
@@ -522,7 +520,7 @@ function initBuildings()
 			description = "Acts as a control and charging center for up to three drones",
 			placeBuilding = function(tile)
 				--Associate builing with tile
-				tile.building = buildingBlueprints[8]
+				tile.building = 8
 
 				--associate tile with drone hub
 				tile.droneHubInfo = {
