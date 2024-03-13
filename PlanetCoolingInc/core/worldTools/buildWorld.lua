@@ -127,8 +127,78 @@ function loadWorld(fileName)
 		return
 	end
 	--Load tiles individually
+	grid = {}
 	grid.tiles = {}
-	local s, e = string.find(fileData, "&grid.tiles")
+	grid.updateTiles = {}
+	local s, e = string.find(fileData, "&grid.tiles = {")
+	--find tiles (each tile is preceded by a #)
+	--local tileData = string.sub(fileData, e + 2, string.find(fileData, "#", e + 2) - 1)
+	tileEnd = string.find(fileData, "&tilesEnd")
+	local iter = true
+	local numOfTiles = 0
+	while iter do
+		s, e = string.find(fileData, "#", e + 1)
+		print(s, e)
+		local s2 = string.find(fileData, "#", e + 1) or tileEnd
+		
+		if s2 < tileEnd then
+			local tileData = string.sub(fileData, e + 1, s2 - 1)
+			--load tile
+			local x  = tonumber(string.sub(tileData, 2, string.find(tileData, "]") - 1))
+			if not grid.tiles[x] then
+				grid.updateTiles[x] = {}
+				loadstring("grid.tiles"..string.sub(tileData, 1, string.find(tileData, "]")).." = {}")()
+			end
+			loadstring("grid.tiles"..tileData)()
+			numOfTiles = numOfTiles + 1
+		else
+			iter = false
+		end
+	end
+	
+	print(numOfTiles)
+	table.print(grid.tiles[-3])
+	table.print(grid.tiles[-2][-2])
+	--[[
+		#[x][y] = {
+
+		}
+		#[x][y] = {
+
+		}
+	]]
+		
+	
+		
+
+
+	--Load gridSize
+	s, e = string.find(fileData, "&gridSize = ")
+	gridSize = tonumber(string.sub(fileData, e + 1, string.find(fileData, "\n", e + 1) - 1))
+	--Load inventories
+	s, e = string.find(fileData, "&inventories")
+	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
+	--Load groundInventories
+	s, e = string.find(fileData, "&groundInventories")
+	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
+	--Load drones
+	s, e = string.find(fileData, "&drones")
+	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
+	--Load player
+	s, e = string.find(fileData, "&player")
+	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
+	--Load pipeNetworks
+	s, e = string.find(fileData, "&pipeNetworks")
+	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
+	--Load electricNetworks
+	s, e = string.find(fileData, "&electricNetworks")
+	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
+
+	--find important tiles
+	fullGridUpdate()
+	--Set gamestate
+	gamestate = 1
+	
 	
 
 
@@ -138,22 +208,37 @@ end
 function saveWorld(fileName)
 	--Things to save:
 	--grid.tiles
+	--gridSize
 	--Inventories
 	--Ground Inventory
 	--Drones
 	--Player
+	--Pipe Networks
+	--Electric Networks
 
 	local saveData
 	--Save grid.tiles
-	saveData = "&grid.tiles = {\n"..table.toString(grid.tiles, 1).."}\n"
+	saveData = "&grid.tiles = {"
+	for x, yTable in pairs(grid.tiles) do
+		for y, tile in pairs(yTable) do
+			saveData = saveData.."#["..x.."]["..y.."] = "..table.toString(tile, 1).."}"
+		end
+	end
+	saveData = saveData.."&tilesEnd\n"
+	--Save gridSize
+	saveData = saveData.."&gridSize = "..gridSize.."\n"
 	--Save Inventories
-	saveData = saveData.."&inventories = {\n"..table.toString(inventories, 1).."}\n"
+	saveData = saveData.."&inventories = "..table.toString(inventories, 1).."}\n"
 	--Save Ground Inventory
-	saveData = saveData.."&groundInventories = {\n"..table.toString(groundInventories, 1).."}\n"
+	saveData = saveData.."&groundInventories = "..table.toString(groundInventories, 1).."}\n"
 	--Save Drones
-	saveData = saveData.."&drones = {\n"..table.toString(drones, 1).."}\n"
+	saveData = saveData.."&drones = "..table.toString(drones, 1).."}\n"
 	--Save Player
-	saveData = saveData.."&player = {\n"..table.toString(player, 1).."}\n" 
+	saveData = saveData.."&player = "..table.toString(player, 1).."}\n"
+	--Save Pipe Networks
+	saveData = saveData.."&pipeNetworks = "..table.toString(pipeNetworks, 1).."}\n"
+	--Save Electric Networks
+	saveData = saveData.."&electricNetworks = "..table.toString(electricNetworks, 1).."}&" 
 
 	
 
@@ -165,15 +250,24 @@ function saveWorld(fileName)
 		if not love.filesystem.getInfo("saves") then
 			love.filesystem.createDirectory("saves")
 		end
-		file = love.filesystem.newFile("saves/save"..os.date("%m-%d-%Y_%H-%M-%S")..".sav")
-		local s, e = file:open("w")
-		print(s, e)
-	else
-		file = io.open("saves/"..fileName..".sav", "w")
+		fileName = "save"..os.date("%m-%d-%Y_%H-%M-%S")
+		local fileDat = love.filesystem.newFile("saves/"..fileName..".sav")
 	end
+	file = love.filesystem.read("saves/"..fileName..".sav")
+	
 	--Write to file
-	file:write(saveData)
+	love.filesystem.write("saves/"..fileName..".sav", saveData)
+	--file:write(saveData)
 	print("World Saved")
-	--Close the file
-	file:close()
+	
+
+	--edit savDat file
+	local data
+	if love.filesystem.getInfo("saves/savDat.dat") then
+		data = love.filesystem.read("saves/savDat.dat")
+	else
+		local datFile = love.filesystem.newFile("saves/savDat.dat")
+		data = datFile:read()
+	end
+	love.filesystem.write("saves/savDat.dat", "LastSave = \""..os.date("%m-%d-%Y_%H-%M-%S").."\" - \nFilename = \""..fileName.."\"")
 end

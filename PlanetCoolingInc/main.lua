@@ -78,6 +78,7 @@ function love.update(dt)
 		if gameTime - randomUpdateTime >= 0.1 then
 			local randX = math.random(-gridSize/2, gridSize/2)
 			local randY = math.random(-gridSize/2, gridSize/2)
+			print(randX, randY, grid.tiles[randX])
 			local tile = grid.tiles[randX][randY]
 			tile.temp = tile.temp + math.random(1,10)
 			updateTileHeat(randX, randY)

@@ -100,6 +100,17 @@ function updateControls(k)
   if k == "s" then
     saveWorld()
   end
+  if k == "l" then
+    --find most recent save
+    if love.filesystem.getInfo("saves/savDat.dat") then
+      local fileData = love.filesystem.read("saves/savDat.dat")
+      fileName = string.match(fileData, "Filename = \"(.-)\"")
+      print("Loading: " .. fileName)
+      loadWorld(fileName)
+    else
+      print("No save Data file found")
+    end
+  end
 end
 
 function clickTile(x, y)

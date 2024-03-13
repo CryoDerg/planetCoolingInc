@@ -59,6 +59,7 @@ function updateTileHeat(x, y)
 
 	--check for new relatively hot tiles
 	local function checkForRelHot(rX,rY)
+		print(rX,rY)
 		local tempTolerance = 10
 		local relTile = grid.tiles[rX][rY]
 		local relTile1 = {}
@@ -78,6 +79,7 @@ function updateTileHeat(x, y)
 		else
 			relTile2 = relTile
 		end
+		print(relTile2, grid.tiles[-1], grid.tiles[-2][-2])
 
 		if grid.tiles[rX][rY + 1] then
 			relTile3 = grid.tiles[rX][rY + 1]

@@ -14,18 +14,18 @@ table.print = function(tbl, indent)
 end
 
 table.toString = function(tbl, indent)
-  indent = indent or 0
-  local output = ""
+  indent = indent and 0
+  local output = "{"..(indent and "\n" or "")
   for key, value in pairs(tbl) do
     if type(value) == "table" then
-      output = output..string.rep("   ", indent)..key..": {\n"
-      output = output..table.toString(value, indent + 1)
-      output = output..string.rep("   ", indent).."}\n"
+      output = output..string.rep("\t", indent or 0)..key.." = "
+      output = output..table.toString(value, indent and indent + 1)
+      output = output..string.rep("\t", indent or 0)..(indent and "},\n" or "},")
     else
-      output = output..string.rep("   ", indent)..key..": "..tostring(value).."\n"
+      output = output..string.rep("\t", indent or 0)..key.." = "..tostring(value)..(indent and ",\n" or ",")
     end
   end
-  return output
+  return output..string.rep("\t", (indent or 1) - 1)
 end
 
 table.copy = function(tbl)
