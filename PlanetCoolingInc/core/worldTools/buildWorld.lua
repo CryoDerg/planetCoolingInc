@@ -229,24 +229,24 @@ function saveWorld(fileName)
 	saveData = "&grid.tiles = {"
 	for x, yTable in pairs(grid.tiles) do
 		for y, tile in pairs(yTable) do
-			saveData = saveData.."#["..x.."]["..y.."] = "..table.toString(tile, 1).."}"
+			saveData = saveData.."#["..x.."]["..y.."] = "..table.toString(tile).."}"
 		end
 	end
 	saveData = saveData.."&tilesEnd\n"
 	--Save gridSize
 	saveData = saveData.."&gridSize = "..gridSize.."\n"
 	--Save Inventories
-	saveData = saveData.."&inventories = "..table.toString(inventories, 1).."}\n"
+	saveData = saveData.."&inventories = "..table.toString(inventories).."}\n"
 	--Save Ground Inventory
-	saveData = saveData.."&groundInventories = "..table.toString(groundInventories, 1).."}\n"
+	saveData = saveData.."&groundInventories = "..table.toString(groundInventories).."}\n"
 	--Save Drones
-	saveData = saveData.."&drones = "..table.toString(drones, 1).."}\n"
+	saveData = saveData.."&drones = "..table.toString(drones).."}\n"
 	--Save Player
-	saveData = saveData.."&player = "..table.toString(player, 1).."}\n"
+	saveData = saveData.."&player = "..table.toString(player).."}\n"
 	--Save Pipe Networks
-	saveData = saveData.."&pipeNetworks = "..table.toString(pipeNetworks, 1).."}\n"
+	saveData = saveData.."&pipeNetworks = "..table.toString(pipeNetworks).."}\n"
 	--Save Electric Networks
-	saveData = saveData.."&electricNetworks = "..table.toString(electricNetworks, 1).."}&" 
+	saveData = saveData.."&electricNetworks = "..table.toString(electricNetworks).."}&" 
 
 	
 
