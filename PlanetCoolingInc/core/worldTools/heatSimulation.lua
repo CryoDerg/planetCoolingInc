@@ -6,11 +6,22 @@ function updateTileHeat(x, y)
 		tile.temp = tile.temp + ((tile.conductivity*(3000-tile.temp))/3600)
 	end
 
-	if tile.cooling and not pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID].onRadiator then
-		--Take heat from tile and store it in pipe network
-		local heatStored = ((tile.conductivity*(tile.temp-math.min(40, pipeNetworks.networkHeat[tile.onPipeNetwork])))/3600)
-		tile.temp = tile.temp - heatStored
-		pipeNetworks.networkHeat[tile.onPipeNetwork] = pipeNetworks.networkHeat[tile.onPipeNetwork] + heatStored
+	--If cooling, put heat into pipe network
+	--If Heating, take heat from pipe network and put into tile
+	if tile.cooling and ((tile.powerConsumption and electricNetworks.networkCharge[tile.onElectricNetwork] >= 0) or not tile.powerConsumption) then
+		if pipeNetworks.networkHeat[tile.onPipeNetwork] < 700 then
+			--Take heat from tile and store it in pipe network
+			local heatStored = ((tile.conductivity*(tile.temp-math.min(40, pipeNetworks.networkHeat[tile.onPipeNetwork])))/3600)
+			tile.temp = tile.temp - heatStored
+			pipeNetworks.networkHeat[tile.onPipeNetwork] = pipeNetworks.networkHeat[tile.onPipeNetwork] + heatStored
+		end
+	elseif tile.heating and ((tile.powerConsumption and electricNetworks.networkCharge[tile.onElectricNetwork] >= 0) or not tile.powerConsumption) then
+		--Output heat from pipe network into tile
+		if pipeNetworks.networkHeat[tile.onPipeNetwork] > tile.temp then
+			local heatStored = ((tile.conductivity*(pipeNetworks.networkHeat[tile.onPipeNetwork]-tile.temp))/3600)
+			tile.temp = tile.temp + heatStored
+			pipeNetworks.networkHeat[tile.onPipeNetwork] = pipeNetworks.networkHeat[tile.onPipeNetwork] - heatStored
+		end
 	end
 	--Spread heat to nearby tiles
 	local heatTransferRate = 0
@@ -109,7 +120,7 @@ function updateTileHeat(x, y)
 			relTile.update = true
 			grid.updateTiles[rX][rY] = true
 
-		elseif not relTile.hotspot and not relTile.cooling then
+		elseif not relTile.hotspot and not relTile.cooling and not relTile.heating then
 			relTile.update = false
 			grid.updateTiles[rX][rY] = nil
 		end
@@ -131,7 +142,7 @@ function updateTileHeat(x, y)
 		checkForRelHot(x, y - 1)
 	end
 
-	if not tile.hotspot and not tile.cooling then
+	if not tile.hotspot and not tile.cooling and not tile.heating then
 		checkForRelHot(x,y)
 	end
 		

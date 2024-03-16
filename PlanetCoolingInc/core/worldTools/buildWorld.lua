@@ -64,9 +64,11 @@ function genNewWorld(size, seed)
 				conductivity = 50,
 				update = false,
 				cooling = false,
+				heating = false,
 				building = false,
 				onElectricNetwork = false,
 				wireID = false,
+				powerConsumption = false,
 				onPipeNetwork = false,
 				pipeID = false,
 				inventoryID = false,
@@ -145,35 +147,23 @@ function loadWorld(fileName)
 		local tileData = string.sub(fileData, e + 1, s2 - 1)
 		--load tile
 		local x  = tonumber(string.sub(tileData, 2, string.find(tileData, "]") - 1))
-		local y = string.sub(tileData, string.find(tileData, "]" ) + 2, string.find(tileData, "]", string.find(tileData, "]") + 1) - 1)
-		if x == -2 then
-			print("Tile "..x..", "..y.." found")
-		end
+		local y = tonumber(string.sub(tileData, string.find(tileData, "]" ) + 2, string.find(tileData, "]", string.find(tileData, "]") + 1) - 1))
+		
 		if not grid.tiles[x] then
 			grid.updateTiles[x] = {}
 			loadstring("grid.tiles"..string.sub(tileData, 1, string.find(tileData, "]")).." = {}")()
 		end
 		loadstring("grid.tiles"..tileData)()
 		numOfTiles = numOfTiles + 1
+		local tile = grid.tiles[x][y]
+		tile.hasContextMenu = false
+		if tile.update then
+			grid.updateTiles[x][y] = true
+		end
 		if s2 >= tileEnd then
 			iter = false
 		end
 	end
-	
-	print(numOfTiles)
-	
-	--[[
-		#[x][y] = {
-
-		}
-		#[x][y] = {
-
-		}
-	]]
-		
-	
-		
-
 
 	--Load gridSize
 	s, e = string.find(fileData, "&gridSize = ")
@@ -197,19 +187,15 @@ function loadWorld(fileName)
 	s, e = string.find(fileData, "&electricNetworks")
 	loadstring(string.sub(fileData, s + 1, string.find(fileData, "&", e) - 1))()
 
-	--find important tiles
-	fullGridUpdate()
-
 	--Init other important things
 	initBuildings()
 	initItems()
 	initContextMenu()
+	updateElectric()
+	updatePipes()
+
 	--Set gamestate
 	gamestate = 1
-	
-	
-
-
 
 end
 
@@ -248,10 +234,6 @@ function saveWorld(fileName)
 	--Save Electric Networks
 	saveData = saveData.."&electricNetworks = "..table.toString(electricNetworks).."}&" 
 
-	
-
-
-
 	--Open file if none specified
 	local file
 	if not fileName then
@@ -267,7 +249,6 @@ function saveWorld(fileName)
 	love.filesystem.write("saves/"..fileName..".sav", saveData)
 	--file:write(saveData)
 	print("World Saved")
-	
 
 	--edit savDat file
 	local data

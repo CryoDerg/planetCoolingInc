@@ -134,6 +134,7 @@ function initBuildings()
 				--Put building in the network
 				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].generators, {building = 3, x=tile.x, y=tile.y})
 				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].consumers, {building = 3, x=tile.x, y=tile.y})
+				electricNetworks.networkCharge[tile.onElectricNetwork] = electricNetworks.networkCharge[tile.onElectricNetwork] + 50
 
 				--associate building ID with the wire it is on
 				local wire = electricNetworks.networks[tile.onElectricNetwork][tile.wireID]
@@ -151,13 +152,20 @@ function initBuildings()
 				--associate building ID with the pipe it is on
 				local pipe = pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID]
 				pipe.onRadiator = #pipeNetworks.networkBuildings[tile.onPipeNetwork].radiators
+
+				tile.heating = true
+				tile.update = true
+				grid.updateTiles[tile.x][tile.y] = true
+				tile.powerConsumption = 250
 			end
 			,
 
 			removeBuilding = function(tile)
 				splitElectric(tile)
 				splitPipe(tile)
+				tile.heating = false
 				tile.building = false
+				tile.powerConsumption = false
 			end
 			,
 
@@ -186,19 +194,14 @@ function initBuildings()
 			end
 			,
 			
-			--passive operation
+			--update function
 			buildingFunction = function(tile)
 				--Act as a radiator that outputs heat from the pipe network
 				if electricNetworks.networkCharge[tile.onElectricNetwork] >= 0 then
-					print("Drop Pod Radiating, using 250 Watts from Network "..tile.onElectricNetwork)
-					local heatTransferred = 0
-					if pipeNetworks.networkHeat[tile.onPipeNetwork] > tile.temp then
-						heatTransferred = ((tile.conductivity*(pipeNetworks.networkHeat[tile.onPipeNetwork]-tile.temp))/3600)
-						tile.temp = tile.temp + (heatTransferred * 0.8)
-						pipeNetworks.networkHeat[tile.onPipeNetwork] = pipeNetworks.networkHeat[tile.onPipeNetwork] - heatTransferred
-						updateTileHeat(tile.x, tile.y)
-					end
-					print("Transferred "..heatTransferred.." Degrees...\nNew Network Heat: "..pipeNetworks.networkHeat[tile.onPipeNetwork])
+					tile.heating = true
+					tile.update = true
+				else
+					tile.heating = false
 				end
 			end
 		},
@@ -224,6 +227,7 @@ function initBuildings()
 				
 				--Put building in the network
 				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].consumers, {building = 4, x=tile.x, y=tile.y})
+				electricNetworks.networkCharge[tile.onElectricNetwork] = electricNetworks.networkCharge[tile.onElectricNetwork] - 100
 
 				--associate building ID with the wire it is on
 				local wire = electricNetworks.networks[tile.onElectricNetwork][tile.wireID]
@@ -240,6 +244,11 @@ function initBuildings()
 				--associate building ID with the pipe it is on
 				local pipe = pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID]
 				pipe.onCollector = #pipeNetworks.networkBuildings[tile.onPipeNetwork].collectors
+
+				tile.cooling = true
+				tile.update = true
+				grid.updateTiles[tile.x][tile.y] = true
+				tile.powerConsumption = 100
 			end
 			,
 
@@ -248,6 +257,7 @@ function initBuildings()
 				splitPipe(tile)
 				tile.building = false
 				tile.cooling = false
+				tile.powerConsumption = false
 			end
 			,
 
@@ -277,21 +287,15 @@ function initBuildings()
 			end
 			,
 
-			--passive operation
+			--update function
 			buildingFunction = function(tile)
 				--Collects heat from the tile and puts it into the pipe network
-				if electricNetworks.networkCharge[tile.onElectricNetwork] >= 0 and pipeNetworks.networkHeat[tile.onPipeNetwork] < 700 then
+				if electricNetworks.networkCharge[tile.onElectricNetwork] >= 0 then
 					tile.cooling = true
 					tile.update = true
-					grid.updateTiles[tile.x][tile.y] = true
-					print("Heat Collector running, using 100 Watts from Network "..tile.onElectricNetwork.." to cool tile by "..((tile.conductivity*(tile.temp-math.min(95, pipeNetworks.networkHeat[tile.onPipeNetwork])))/3600).." Degrees")
+					
 				else
 					tile.cooling = false
-					if pipeNetworks.networkHeat[tile.onPipeNetwork] >= 700 then
-						print("Heat Collector not running, pipe network too hot!")
-					else
-						print("Heat Collector not running, no power on Network "..tile.onElectricNetwork)
-					end
 				end
 			end
 		},
@@ -317,6 +321,7 @@ function initBuildings()
 				
 				--Put building in the network
 				table.insert(electricNetworks.networkBuildings[tile.onElectricNetwork].generators, {building = 5, x=tile.x, y=tile.y})
+				electricNetworks.networkCharge[tile.onElectricNetwork] = electricNetworks.networkCharge[tile.onElectricNetwork] + 100
 
 				--associate building ID with the wire it is on
 				local wire = electricNetworks.networks[tile.onElectricNetwork][tile.wireID]
@@ -357,7 +362,7 @@ function initBuildings()
 			end
 			,
 
-			--passive operation
+			--update function
 			buildingFunction = function(tile)
 				--Act as a generator
 				print("Solar Panel generating 100 Watts")
@@ -386,11 +391,16 @@ function initBuildings()
 				--associate building ID with the pipe it is on
 				local pipe = pipeNetworks.networks[tile.onPipeNetwork][tile.pipeID]
 				pipe.onRadiator = #pipeNetworks.networkBuildings[tile.onPipeNetwork].radiators
+
+				tile.heating = true
+				tile.update = true
+				grid.updateTiles[tile.x][tile.y] = true
 			end
 			,
 
 			removeBuilding = function(tile)
 				splitPipe(tile)
+				tile.heating = false
 				tile.building = false
 			end
 			,
@@ -417,17 +427,10 @@ function initBuildings()
 			end
 			,
 
-			--passive operation
+			--update function
 			buildingFunction = function(tile)
 				--Act as a radiator that outputs heat from the pipe network
-				local heatTransferred = 0
-				if pipeNetworks.networkHeat[tile.onPipeNetwork] > tile.temp then
-					heatTransferred = ((tile.conductivity*(pipeNetworks.networkHeat[tile.onPipeNetwork]-tile.temp))/3600)
-					tile.temp = tile.temp + (heatTransferred * 0.8)
-					pipeNetworks.networkHeat[tile.onPipeNetwork] = pipeNetworks.networkHeat[tile.onPipeNetwork] - heatTransferred
-					updateTileHeat(tile.x, tile.y)
-				end
-				print("Radiator Transferred "..heatTransferred.." Degrees...\nNew Network Heat: "..pipeNetworks.networkHeat[tile.onPipeNetwork])
+				tile.heating = true
 			end
 		},
 
@@ -507,7 +510,7 @@ function initBuildings()
 			end
 			,
 
-			--passive operation
+			--update function
 			buildingFunction = function(tile)
 				--Act as a storage
 			end
@@ -518,6 +521,8 @@ function initBuildings()
 			--Contains three drone slots which allows them to charge or be idle. A drone must be assigned to a slot to be active
 			name = "Drone Hub",
 			description = "Acts as a control and charging center for up to three drones",
+			--Power Consumption will depend on the number of drones charging
+			powerConsumption = 0,
 			placeBuilding = function(tile)
 				--Associate builing with tile
 				tile.building = 8
@@ -572,7 +577,7 @@ function initBuildings()
 			end
 			,
 
-			--passive operation
+			--update function
 			buildingFunction = function(tile)
 				--Act as a drone hub
 			end

@@ -17,16 +17,55 @@ Cooling Methods:
 
 
 TODO
-	Grid system (DONE)
-	Generate world
-	Thermal system (DONE)
-	Player Control
-	Buildings 
-	Weather
+	Grid system - Have a grid with tiles that hold different bits of data like its temp and other things (DONE)
+	Generate world - Generate a random world that has random features, as well as save and load worlds
+		- On generation, have a small patch of land that is not super hot where the player starts with a drop pod 
+		- Add more features and biomes
+			- features may include: 
+				- Irregular grid shape, like more of a circle
+				- Dried Lakes
+				- Dried Rivers
+				- Volcanic areas
+				- Elevated terrain
+	Thermal system - Manage the heat of important tiles and determine which tiles are important (DONE)
+	Player Control - Different ways the user interacts with the player character
+		- Player stays within a radius of the center of the screen 
+		- Player moves based on actions from user: placing buildings, moving drones, interacting with tiles, etc...
+	Buildings - Functional/Decorative buildings that can be placed with materials
+		- Add more buildings
+		- Implement a material cost to place buildings
+	Weather - Natural events like cloudy skies that effect gameplay in different ways
+	Context Menu System - Have a list of context menus that display different bits of info depending on the data it is given 
+		- Fix button interactions not lining up with the actual button
+	Inventories - Have a list of inventories that hold a certain amount of items as well as having functions to transfer items between them (DONE)
+	Drones - Have a list of drones that can be programmed by the player to do certain tasks 
+		- Implement scolling in drone program menu
+		- Have drones need charge and a hub to function
+	User Interface - Implement a user interface for everything
+		- Main menu and planet selection
+		- Loading saves and creating new saves
+		- In game UI
+		- Loading screens
+		- Pause menu
+	Graphics - Provide better visuals and animations
+		- Fix the line that connects to context menus
+		- Animation system
+		- Textures for player, drones, buildings, etc...
+		- Weather effects
+		- Calculate color of tiles based on their heat and make the square tiles less obvious
+		- Add shadows to different elevation tiles and buildings
+		- Textures for tiles outside the available sector
+	
 
-	Context Menu System - Have a list of context menus that display different bits of info depending on the data it is given (DONE)
-	Inventories - Have a list of inventories that hold a certain amount of items as well as having functions to transfer items between them
-	Drones - Have a list of drones that can be programmed by the player to do certain tasks
+
+	Optimization improvements:
+		The electric and pipe network updates cause a lot of lag when there are many buildings on the nets. They are updated every second and this causes unnessecary lag. They should pre-calculate all needed values when a new building is placed instead of every second. Anything that does need dynamic updates should be changed by a different function. The old update functions can be kept for when the world is loaded and the networks are loaded. (DONE)
+			- Electric network updates can be optimized by only updating relevant values when a new building is connected.
+			- Pipe network updates can be optimized by reducing the amount of times that the radiators and heat collectors need to run their update functions. They should only run when certain events like electric charge updating. Radiators can act like the opposite of heat collectors by giving the tile it is on the tile.heating value. This value can be used to determine if the tile needs to be updated like with tile.cooling.
+
+		The entire grid is drawn every frame. Only the tiles on screen should be drawn to save resources. (DONE)
+
+		Even with the optimized heat updates where only important tiles are updated, this may still become laggy when the grid becomes larger. All important tiles still need to be updated, but they may need to be staggered.
 
 
 FUTURE IDEAS
@@ -68,9 +107,9 @@ function love.update(dt)
 		if gameTime - updateTime >= 1 then
 			updateImportantTiles()
 
-			updateElectric()
+			--updateElectric()
 
-			updatePipes()
+			--updatePipes()
 
 			updateTime = gameTime
 		end
