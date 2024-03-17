@@ -79,18 +79,17 @@ function updateTileHeat(x, y)
 		local relTile4 = {}
 
 
-		if grid.tiles[rX + 1] then
+		if grid.tiles[rX + 1] and grid.tiles[rX + 1][rY] then
 			relTile1 = grid.tiles[rX + 1][rY]
 		else
 			relTile1 = relTile
 		end
 
-		if grid.tiles[rX - 1] then
+		if grid.tiles[rX - 1] and grid.tiles[rX - 1][rY] then
 			relTile2 = grid.tiles[rX - 1][rY]
 		else
 			relTile2 = relTile
 		end
-		--print(relTile2, grid.tiles[-1], grid.tiles[-2][-2])
 
 		if grid.tiles[rX][rY + 1] then
 			relTile3 = grid.tiles[rX][rY + 1]
@@ -126,11 +125,11 @@ function updateTileHeat(x, y)
 		end
 	end
 	
-	if grid.tiles[x + 1] then
+	if grid.tiles[x + 1] and grid.tiles[x + 1][y] then
 		checkForRelHot(x + 1, y)
 	end
 
-	if grid.tiles[x - 1] then
+	if grid.tiles[x - 1] and grid.tiles[x - 1][y] then
 		checkForRelHot(x - 1, y)
 	end
 	
@@ -153,8 +152,7 @@ end
 function fullGridUpdate()
 	for x, vX in pairs(grid.tiles) do
 		
-		for y, vY in ipairs(vX) do
-			updateTileHeat(x,-y)
+		for y, vY in pairs(vX) do
 			updateTileHeat(x,y)
 		end
 	end

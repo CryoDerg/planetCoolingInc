@@ -51,14 +51,15 @@ function genNewWorld(size, seed)
 	end
 
 	--create grid
-	for x = -size/2, size/2 do
+	for x = (-size-10)/2, (size+10)/2 do
 		grid.tiles[x] = {}
 		grid.updateTiles[x] = {}
-		for y = -size/2, size/2 do
+		for y = (-size-10)/2, (size+10)/2 do
 			grid.tiles[x][y] = {
 				x = x,
 				y = y,
 				temp = math.random(200, 300),
+				biome = "badlands", --"badlands", "volcanic", "driedLake", "driedRiver"
 				hotspot = false,
 				updatedTime = 0,
 				conductivity = 50,
@@ -89,6 +90,11 @@ function genNewWorld(size, seed)
 		end
 	end
 
+	love.graphics.clear()
+	love.draw()
+	love.graphics.present()
+
+	--Feature Generation (Hotspots, Rocks, Volcanoes, Dried Lakes, Dried Rivers)
 	--Determine Hotspot locations
 	for h = 1, 13 do
 		local x, y = math.random(0, size) - size/2, math.random(0, size) - size/2
@@ -96,6 +102,104 @@ function genNewWorld(size, seed)
 		grid.tiles[x][y].temp = grid.tiles[x][y].temp + 700 
 		grid.tiles[x][y].conductivity = 100
 	end
+
+	--Determine Rock locations
+	local rockMaterials = {
+		"granite",
+		"iron",
+		"marble",
+	}
+	local numOfRocks = math.random(40, 60)
+	for r = 1, numOfRocks do
+		local rock = {
+			material = rockMaterials[math.random(1, #rockMaterials)],
+			materialAmount = math.random(40, 100),
+		}
+		local x, y = math.random(0, size) - size/2, math.random(0, size) - size/2
+		grid.tiles[x][y].rock = rock
+		grid.tiles[x][y].conductivity = 10
+	end
+
+	--Determine Volcano locations
+	local numOfVolcanoes = math.random(10, 15)
+	--gen volcano biome
+	for v = 1, numOfVolcanoes do
+		--determine center of biome
+		local x, y = math.random(0, size) - size/2, math.random(0, size) - size/2
+		local biomeSize = math.random(5, 10)
+		--"grow" biome from center
+		--[[
+			Growth Behavior for Volcanic Biome:
+			- Biome starts at center
+			- Grows out two short branches 
+			- Branches are 2-3 tiles thick
+			- Branches are 5-10 tiles long
+		]]
+		--dertermine branch directions
+		for branchNum = 1, 2 do
+			local branchDir = math.random(1, 4)
+			local branchLength = math.random(5, 10)
+			local branchThickness = math.random(2, 3)
+			local branchPosVariance = 0
+			local bX, bY = x, y
+			for b = 1, branchLength do
+				if branchDir == 1 then
+					--up
+					bX, bY = bX + branchPosVariance, bY - 1
+				elseif branchDir == 2 then
+					--down
+					bX, bY = bX + branchPosVariance, bY + 1
+				elseif branchDir == 3 then
+					--left
+					bX, bY = bX - 1, bY + branchPosVariance
+				elseif branchDir == 4 then
+					--right
+					bX, bY = bX + 1, bY + branchPosVariance
+				end
+
+				--Change tile to volcanic biome
+				local bTile = createTile(bX, bY)
+				bTile.biome = "volcanic"
+				bTile.temp = bTile.temp + 500
+				bTile.conductivity = 100
+
+				--Apply branch thickness
+				local thickBranch = {bTile}
+				local function applyBranchThickness(thickness)
+					--add four tiles around the tile
+					local tTile = thickBranch[1]
+					local tX, tY = tTile.x, tTile.y
+					local tTiles = {
+						createTile(tX + 1, tY),
+						createTile(tX - 1, tY),
+						createTile(tX, tY + 1),
+						createTile(tX, tY - 1),
+					}
+					for k, t in pairs(tTiles) do
+						if t.biome == "badlands" and t.biome ~= "volcanic" then
+							t.biome = "volcanic"
+							t.temp = t.temp + 500
+							t.conductivity = 100
+							table.insert(thickBranch, t)
+						end
+					end
+					if thickness > 1 then
+						applyBranchThickness(thickness - 1)
+					end
+				end
+				applyBranchThickness(branchThickness)
+					
+
+				--Add variance to branch position
+				branchPosVariance = math.random(-1, 1)
+
+			end
+		end
+	end
+
+	love.graphics.clear()
+	love.draw()
+	love.graphics.present()
 
 	--Presimulate heat spread
 	local cycles = 25
@@ -106,7 +210,7 @@ function genNewWorld(size, seed)
 	end
 
 	--Presimulate relative heat spread
-	cycles = 100
+	cycles = 40
 	for c = 1, cycles do
 		print("Relative Simulation Cycle: "..c)
 		gameTime = gameTime + 1
@@ -260,3 +364,45 @@ function saveWorld(fileName)
 	end
 	love.filesystem.write("saves/savDat.dat", "LastSave = \""..os.date("%m-%d-%Y_%H-%M-%S").."\" - \nFilename = \""..fileName.."\"")
 end
+
+function createTile(x, y)
+	if not grid.tiles[x] then
+		grid.tiles[x] = {}
+		grid.updateTiles[x] = {}
+	end
+	if not grid.tiles[x][y] then
+		grid.tiles[x][y] = {
+			x = x,
+			y = y,
+			temp = math.random(200, 300),
+			biome = "badlands",
+			hotspot = false,
+			updatedTime = 0,
+			conductivity = 50,
+			update = false,
+			cooling = false,
+			heating = false,
+			building = false,
+			onElectricNetwork = false,
+			wireID = false,
+			powerConsumption = false,
+			onPipeNetwork = false,
+			pipeID = false,
+			inventoryID = false,
+			hasContextMenu = false,
+			droneHubInfo = {
+				hasHub = false,
+				slots = {
+					--[[
+					[1] = {
+						linkedDrone = nil,
+						linkedDroneID = nil,
+					}
+					]]
+				},
+				droneCapacity = nil,
+			},
+		}
+	end
+	return grid.tiles[x][y]
+ end

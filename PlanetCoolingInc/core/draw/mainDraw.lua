@@ -23,6 +23,9 @@ function drawWorld()
 						else
 							love.graphics.setColor(0.07, (215 - vY.temp) / 350, (70 - vY.temp) / 100)
 						end
+						if vY.biome == "volcanic" then
+							love.graphics.setColor(1,0,1)
+						end
 					else
 						love.graphics.setColor(vY.temp/700, vY.temp/1000, 0.2)
 						
@@ -31,7 +34,13 @@ function drawWorld()
 					if vY.update and showHotTiles then
 						love.graphics.setColor(0,1,0)
 					end
+					--draw the tile
 					love.graphics.rectangle("fill", x*60, y*60, 60, 60)
+					--draw rock
+					if vY.rock then
+						love.graphics.setColor(0.5,0.5,0.5)
+						love.graphics.rectangle("fill", x*60, y*60, 60, 60)
+					end
 
 					if networkOverlay then
 						if vY.onPipeNetwork then
