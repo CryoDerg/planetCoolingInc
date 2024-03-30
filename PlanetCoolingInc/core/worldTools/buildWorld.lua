@@ -61,6 +61,7 @@ function genNewWorld(size, seed)
 				temp = math.random(200, 300),
 				biome = "badlands", --"badlands", "volcanic", "driedLake", "driedRiver"
 				hotspot = false,
+				volcano = false,
 				updatedTime = 0,
 				conductivity = 50,
 				update = false,
@@ -121,12 +122,13 @@ function genNewWorld(size, seed)
 	end
 
 	--Determine Volcano locations
-	local numOfVolcanoes = math.random(10, 15)
+	local numOfVolcanoes = math.random(1,2)
 	--gen volcano biome
 	for v = 1, numOfVolcanoes do
 		--determine center of biome
-		local x, y = math.random(0, size) - size/2, math.random(0, size) - size/2
+		local x, y = math.random(10, size - 10) - size/2, math.random(10, size - 10) - size/2
 		local biomeSize = math.random(5, 10)
+		grid.tiles[x][y].volcano = true
 		--"grow" biome from center
 		--[[
 			Growth Behavior for Volcanic Biome:
@@ -166,6 +168,8 @@ function genNewWorld(size, seed)
 				--Apply branch thickness
 				local thickBranch = {bTile}
 				local function applyBranchThickness(thickness)
+					print("Applying Branch Thickness: "..thickness.." / "..branchThickness)
+					print(#thickBranch)
 					--add four tiles around the tile
 					local tTile = thickBranch[1]
 					local tX, tY = tTile.x, tTile.y
@@ -175,23 +179,24 @@ function genNewWorld(size, seed)
 						createTile(tX, tY + 1),
 						createTile(tX, tY - 1),
 					}
+					table.remove(thickBranch, 1)
 					for k, t in pairs(tTiles) do
 						if t.biome == "badlands" and t.biome ~= "volcanic" then
 							t.biome = "volcanic"
 							t.temp = t.temp + 500
 							t.conductivity = 100
-							table.insert(thickBranch, t)
+							if thickness > 0 then
+								table.insert(thickBranch, t)
+								applyBranchThickness(thickness - 1)
+							end
 						end
-					end
-					if thickness > 1 then
-						applyBranchThickness(thickness - 1)
 					end
 				end
 				applyBranchThickness(branchThickness)
 					
 
 				--Add variance to branch position
-				branchPosVariance = math.random(-1, 1)
+				--branchPosVariance = math.random(-1, 1)
 
 			end
 		end
@@ -204,7 +209,7 @@ function genNewWorld(size, seed)
 	--Presimulate heat spread
 	local cycles = 25
 	for c = 1, cycles do
-		print("Simulation Cycle: "..c)
+		--print("Simulation Cycle: "..c)
 		gameTime = gameTime + 1
 		fullGridUpdate()
 	end
@@ -212,7 +217,7 @@ function genNewWorld(size, seed)
 	--Presimulate relative heat spread
 	cycles = 40
 	for c = 1, cycles do
-		print("Relative Simulation Cycle: "..c)
+		--print("Relative Simulation Cycle: "..c)
 		gameTime = gameTime + 1
 		updateImportantTiles()
 	end
