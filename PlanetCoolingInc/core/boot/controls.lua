@@ -111,6 +111,28 @@ function updateControls(k)
       print("No save Data file found")
     end
   end
+
+  if k == "u" then
+    --regen world with higher heatMapSize
+    genNewWorld(gridSize, gridSeed, heatMapSize * 2, heightMapSize)
+    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
+  end
+  if k == "i" then
+    --regen world with lower tempMapSize
+    genNewWorld(gridSize, gridSeed, heatMapSize / 2, heightMapSize)
+    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
+  end
+  if k == "j" then
+    --regen world with higher heightMapSize
+    genNewWorld(gridSize, gridSeed, heatMapSize, heightMapSize * 2)
+    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
+  end
+  if k == "k" then
+    --regen world with lower heightMapSize
+    genNewWorld(gridSize, gridSeed, heatMapSize, heightMapSize / 2)
+    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
+  end
+    
 end
 
 function clickTile(x, y)

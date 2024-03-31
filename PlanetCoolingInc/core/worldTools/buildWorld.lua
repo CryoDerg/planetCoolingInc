@@ -1,4 +1,22 @@
-function genNewWorld(size, seed)
+--[[
+	Procedural World Generation
+	- Generates a new world with a specified size and seed (the size will increase as the player progresses)
+	- The world is generated with a grid of tiles that have different noise values (which will be represented as temperature and tile height)
+
+
+	Tile Heat Properties
+	- Each tile has a temperature value that will be used to determine the heat of the tile
+	- The temp will spread to adjacent tiles based on the conductivity of the tile
+	- Each tile has a certain material that will determine the conductivity and melting point of the tile
+	- If melting point is reached, the tile will turn into a lava tile
+	- Lava can be cooled in different ways to form different types of tiles
+
+]]
+function genNewWorld(size, seed, tempSize, heightSize)
+	--Set size to nearest value divisible by 8
+	size = math.floor(size / 8) * 8
+
+	--Set up world
 	initBuildings()
 	initItems()
 	initInventories()
@@ -50,29 +68,46 @@ function genNewWorld(size, seed)
 		math.randomseed(seed)
 	end
 
+	gridSeed = seed
+
+	--Set random noise bases
+	local baseXHeat = math.random(1, 1000) * 92
+	local baseYHeat = math.random(1, 1000) * 38
+	local baseXHeight = math.random(1, 1000) * 12
+	local baseYHeight = math.random(1, 1000) * 74
+
 	--create grid
-	for x = (-size-10)/2, (size+10)/2 do
+	for x = (-size)/2, (size)/2 - 1 do
 		grid.tiles[x] = {}
 		grid.updateTiles[x] = {}
-		for y = (-size-10)/2, (size+10)/2 do
+		for y = (-size)/2, (size)/2 - 1 do
+			--create tile
 			grid.tiles[x][y] = {
 				x = x,
 				y = y,
-				temp = math.random(200, 300),
+				z = 50,
+
+				temp = 0,
+				material = "rock",
+				meltingPoint = 1000,
 				biome = "badlands", --"badlands", "volcanic", "driedLake", "driedRiver"
-				hotspot = false,
-				volcano = false,
+				
 				updatedTime = 0,
-				conductivity = 50,
 				update = false,
+				conductivity = 50,
+				
 				cooling = false,
 				heating = false,
+
 				building = false,
+				
 				onElectricNetwork = false,
 				wireID = false,
 				powerConsumption = false,
+
 				onPipeNetwork = false,
 				pipeID = false,
+
 				inventoryID = false,
 				hasContextMenu = false,
 				droneHubInfo = {
@@ -90,124 +125,65 @@ function genNewWorld(size, seed)
 			}
 		end
 	end
-
-	love.graphics.clear()
-	love.draw()
-	love.graphics.present()
-
-	--Feature Generation (Hotspots, Rocks, Volcanoes, Dried Lakes, Dried Rivers)
-	--Determine Hotspot locations
-	for h = 1, 13 do
-		local x, y = math.random(0, size) - size/2, math.random(0, size) - size/2
-		grid.tiles[x][y].hotspot = true
-		grid.tiles[x][y].temp = grid.tiles[x][y].temp + 700 
-		grid.tiles[x][y].conductivity = 100
-	end
-
-	--Determine Rock locations
-	local rockMaterials = {
-		"granite",
-		"iron",
-		"marble",
-	}
-	local numOfRocks = math.random(40, 60)
-	for r = 1, numOfRocks do
-		local rock = {
-			material = rockMaterials[math.random(1, #rockMaterials)],
-			materialAmount = math.random(40, 100),
-		}
-		local x, y = math.random(0, size) - size/2, math.random(0, size) - size/2
-		grid.tiles[x][y].rock = rock
-		grid.tiles[x][y].conductivity = 10
-	end
-
-	--Determine Volcano locations
-	local numOfVolcanoes = math.random(1,2)
-	--gen volcano biome
-	for v = 1, numOfVolcanoes do
-		--determine center of biome
-		local x, y = math.random(10, size - 10) - size/2, math.random(10, size - 10) - size/2
-		local biomeSize = math.random(5, 10)
-		grid.tiles[x][y].volcano = true
-		--"grow" biome from center
-		--[[
-			Growth Behavior for Volcanic Biome:
-			- Biome starts at center
-			- Grows out two short branches 
-			- Branches are 2-3 tiles thick
-			- Branches are 5-10 tiles long
-		]]
-		--dertermine branch directions
-		for branchNum = 1, 2 do
-			local branchDir = math.random(1, 4)
-			local branchLength = math.random(5, 10)
-			local branchThickness = math.random(2, 3)
-			local branchPosVariance = 0
-			local bX, bY = x, y
-			for b = 1, branchLength do
-				if branchDir == 1 then
-					--up
-					bX, bY = bX + branchPosVariance, bY - 1
-				elseif branchDir == 2 then
-					--down
-					bX, bY = bX + branchPosVariance, bY + 1
-				elseif branchDir == 3 then
-					--left
-					bX, bY = bX - 1, bY + branchPosVariance
-				elseif branchDir == 4 then
-					--right
-					bX, bY = bX + 1, bY + branchPosVariance
-				end
-
-				--Change tile to volcanic biome
-				local bTile = createTile(bX, bY)
-				bTile.biome = "volcanic"
-				bTile.temp = bTile.temp + 500
-				bTile.conductivity = 100
-
-				--Apply branch thickness
-				local thickBranch = {bTile}
-				local function applyBranchThickness(thickness)
-					print("Applying Branch Thickness: "..thickness.." / "..branchThickness)
-					print(#thickBranch)
-					--add four tiles around the tile
-					local tTile = thickBranch[1]
-					local tX, tY = tTile.x, tTile.y
-					local tTiles = {
-						createTile(tX + 1, tY),
-						createTile(tX - 1, tY),
-						createTile(tX, tY + 1),
-						createTile(tX, tY - 1),
-					}
-					table.remove(thickBranch, 1)
-					for k, t in pairs(tTiles) do
-						if t.biome == "badlands" and t.biome ~= "volcanic" then
-							t.biome = "volcanic"
-							t.temp = t.temp + 500
-							t.conductivity = 100
-							if thickness > 0 then
-								table.insert(thickBranch, t)
-								applyBranchThickness(thickness - 1)
-							end
-						end
-					end
-				end
-				applyBranchThickness(branchThickness)
-					
-
-				--Add variance to branch position
-				--branchPosVariance = math.random(-1, 1)
-
+	
+	--Map temp and height
+	heatMapSize = tempSize or 32
+	heightMapSize = heightSize or 64
+	riverMapSize = 100
+	for x = (-size)/2, (size)/2 - 1 do
+		for y = (-size)/2, (size)/2 - 1 do
+			local tile = grid.tiles[x][y]
+			local temp = 400 + love.math.noise(x/heatMapSize + baseXHeat, y/heatMapSize + baseYHeat) * 120
+			local height = love.math.noise(x/heightMapSize + baseXHeight, y/heightMapSize + baseYHeight) * 150
+			local river = love.math.noise(x/riverMapSize + (baseXHeight+19), y/riverMapSize + (baseYHeight+73)) * 100
+			if river > 25 and river < 38 then
+				tile.z = river
+			else
+				tile.z = height
 			end
+			tile.temp = temp
+			
 		end
 	end
 
-	love.graphics.clear()
-	love.draw()
-	love.graphics.present()
+	--Set biomes
+	local volcanoCount = 0
+	for x = (-size)/2, (size)/2 - 1 do
+		for y = (-size)/2, (size)/2 - 1 do
+			local tile = grid.tiles[x][y]
+			local temp = tile.temp
+			local height = tile.z
+
+			--Biomes: badlands, volcanic, driedLake, driedRiver, lavaLake, lavaRiver
+			if temp > 500 and height > 50 then
+				tile.biome = "volcanic"
+				tile.temp = tile.temp + 500
+				--Determine if a feature is generated on the tile (volcano) - 1/500 chance
+				if math.random(1, 500) == 1 then
+					tile.feature = "volcano"
+				end
+				volcanoCount = volcanoCount + 1
+			elseif temp > 500 and height <= 40 then
+				tile.biome = "lavaLake"
+				tile.temp = tile.temp + 350
+			elseif temp < 500 and height <= 40 then
+				tile.temp = tile.temp - 75
+				tile.biome = "driedLake"
+			else
+				tile.biome = "badlands"
+			end
+			
+		end
+	end
+	if volcanoCount == 0 then
+		print("No Volcanoes Generated")
+	end
+
+	--Map Rivers
+	
 
 	--Presimulate heat spread
-	local cycles = 25
+	local cycles = 1
 	for c = 1, cycles do
 		--print("Simulation Cycle: "..c)
 		gameTime = gameTime + 1
@@ -215,7 +191,7 @@ function genNewWorld(size, seed)
 	end
 
 	--Presimulate relative heat spread
-	cycles = 40
+	cycles = 100
 	for c = 1, cycles do
 		--print("Relative Simulation Cycle: "..c)
 		gameTime = gameTime + 1
@@ -410,4 +386,13 @@ function createTile(x, y)
 		}
 	end
 	return grid.tiles[x][y]
+ end
+
+ function checkTile(x, y)
+	if grid.tiles[x] then
+		if grid.tiles[x][y] then
+			return grid.tiles[x][y]
+		end
+	end
+	return false
  end

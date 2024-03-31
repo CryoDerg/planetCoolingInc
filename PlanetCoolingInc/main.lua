@@ -84,6 +84,9 @@ function love.load()
 end
 
 function love.update(dt)
+	if love.keyboard.isDown("r") then
+		genNewWorld(100)
+	end
 	runTime = runTime + dt
 	gameTime = gameTime + dt
 
@@ -115,8 +118,8 @@ function love.update(dt)
 		end
 
 		if gameTime - randomUpdateTime >= 0.1 then
-			local randX = math.random(-gridSize/2, gridSize/2)
-			local randY = math.random(-gridSize/2, gridSize/2)
+			local randX = math.random(-gridSize/2, gridSize/2 - 1)
+			local randY = math.random(-gridSize/2, gridSize/2 - 1)
 			--print(randX, randY, grid.tiles[randX])
 			local tile = grid.tiles[randX][randY]
 			tile.temp = tile.temp + math.random(1,10)

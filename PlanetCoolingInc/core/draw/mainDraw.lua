@@ -24,6 +24,21 @@ function drawWorld()
 							love.graphics.setColor(0.07, (215 - vY.temp) / 350, (70 - vY.temp) / 100)
 						end
 						if vY.biome == "volcanic" then
+							love.graphics.setColor(1,0,0)
+							if vY.feature == "volcano" then
+								love.graphics.setColor(0.5,0,0)
+							end
+						end
+						if vY.biome == "lavaLake" then
+							love.graphics.setColor(1,1,0)
+						end
+						if vY.biome == "driedLake" then
+							love.graphics.setColor(0,0,1)
+						end
+						if vY.biome == "badlands" then
+							love.graphics.setColor(0,1,1)
+						end
+						if vY.river then
 							love.graphics.setColor(1,0,1)
 						end
 					else
