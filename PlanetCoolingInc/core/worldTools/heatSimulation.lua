@@ -158,13 +158,41 @@ function fullGridUpdate()
 	end
 end
 
+function countUpdatedTiles()
+	updateTiles = updateImportantTiles()
+end
+
 function updateImportantTiles()
+	local updateDelay = 0
+	local updatedTiles = {}
+	local updateTilesCount = 0
 	for x, vX in pairs(grid.updateTiles) do
 		for y, vY in pairs(vX) do
-			updateTileHeat(x,y)
-			if grid.tiles[x][y].hasContextMenu then
-				updateContextMenu(grid.tiles[x][y].contextMenuID)
-			end
+			table.insert(updatedTiles, {x = x, y = y})
+			updateTilesCount = updateTilesCount + 1
 		end
 	end
+
+	local updateAmount = updateTilesCount / 20
+	local currentIndex = currentIndex and (currentIndex > #updatedTiles and 1 or currentIndex) or 1
+	local updateTimer = 0
+
+	local function updateNextTile(dt)
+		updateTimer = updateTimer + dt
+		if updateTimer >= updateDelay then
+			for i = 1, updateAmount do
+				local tile = updatedTiles[currentIndex]
+				if tile then
+					updateTileHeat(tile.x, tile.y)
+					if grid.tiles[tile.x][tile.y].hasContextMenu then
+						updateContextMenu(grid.tiles[tile.x][tile.y].contextMenuID)
+					end
+					currentIndex = currentIndex + 1
+				end
+			end
+			updateTimer = 0
+		end
+	end
+
+	return updateNextTile
 end

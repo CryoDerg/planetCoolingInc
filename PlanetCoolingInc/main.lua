@@ -108,7 +108,7 @@ function love.update(dt)
 		end
 
 		if gameTime - updateTime >= 1 then
-			updateImportantTiles()
+			countUpdatedTiles()
 
 			--updateElectric()
 
@@ -116,6 +116,8 @@ function love.update(dt)
 
 			updateTime = gameTime
 		end
+
+		updateTiles(dt)
 
 		if gameTime - randomUpdateTime >= 0.1 then
 			local randX = math.random(-gridSize/2, gridSize/2 - 1)

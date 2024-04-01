@@ -19,7 +19,7 @@ function updateControls(k)
   end
 
   if k == settings.controls.genWorld then 
-    genNewWorld(100)
+    genNewWorld(500)
   end
 
   if k == "b" then

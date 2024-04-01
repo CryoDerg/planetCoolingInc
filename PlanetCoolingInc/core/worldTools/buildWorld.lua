@@ -127,7 +127,7 @@ function genNewWorld(size, seed, tempSize, heightSize)
 	end
 	
 	--Map temp and height
-	heatMapSize = tempSize or 32
+	heatMapSize = tempSize or 90
 	heightMapSize = heightSize or 64
 	riverMapSize = 100
 	for x = (-size)/2, (size)/2 - 1 do
@@ -195,7 +195,10 @@ function genNewWorld(size, seed, tempSize, heightSize)
 	for c = 1, cycles do
 		--print("Relative Simulation Cycle: "..c)
 		gameTime = gameTime + 1
-		updateImportantTiles()
+		countUpdatedTiles()
+		for t = 1, 100 do
+			updateTiles(0.01)
+		end
 	end
 
 	gamestate = 1
