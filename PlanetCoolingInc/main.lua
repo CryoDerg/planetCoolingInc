@@ -97,7 +97,7 @@ function love.update(dt)
 	
 	
 	
-	if gamestate == 1 then
+	if gamestate == "game" then
 		updatePlayerPosition(dt)
 		updateDronesPosition(dt)
 
@@ -179,7 +179,6 @@ function love.mousereleased(x, y, k)
 	if draggedMenu then
 		draggedMenu = false
 	end
-	--contextMenu.dragging = false
 end
 
 function love.mousemoved(x, y, dx, dy)
@@ -198,13 +197,6 @@ function love.mousemoved(x, y, dx, dy)
 		camMovedX = camMovedX + dx
 		camMovedY = camMovedY + dy
 	end
-
-	--[[
-	if contextMenu.dragging then
-		contextMenu.x = contextMenu.x + dx
-		contextMenu.y = contextMenu.y + dy
-	end
-	]]
 end
 
 function love.wheelmoved(x, y)
@@ -235,14 +227,11 @@ function love.draw()
 	camY = -focusPointY + (centerHeight/scale)
 	love.graphics.translate(camX, camY)
 
-
-	if grid then
+	if gamestate == "game" then
 		drawWorld()
-	end
-
-	if gamestate == 1 then
 		drawPlayer()
 		drawDrones()
-		drawUI()
 	end
+	
+	drawUI()
 end

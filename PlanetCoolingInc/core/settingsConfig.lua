@@ -92,5 +92,6 @@ function checkFullscreen()
 	windowWidth, windowHeight = love.window.getMode()
 	centerWidth = (windowWidth / 2)
 	centerHeight = (windowHeight / 2)
-	--scale = math.min((windowWidth/gameWidth),(windowHeight/gameHeight))
+	uiScale = math.min((windowWidth/gameWidth),(windowHeight/gameHeight))
+	scale = uiScale
 end

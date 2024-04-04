@@ -23,6 +23,7 @@ function boot()
 	centerWidth = (windowWidth / 2)
 	centerHeight = (windowHeight / 2)
 	scale = math.min((windowWidth/gameWidth),(windowHeight/gameHeight))
+	uiScale = scale
 	scaledWindowWidth = windowWidth * scale
 	scaledWindowHeight = windowHeight * scale
 	scaledCenterWidth = scaledWindowWidth / 2
@@ -42,7 +43,7 @@ function boot()
 	hoverInfo = ""
 	clickedButton = {}
 
-	gamestate = 0
+	gamestate = "mainMenu"
 	gridSize = 0
 	buildingMenuOpen = false
 	contextMenuOpen = false

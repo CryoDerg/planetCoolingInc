@@ -14,124 +14,19 @@ end
 
 function updateControls(k)
   --When input is received, check to see if it is a control and execute the appropriate action
-  if k == settings.controls.tempOverlay then
-    tempOverlay = not tempOverlay
-  end
-
-  if k == settings.controls.genWorld then 
-    genNewWorld(500)
+  if gamestate == "mainMenu" then
+    print(uiScale)
+    interactUI.mainMenu(screenMX / uiScale, screenMY / uiScale, k)
+  elseif gamestate == "options" then
+    interactUI.optionsMenu(screenMX / uiScale, screenMY / uiScale, k)
+  elseif gamestate == "game" then
+    interactUI.game(screenMX / uiScale, screenMY / uiScale, k)
   end
 
   if k == "b" then
+    --Breakpoint
     breakpoint({}, true)
-  end
-
-  if k == "h" then
-    showHotTiles = not showHotTiles
-  end
-
-  if k == settings.controls.networkOverlay then
-    networkOverlay = not networkOverlay
-  end
-
-  if k == "f" then 
-    settings.fullscreenState = not settings.fullscreenState 
-    saveSettings()
-  end
-
-  if k == "m" then
-    --move player to mouse
-    movePlayerTo(mX - camX, mY - camY)
-  end
-
-  if k == "p" then
-    print(tableToString(settings))
-  end
-
-  if k == "d" then
-    buildingBlueprints[9].placeBuilding(grid.tiles[math.floor((mX - camX)/60)][math.floor((mY - camY)/60)])
-    openProgramMenu(drones[1])
-
-    buildingBlueprints[7].placeBuilding(grid.tiles[1][1])
-    addItemToInventory("uranium", 100, inventories[grid.tiles[1][1].inventoryID])
-  end
-
-  if k == settings.controls.placeBuilding then
-    if tileSelectionOpen then
-      local tile = clickTile(mX, mY)
-      if tile then
-        tileSelectionDrone.program[tileSelectionEvent] = {event = "MoveTo", eventText = "Move To Tile", x = tile.x, y = tile.y, tile = tile}
-        tileSelectionOpen = false
-        droneProgramOpen = true
-      end
-    elseif hubLinkOpen then
-      local tile = clickTile(mX, mY)
-      if tile then
-        if tile.droneHubInfo.hasHub then
-          linkDroneToHub(linkDrone, tile)
-          moveDroneTo(linkDrone, tile.x*60 + 30, tile.y*60 + 30)
-          hubLinkOpen = false
-        end
-      end
-    else
-      clickBuildingUI(screenMX, screenMY)
-      clickContextMenu(screenMX, screenMY)
-      clickProgramMenu(screenMX, screenMY)
-    
-      if placingBuilding and not clickedButton[1] then
-        local x, y = math.floor((mX - camX)/60), math.floor((mY - camY)/60)
-        buildingBlueprints[selectBuilding].placeBuilding(grid.tiles[x][y])
-      end
-    end
-  end
-
-  if k == settings.controls.openContextMenu and clickTile(mX, mY) and camMoved < 8 then
-    createContextMenu(mX, mY)
-  end
-
-  if k == "escape" then
-    buildingMenuOpen = false
-  end
-
-  if k == "1" then
-    createGameMessage("Hewwo", mX - camX, mY - camY, 5)
-  end
-
-  if k == "s" then
-    saveWorld()
-  end
-  if k == "l" then
-    --find most recent save
-    if love.filesystem.getInfo("saves/savDat.dat") then
-      local fileData = love.filesystem.read("saves/savDat.dat")
-      fileName = string.match(fileData, "Filename = \"(.-)\"")
-      print("Loading: " .. fileName)
-      loadWorld(fileName)
-    else
-      print("No save Data file found")
-    end
-  end
-
-  if k == "u" then
-    --regen world with higher heatMapSize
-    genNewWorld(gridSize, gridSeed, heatMapSize * 2, heightMapSize)
-    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
-  end
-  if k == "i" then
-    --regen world with lower tempMapSize
-    genNewWorld(gridSize, gridSeed, heatMapSize / 2, heightMapSize)
-    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
-  end
-  if k == "j" then
-    --regen world with higher heightMapSize
-    genNewWorld(gridSize, gridSeed, heatMapSize, heightMapSize * 2)
-    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
-  end
-  if k == "k" then
-    --regen world with lower heightMapSize
-    genNewWorld(gridSize, gridSeed, heatMapSize, heightMapSize / 2)
-    print("HeatMapSize: " .. heatMapSize.. "\nHeightMapSize: " .. heightMapSize)
-  end
+   end
     
 end
 

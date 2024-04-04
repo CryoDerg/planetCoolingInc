@@ -98,16 +98,21 @@ function drawDrones()
 end
 
 function drawUI()
-	if placingBuilding or tileSelectionOpen or hubLinkOpen then
-		constructionUI()
+	if gamestate == "mainMenu" then
+		uiDraw.drawMainMenu()
+	elseif gamestate == "options" then
+		uiDraw.drawOptionsMenu()
+	elseif gamestate == "game" then
+		if placingBuilding or tileSelectionOpen or hubLinkOpen then
+			uiDraw.constructionUI()
+		end
+
+		uiDraw.drawContextMenus()
+
+		if not tileSelectionOpen then
+			uiDraw.drawBuildingMenu()
+			uiDraw.droneProgramUI()
+		end
 	end
-
-	drawContextMenus()
-
-	if not tileSelectionOpen then
-		drawBuildingUI()
-		droneProgramUI()
-	end
-
 	drawGameMessages()
 end

@@ -201,7 +201,7 @@ function genNewWorld(size, seed, tempSize, heightSize)
 		end
 	end
 
-	gamestate = 1
+	gamestate = "game"
 
 	logMessage("World Generated - Seed: "..seed)
 	logMessage("GameState Set to 1")

@@ -2,6 +2,8 @@ function fileLoad()
 	require("core/draw/mainDraw")
 	require("core/draw/uiDraw")
 
+	require("core/interactUI/uiAction")
+
 	require("core/worldTools/buildings")
 	require("core/worldTools/buildWorld")
 	require("core/worldTools/heatSimulation")

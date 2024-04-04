@@ -38,8 +38,8 @@ function createContextMenu(x, y)
     local contextMenu = {
       type = "player",
       ID = #contextMenus + 1,
-      x = x*scale,
-      y = y*scale,
+      x = screenMX / uiScale,
+      y = screenMY / uiScale,
       rootX = player.x,
       rootY = player.y,
       elements = {
@@ -70,8 +70,8 @@ function createContextMenu(x, y)
           drone = drone,
           type = "drone",
           ID = #contextMenus + 1,
-          x = x,
-          y = y,
+          x = screenMX / uiScale,
+          y = screenMY / uiScale,
           rootX = drone.x,
           rootY = drone.y,
           elements = {
@@ -138,8 +138,8 @@ function createContextMenu(x, y)
         type = "tile",
         tile = tile,
         ID = #contextMenus + 1,
-        x = x*scale,
-        y = y*scale,
+        x = screenMX / uiScale,
+        y = screenMY / uiScale,
         rootX = tile.x*60 + 30,
         rootY = tile.y*60 + 30,
         elements = {
