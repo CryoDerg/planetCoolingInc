@@ -182,10 +182,7 @@ function love.mousereleased(x, y, k)
 end
 
 function love.mousemoved(x, y, dx, dy)
-	if buildingMenuOpen then
-		--Check to see if mouse is over a button
-		hoverBuildingUI(x, y)
-	end
+	updateControls(false)
 
 	if draggedMenu then
 		draggedMenu.x = draggedMenu.x + dx
@@ -203,17 +200,19 @@ function love.wheelmoved(x, y)
 	if not dragCam then
 		--adjust the scale then adjust varables that measure screen dimensions
 		if y > 0 then
-			scale = scale * 1.5
-			scaledWindowWidth = windowWidth * scale
+			updateControls("up")
+			
+			--[[scaledWindowWidth = windowWidth * scale
 			scaledWindowHeight = windowHeight * scale
 			scaledCenterWidth = scaledWindowWidth / 2
-			scaledCenterHeight = scaledWindowHeight / 2
+			scaledCenterHeight = scaledWindowHeight / 2]]
 		elseif y < 0 then
-			scale = scale / 1.5
-			scaledWindowWidth = windowWidth * scale
+			updateControls("down")
+
+			--[[scaledWindowWidth = windowWidth * scale
 			scaledWindowHeight = windowHeight * scale
 			scaledCenterWidth = scaledWindowWidth / 2
-			scaledCenterHeight = scaledWindowHeight / 2
+			scaledCenterHeight = scaledWindowHeight / 2]]
 		end
 	end
 end

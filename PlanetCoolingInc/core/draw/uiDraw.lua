@@ -11,17 +11,17 @@ uiDraw.drawMainMenu = function()
 	
 	--Draw buttons
 	--Start Button
-	love.graphics.setColor(0, 0, 1, 1)
+	love.graphics.setColor(interactUI.mainMenuVars.startButtonHover and {0.5, 0.5, 1, 1} or {0, 0, 1, 1})
 	--On Screen Coords: 450, 400, 300, 50
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((400/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
 	
 	--Options Button
-	love.graphics.setColor(0, 1, 0, 1)
+	love.graphics.setColor(interactUI.mainMenuVars.optionsButtonHover and {0.5, 1, 0.5, 1} or {0, 1, 0, 1})
 	--On Screen Coords: 450, 500, 300, 50
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((500/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
 
 	--Exit Button
-	love.graphics.setColor(1, 0, 0, 1)
+	love.graphics.setColor(interactUI.mainMenuVars.exitButtonHover and {1, 0.5, 0.5, 1} or {1, 0, 0, 1})
 	--On Screen Coords: 20, windowHeight - 70, 100, 50
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((20/scale)*uiScale), focusPointY + (centerHeight/scale) - ((70/scale)*uiScale), ((100/scale)*uiScale), ((50/scale)*uiScale))
 end
@@ -29,25 +29,38 @@ end
 uiDraw.drawOptionsMenu = function()
 	--Draw Fullscreen Option
 	--On Screen Coords: 450, 200, 300, 50
-	if fullscreen then
-		love.graphics.setColor(0, 1, 0, 1)
-		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
-		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print("Fullscreen: On", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), 0, (1/scale)*uiScale, (1/scale)*uiScale)
-	else
-		love.graphics.setColor(1, 0, 0, 1)
+	if settings.fullscreenState then
+		love.graphics.setColor(interactUI.optionsMenuVars.fullscreenButtonHover and {0.5, 1, 0.5, 1} or {0, 1, 0, 1})
 		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
 		love.graphics.setColor(0, 0, 0, 1)
+		love.graphics.print("Fullscreen: On", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), 0, (1/scale)*uiScale, (1/scale)*uiScale)
+	else
+		love.graphics.setColor(interactUI.optionsMenuVars.fullscreenButtonHover and {1, 0.5, 0.5, 1} or {1, 0, 0, 1})
+		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
+		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.print("Fullscreen: Off", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), 0, (1/scale)*uiScale, (1/scale)*uiScale)
 	end
-	
-	
-	
-
 	--Draw Exit Button
-	love.graphics.setColor(1, 0, 0, 1)
+	love.graphics.setColor(interactUI.optionsMenuVars.exitButtonHover and {1, 0.5, 0.5, 1} or {1, 0, 0, 1})
 	--On Screen Coords: 20, windowHeight - 70, 100, 50
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((20/scale)*uiScale), focusPointY + (centerHeight/scale) - ((70/scale)*uiScale), ((100/scale)*uiScale), ((50/scale)*uiScale))
+end
+
+uiDraw.pauseMenu = function()
+	--Resume Button
+	--On Screen Coords: 450, 200, 300, 50
+	love.graphics.setColor(interactUI.pauseMenuVars.resumeButtonHover and {0.5, 1, 0.5, 1} or {0, 1, 0, 1})
+	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((200/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
+
+	--Options Button
+	--On Screen Coords: 450, 300, 300, 50
+	love.graphics.setColor(interactUI.pauseMenuVars.optionsButtonHover and {0.5, 0.5, 1, 1} or {0, 0, 1, 1})
+	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((300/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
+
+	--Main Menu Button
+	--On Screen Coords: 450, 400, 300, 50
+	love.graphics.setColor(interactUI.pauseMenuVars.mainMenuButtonHover and {1, 0.5, 0.5, 1} or {1, 0, 0, 1})
+	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((450/scale)*uiScale), focusPointY - (centerHeight/scale) + ((400/scale)*uiScale), ((300/scale)*uiScale), ((50/scale)*uiScale))
 end
 
 --Drawing Context Menu
@@ -128,12 +141,13 @@ uiDraw.drawBuildingMenu = function()
 		--On Screen Coords: 0, windowHeight - 150, windowWidth, 150
 		love.graphics.rectangle("fill", focusPointX - (centerWidth/scale), focusPointY + (centerHeight/scale) - ((150/scale)*uiScale), ((windowWidth/scale)*uiScale), ((150/scale)*uiScale))
 		--Draw the buttons
-		for i = 1, #buildingBlueprints do
+		for i = interactUI.gameVars.buildingMenuScroll, interactUI.gameVars.buildingMenuScroll + 8 > #buildingBlueprints and #buildingBlueprints or interactUI.gameVars.buildingMenuScroll + 8 do
+			local buttonX = i - interactUI.gameVars.buildingMenuScroll
 			love.graphics.setColor(0, 0, 0, 1)
 			--On Screen Coords: 143.75 + (i - 1) * 106.5, windowHeight - 125, 100, 100
-			love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((143.75/scale)*uiScale) + (i - 1) * ((106.5/scale)*uiScale), focusPointY + (centerHeight/scale) - ((125/scale)*uiScale), ((100/scale)*uiScale), ((100/scale)*uiScale))
+			love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((143.75/scale)*uiScale) + buttonX * ((106.5/scale)*uiScale), focusPointY + (centerHeight/scale) - ((125/scale)*uiScale), ((100/scale)*uiScale), ((100/scale)*uiScale))
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.print(buildingBlueprints[i].name, focusPointX - (centerWidth/scale) + ((143.75/scale)*uiScale) + (i - 1) * ((106.5/scale)*uiScale), focusPointY + (centerHeight/scale) - ((125/scale)*uiScale), 0 , (1/scale)*uiScale, (1/scale)*uiScale)
+			love.graphics.print(buildingBlueprints[i].name, focusPointX - (centerWidth/scale) + ((143.75/scale)*uiScale) + buttonX * ((106.5/scale)*uiScale), focusPointY + (centerHeight/scale) - ((125/scale)*uiScale), 0 , (1/scale)*uiScale, (1/scale)*uiScale)
 		end
 		--Draw Arrow Buttons
 		love.graphics.setColor(0, 1, 0, 1)
@@ -147,16 +161,20 @@ uiDraw.drawBuildingMenu = function()
 		--Draw building info is mouse is over a building button
 		love.graphics.setColor(1, 1, 1, 1)
 		--On Screen Coords: 50, 50, windowWidth - 100, windowHeight - 200
-		love.graphics.print(hoverInfo, focusPointX - (centerWidth/scale) + ((50/scale)*uiScale), focusPointY - (centerHeight/scale) + ((150/scale)*uiScale), 0, (1/scale)*uiScale, (1/scale)*uiScale)
+		love.graphics.print(interactUI.gameVars.buildingMenuHoverInfo, focusPointX - (centerWidth/scale) + ((50/scale)*uiScale), focusPointY - (centerHeight/scale) + ((150/scale)*uiScale), 0, (1/scale)*uiScale, (1/scale)*uiScale)
 	end
 	--Draw building menu button in the bottom left corner
 	if buildingMenuOpen then
 		love.graphics.setColor(1, 0, 0, 1)
 	else
-		love.graphics.setColor(0, 1, 1, 1)
+		love.graphics.setColor(interactUI.gameVars.placingBuilding and {1, 0, 0, 1} or {0, 1, 1, 1})
 	end
 	--On Screen Coords: 31.25, windowHeight - 125, 50, 100
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((31.25/scale)*uiScale), focusPointY + (centerHeight/scale) - ((125/scale)*uiScale), ((50/scale)*uiScale), ((100/scale)*uiScale))
+
+	if interactUI.gameVars.placingBuilding then
+		uiDraw.constructionUI()
+	end
 end
 
 --Drawing Building Placement

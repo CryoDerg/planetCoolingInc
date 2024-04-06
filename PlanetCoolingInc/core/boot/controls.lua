@@ -1,5 +1,7 @@
 --Configure controls and keybindings
-function configControls(controls) --Controls for Mouse: M1, M2... add "R" to indicate release
+--Controls for Mouse: M1, M2... up(scroll up), down(scroll down)
+--add "R" to indicate release of any key
+function configControls(controls) 
   --If the controls are not set, set them to the default
   if controls == nil then
     return {
@@ -15,10 +17,11 @@ end
 function updateControls(k)
   --When input is received, check to see if it is a control and execute the appropriate action
   if gamestate == "mainMenu" then
-    print(uiScale)
     interactUI.mainMenu(screenMX / uiScale, screenMY / uiScale, k)
   elseif gamestate == "options" then
     interactUI.optionsMenu(screenMX / uiScale, screenMY / uiScale, k)
+  elseif gamestate == "pause" then
+    interactUI.pauseMenu(screenMX / uiScale, screenMY / uiScale, k)
   elseif gamestate == "game" then
     interactUI.game(screenMX / uiScale, screenMY / uiScale, k)
   end
@@ -26,7 +29,7 @@ function updateControls(k)
   if k == "b" then
     --Breakpoint
     breakpoint({}, true)
-   end
+  end
     
 end
 

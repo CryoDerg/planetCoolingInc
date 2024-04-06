@@ -102,8 +102,10 @@ function drawUI()
 		uiDraw.drawMainMenu()
 	elseif gamestate == "options" then
 		uiDraw.drawOptionsMenu()
+	elseif gamestate == "pause" then
+		uiDraw.pauseMenu()
 	elseif gamestate == "game" then
-		if placingBuilding or tileSelectionOpen or hubLinkOpen then
+		if tileSelectionOpen or hubLinkOpen then
 			uiDraw.constructionUI()
 		end
 

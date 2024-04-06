@@ -34,6 +34,7 @@ function boot()
 	networkOverlay = false
 	camX, camY = centerWidth, centerHeight
 	camMovedX, camMovedY, camMoved = 0, 0, 0
+	mX, mY, screenMX, screenMY = 0, 0, 0, 0
 	runTime = 0
 	gameTime = 0
 	updateTime = 0
