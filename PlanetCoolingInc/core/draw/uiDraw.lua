@@ -46,6 +46,48 @@ uiDraw.drawOptionsMenu = function()
 	love.graphics.rectangle("fill", focusPointX - (centerWidth/scale) + ((20/scale)*uiScale), focusPointY + (centerHeight/scale) - ((70/scale)*uiScale), ((100/scale)*uiScale), ((50/scale)*uiScale))
 end
 
+uiDraw.planetMenu = function()
+	-- 3 planets
+	local p = interactUI.planetMenuVars.selectedPlanet
+	--draw planets
+	--On Screen Coords: centerWidth, centerHeight, 200
+	local colors = {
+		{1, 1, 0},
+		{0, 1, 0},
+		{0, 1, 1},
+	}
+	for i = 1, 3 do
+		if i == interactUI.planetMenuVars.selectedPlanet then
+			love.graphics.setColor(colors[i])
+		else
+			love.graphics.setColor(0.3, 0.3, 0.3)
+		end
+		
+		--On Screen Coords: centerWidth * (i - p), centerHeight, 200
+		love.graphics.circle("fill", focusPointX + (centerWidth/uiScale) * (i - p), focusPointY, (200/scale)*uiScale)
+	end
+
+	--name
+	local names = {
+		"THe uhhhhh",
+		"This is a planet",
+		"Greg",
+	}
+	love.graphics.setColor(1, 1, 1, 1)
+	--On Screen Coords: centerWidth - (#names[i]/2) * 10, 100 
+	love.graphics.print(names[p], focusPointX - (#names[p]/2) * 6, focusPointY - (centerHeight/uiScale) + ((100/scale)*uiScale), 0, (1/scale)*uiScale, (1/scale)*uiScale)
+
+	--Start Button
+	love.graphics.setColor(p == 1 and (interactUI.planetMenuVars.startButtonHover and {0.5, 0.5, 1, 1} or {0, 0, 1, 1}) or {0.3, 0.3, 0.3, 1})
+	--On Screen Coords: centerWidth - 100, windowHeight - 100, 200, 50
+	love.graphics.rectangle("fill", focusPointX - ((100/scale)*uiScale), focusPointY + (centerHeight/scale) - ((100/scale)*uiScale), ((200/scale)*uiScale), ((50/scale)*uiScale))
+
+	if p ~= 1 then
+		love.graphics.setColor(0, 0, 0, 1)
+		love.graphics.print("This MF does not exist!", focusPointX - 100, focusPointY + (centerHeight/scale) - 100, 0, (1/scale)*uiScale, (1/scale)*uiScale)
+	end
+end
+
 uiDraw.pauseMenu = function()
 	--Resume Button
 	--On Screen Coords: 450, 200, 300, 50

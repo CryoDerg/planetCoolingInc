@@ -20,6 +20,8 @@ function updateControls(k)
     interactUI.mainMenu(screenMX / uiScale, screenMY / uiScale, k)
   elseif gamestate == "options" then
     interactUI.optionsMenu(screenMX / uiScale, screenMY / uiScale, k)
+  elseif gamestate == "planets" then
+    interactUI.planetMenu(screenMX / uiScale, screenMY / uiScale, k)
   elseif gamestate == "pause" then
     interactUI.pauseMenu(screenMX / uiScale, screenMY / uiScale, k)
   elseif gamestate == "game" then

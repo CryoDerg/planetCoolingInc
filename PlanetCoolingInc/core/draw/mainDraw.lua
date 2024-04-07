@@ -102,6 +102,8 @@ function drawUI()
 		uiDraw.drawMainMenu()
 	elseif gamestate == "options" then
 		uiDraw.drawOptionsMenu()
+	elseif gamestate == "planets" then
+		uiDraw.planetMenu()
 	elseif gamestate == "pause" then
 		uiDraw.pauseMenu()
 	elseif gamestate == "game" then

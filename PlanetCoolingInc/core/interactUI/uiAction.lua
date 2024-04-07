@@ -13,9 +13,9 @@ interactUI.mainMenu = function(x, y, k)
 			--Exit the game
 			love.event.quit()
 		elseif k == "M1" and x > 450 and x < 750 and y > 400 and y < 450 then
-			--Start the game
-			genNewWorld(100)
-			print("Game started")
+			--select planet
+			gamestate = "planets"
+			updateControls(false)
 		elseif k == "M1" and x > 450 and x < 750 and y > 500 and y < 550 then
 			--Open the options menu
 			gamestate = "options"
@@ -82,6 +82,39 @@ interactUI.optionsMenu = function(x, y, k)
 			interactUI.optionsMenuVars.exitButtonHover = true
 		else
 			interactUI.optionsMenuVars.exitButtonHover = false
+		end
+	end
+end
+
+interactUI.planetMenuVars = {
+	selectedPlanet = 1,
+	startButtonHover = false,
+
+}
+interactUI.planetMenu = function(x, y, k)
+	if k then
+		if k == "escape" then
+			--main menu
+			gamestate = "mainMenu"
+			updateControls(false)
+		elseif k == "a" and interactUI.planetMenuVars.selectedPlanet > 1 then
+			interactUI.planetMenuVars.selectedPlanet = interactUI.planetMenuVars.selectedPlanet - 1
+		elseif k == "d" and interactUI.planetMenuVars.selectedPlanet < 3 then
+			interactUI.planetMenuVars.selectedPlanet = interactUI.planetMenuVars.selectedPlanet + 1
+		elseif k == "M1" and x > (centerWidth / uiScale) - 100 and x < (centerWidth / uiScale) + 100 and y > (windowHeight / uiScale) - 100 and y < (windowHeight / uiScale) - 50 then
+			--start game
+			gamestate = "load"
+			love.graphics.clear()
+			love.draw()
+			love.graphics.present()
+			genNewWorld(100)
+			updateControls(false)
+		end
+	else
+		if x > (centerWidth / uiScale) - 100 and x < (centerWidth / uiScale) + 100 and y > (windowHeight / uiScale) - 100 and y < (windowHeight / uiScale) - 50 then
+			interactUI.planetMenuVars.startButtonHover = true
+		else
+			interactUI.planetMenuVars.startButtonHover = false
 		end
 	end
 end
