@@ -213,7 +213,7 @@ interactUI.game = function(x, y, k)
 						hubLinkOpen = false
 					end
 			  	end
-			elseif buildingMenuOpen then
+			elseif interactUI.gameVars.buildingMenuOpen then
 				--mouse is over the left arrow button
 				if math.checkIfPointInRect(x, y, 112.5, 137.5, (windowHeight / uiScale) - 125, (windowHeight / uiScale) - 25) and interactUI.gameVars.buildingMenuScroll > 1 then
 					interactUI.gameVars.buildingMenuScroll = interactUI.gameVars.buildingMenuScroll - 1
@@ -232,10 +232,9 @@ interactUI.game = function(x, y, k)
 						local y1 = (windowHeight / uiScale) - 125
 						local y2 = (windowHeight / uiScale) - 25
 						if math.checkIfPointInRect(x, y, x1, x2, y1, y2) then
-							selectBuilding = i
 							interactUI.gameVars.selectBuilding = i
 							interactUI.gameVars.placingBuilding = true
-							buildingMenuOpen = false
+							interactUI.gameVars.buildingMenuOpen = false
 							clickedButton = true
 							break
 						end
@@ -245,17 +244,17 @@ interactUI.game = function(x, y, k)
 
 			--mouse is over the building menu button
 			if math.checkIfPointInRect(x, y, 31.25, 81.25, (windowHeight / uiScale) - 125, (windowHeight / uiScale) - 25) then
-				buildingMenuOpen = not buildingMenuOpen
+				interactUI.gameVars.buildingMenuOpen = not interactUI.gameVars.buildingMenuOpen
 				interactUI.gameVars.placingBuilding = false
 			end
 
 			clickContextMenu(x, y)
 			clickProgramMenu(x, y)
 			
-		 	if placingBuilding and not clickedButton then
+		 	if interactUI.gameVars.placingBuilding then
 				--Place a building
 			 	local x, y = math.floor((mX - camX)/60), math.floor((mY - camY)/60)
-			 	buildingBlueprints[selectBuilding].placeBuilding(grid.tiles[x][y])
+			 	buildingBlueprints[interactUI.gameVars.selectBuilding].placeBuilding(grid.tiles[x][y])
 		  	end
 		elseif k == "M2R" and clickTile(mX, mY) and camMoved < 8 then
 			--Open the context menu

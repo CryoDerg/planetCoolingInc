@@ -9,7 +9,7 @@ Power sources:
 	Coal Generators (Burns coal for energy)
 
 Cooling Methods:
-	Radiators
+	Heat packaging & heat cells
 	Ice Delivery
 	Deliver heat to space
 	Wormholes to throw heat into (maybe)
@@ -20,6 +20,7 @@ TODO
 	Grid system - Have a grid with tiles that hold different bits of data like its temp and other things (DONE)
 	Generate world - Generate a random world that has random features, as well as save and load worlds
 		- On generation, have a small patch of land that is not super hot where the player starts with a drop pod 
+		- Different types of rock will be naturally generated, the player can also use heat to turn rock into lava then cool them in different ways to make different types of rock
 		- Add more features and biomes
 			- features may include: 
 				- Irregular grid shape, like more of a circle
@@ -34,6 +35,9 @@ TODO
 	Buildings - Functional/Decorative buildings that can be placed with materials
 		- Add more buildings
 		- Implement a material cost to place buildings
+		- Replace radiators with a heat packager that produces heat cells that can be moved by drones
+		- Rework pipes
+		- Add ability to remove buildings
 	Weather - Natural events like cloudy skies that effect gameplay in different ways
 	Context Menu System - Have a list of context menus that display different bits of info depending on the data it is given 
 		- Fix button interactions not lining up with the actual button
