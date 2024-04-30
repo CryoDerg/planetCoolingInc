@@ -99,7 +99,7 @@ function genNewWorld(size, seed, tempSize, heightSize)
 				cooling = false,
 				heating = false,
 
-				building = false,
+				buildings = {},
 				
 				onElectricNetwork = false,
 				wireID = false,
@@ -178,9 +178,6 @@ function genNewWorld(size, seed, tempSize, heightSize)
 	if volcanoCount == 0 then
 		print("No Volcanoes Generated")
 	end
-
-	--Map Rivers
-	
 
 	--Presimulate heat spread
 	local cycles = 1

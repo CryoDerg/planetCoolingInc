@@ -7,6 +7,7 @@ function drawWorld()
 	--The above math is to make sure that the grid is drawn in a way that it is always at least 5 tiles off screen in each direction
 
 	--draw the grid
+	local vX, vY
 	tilesWithBuildings = {}
 	for x = xStart, xEnd do
 		vX = grid.tiles[x]
@@ -51,11 +52,6 @@ function drawWorld()
 					end
 					--draw the tile
 					love.graphics.rectangle("fill", x*60, y*60, 60, 60)
-					--draw rock
-					if vY.rock then
-						love.graphics.setColor(0.5,0.5,0.5)
-						love.graphics.rectangle("fill", x*60, y*60, 60, 60)
-					end
 
 					if networkOverlay then
 						if vY.onPipeNetwork then
@@ -68,7 +64,7 @@ function drawWorld()
 						end
 					end
 					
-					if vY.building then
+					if #vY.buildings > 0 then
 						table.insert(tilesWithBuildings, vY)
 					end
 				end
@@ -78,9 +74,13 @@ function drawWorld()
 
 	--draw the buildings
 	for i, tile in pairs(tilesWithBuildings) do
-		if tile.building then
-			local building = buildingBlueprints[tile.building]
-			building.drawBuilding(tile)
+		for _, building in pairs(tile.buildings) do
+			if building then
+				local x = building.x
+				local y = building.y
+				local building = buildingBlueprints[building.id]
+				building.drawBuilding(x, y)
+			end
 		end
 	end
 end

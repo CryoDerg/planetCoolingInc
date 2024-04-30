@@ -56,7 +56,7 @@ function initBuildings()
 		},
 
 		--Pipe[2]
-		{
+		{ 
 			name = "Pipe",
 			description = "Connects buildings to the pipe network",
 			placeBuilding = function(tile)
@@ -122,9 +122,14 @@ function initBuildings()
 			powerConsumption = 250,
 
 			--when placed
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Associate builing with tile
-				tile.building = 3
+				local buildDat = {
+					id = 3,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildingss, buildDat)
 
 				--Connect to electric network
 				if not tile.onElectricNetwork then
@@ -172,7 +177,7 @@ function initBuildings()
 			drawBuilding = function(tile)
 				--draw drop pod
 				love.graphics.setColor(1,1,1)
-				love.graphics.circle("fill", tile.x*60+30, tile.y*60+30, 20)
+				love.graphics.circle("fill", x+30, y+30, 20)
 			end
 			,
 
@@ -216,9 +221,14 @@ function initBuildings()
 			powerConsumption = 100,
 
 			--when placed
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Associate builing with tile
-				tile.building = 4
+				buildDat = {
+					id = 4,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildings, buildDat)
 
 				--Connect to electric network
 				if not tile.onElectricNetwork then
@@ -264,9 +274,9 @@ function initBuildings()
 			drawBuilding = function(tile)
 				--draw heat collector
 				love.graphics.setColor(1,1,1)
-				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.rectangle("fill", x+10, y+10, 40, 40)
 				love.graphics.setColor(0,0,1)
-				love.graphics.circle("fill", tile.x*60+30, tile.y*60+30, 15)
+				love.graphics.circle("fill", x+30, y+30, 15)
 			end
 			,
 
@@ -310,9 +320,14 @@ function initBuildings()
 			powerGeneration = 100,
 
 			--when placed
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Associate builing with tile
-				tile.building = 5
+				buildDat = {
+					id = 5,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildings, buildDat)
 
 				--Connect to electric network
 				if not tile.onElectricNetwork then
@@ -338,10 +353,10 @@ function initBuildings()
 			drawBuilding = function(tile)
 				--draw solar panel
 				love.graphics.setColor(0.2,0.2,0.2)
-				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.rectangle("fill", x+10, y+10, 40, 40)
 				love.graphics.setColor(0.7,0.7,0.7)
-				love.graphics.line(tile.x*60+20, tile.y*60+10, tile.x*60+20, tile.y*60+50)
-				love.graphics.line(tile.x*60+40, tile.y*60+10, tile.x*60+40, tile.y*60+50)
+				love.graphics.line(x+20, y+10, x+20, y+50)
+				love.graphics.line(x+40, y+10, x+40, y+50)
 			end
 			,
 
@@ -376,9 +391,14 @@ function initBuildings()
 			description = "Takes heat from the pipe network and outputs it into its surroundings",
 
 			--when placed
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Associate builing with tile
-				tile.building = 6
+				buildDat = {
+					id = 6,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildings, buildDat)
 
 				--Connect to pipe network
 				if not tile.onPipeNetwork then
@@ -408,10 +428,10 @@ function initBuildings()
 			drawBuilding = function(tile)
 				--draw radiator
 				love.graphics.setColor(1,1,1)
-				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.rectangle("fill", x+10, y+10, 40, 40)
 				love.graphics.setColor(1,0.3,0)
-				love.graphics.line(tile.x*60+10, tile.y*60+10, tile.x*60+50, tile.y*60+50)
-				love.graphics.line(tile.x*60+50, tile.y*60+10, tile.x*60+10, tile.y*60+50)
+				love.graphics.line(x+10, y+10, x+50, y+50)
+				love.graphics.line(x+50, y+10, x+10, y+50)
 			end
 			,
 
@@ -441,9 +461,14 @@ function initBuildings()
 			description = "Stores items",
 
 			--when placed
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Associate builing with tile
-				tile.building = 7
+				buildDat = {
+					id = 7,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildings, buildDat)
 
 				--Connect to electric network
 				
@@ -478,9 +503,9 @@ function initBuildings()
 			drawBuilding = function(tile)
 				--draw item storage
 				love.graphics.setColor(1,1,1)
-				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.rectangle("fill", x+10, y+10, 40, 40)
 				love.graphics.setColor(0,1,0)
-				love.graphics.rectangle("line", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.rectangle("line", x+10, y+10, 40, 40)
 			end
 			,
 
@@ -523,9 +548,14 @@ function initBuildings()
 			description = "Acts as a control and charging center for up to three drones",
 			--Power Consumption will depend on the number of drones charging
 			powerConsumption = 0,
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Associate builing with tile
-				tile.building = 8
+				buildDat = {
+					id = 8,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildings, buildDat)
 
 				--associate tile with drone hub
 				tile.droneHubInfo = {
@@ -552,15 +582,15 @@ function initBuildings()
 			drawBuilding = function(tile)
 				--draw drone hub
 				love.graphics.setColor(1,1,1)
-				love.graphics.rectangle("fill", tile.x*60+10, tile.y*60+10, 40, 40)
+				love.graphics.rectangle("fill", x+10, y+10, 40, 40)
 				love.graphics.setColor(0.3,0.3,0.3)
-				love.graphics.rectangle("fill", tile.x*60+11, tile.y*60+11, 10, 38)
-				love.graphics.rectangle("fill", tile.x*60+25, tile.y*60+11, 10, 38)
-				love.graphics.rectangle("fill", tile.x*60+39, tile.y*60+11, 10, 38)
+				love.graphics.rectangle("fill", x+11, y+11, 10, 38)
+				love.graphics.rectangle("fill", x+25, y+11, 10, 38)
+				love.graphics.rectangle("fill", x+39, y+11, 10, 38)
 
 				if hubLinkOpen then
 					love.graphics.setColor(0,1,0,0.5)
-					love.graphics.circle("fill", tile.x*60+30, tile.y*60+30, 30)
+					love.graphics.circle("fill", x+30, y+30, 30)
 				end
 			end
 			,
@@ -582,16 +612,62 @@ function initBuildings()
 				--Act as a drone hub
 			end
 		},
+		
 		--Drone[9]
 		{
 			--Drone that can be programmed to perform tasks
 			name = "Drone",
 			description = "A drone that can be programmed to perform tasks",
-			placeBuilding = function(tile)
+			placeBuilding = function(tile, x, y)
 				--Create new drone on the tile
-				createDrone(tile.x * 60, tile.y * 60)
+				createDrone(x, y)
+			end,
+		},
+
+		--Heat Packager[10]
+		{
+			name = "Heat Packager",
+			description = "Packages heat into neat little cells for easier transport. (Note: Neat little cells are not included)",
+			powerConsumption = 200,
+
+			placeBuilding = function(tile, x, y)
+				buildDat = {
+					id = 10,
+					x = x,
+					y = y,
+				}
+				table.insert(tile.buildings, buildDat)
+
+				if not tile.onElectricNetwork then
+					connectElectric(tile)
+				end
+			end,
+
+			removeBuilding = function(tile)
+				tile.building = false
+
+				splitElectric(tile)
+			end,
+
+			drawBuilding = function(tile)
+				love.graphics.setColor(1,1,1)
+				love.graphics.rectangle("fill", x+10, y+10, 40, 40)
+			end,
+
+			contextMenu = function(tile)
+				local elements = {
+					{
+						type = "text",
+						textColor = {1, 1, 1},
+						text = "\nBuilding: Heat Packager"
+					}
+				}
+				return elements
+			end,
+
+			buildingFunction = function(tile)
+				--do thing
 			end,
 		},
 	}
 end
-

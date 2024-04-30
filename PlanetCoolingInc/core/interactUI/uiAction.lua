@@ -187,7 +187,7 @@ interactUI.game = function(x, y, k)
 			--Generate a new world 
 			genNewWorld(100)
 		elseif k == "h" then
-			--Toggel update tiles overlay
+			--Toggle update tiles overlay
 			showHotTiles = not showHotTiles
 		elseif k == "x" then
 			--Toggle network overlay
@@ -196,14 +196,14 @@ interactUI.game = function(x, y, k)
 			--move player to mouse
 			movePlayerTo(mX - camX, mY - camY)
 		elseif k == "M1" then
-			if tileSelectionOpen then
+			if interactUI.gameVars.tileSelectionOpen then
 				local tile = clickTile(mX, mY)
 				if tile then
 					tileSelectionDrone.program[tileSelectionEvent] = {event = "MoveTo", eventText = "Move To Tile", x = tile.x, y = tile.y, tile = tile}
 					tileSelectionOpen = false
 					droneProgramOpen = true
 				end
-			elseif hubLinkOpen then
+			elseif interactUI.gameVars.hubLinkOpen then
 				--Link a drone to a hub
 				local tile = clickTile(mX, mY)
 				if tile then
@@ -254,7 +254,7 @@ interactUI.game = function(x, y, k)
 		 	if interactUI.gameVars.placingBuilding then
 				--Place a building
 			 	local x, y = math.floor((mX - camX)/60), math.floor((mY - camY)/60)
-			 	buildingBlueprints[interactUI.gameVars.selectBuilding].placeBuilding(grid.tiles[x][y])
+			 	buildingBlueprints[interactUI.gameVars.selectBuilding].placeBuilding(grid.tiles[x][y], x, y)
 		  	end
 		elseif k == "M2R" and clickTile(mX, mY) and camMoved < 8 then
 			--Open the context menu

@@ -17,18 +17,18 @@ function initItems()
 	--Initialize all the items in the game
 	itemList = {
 		{
-			name = "Coal",
-			internalName = "coal",
+			name = "Heat Cell",
+			interName = "heatUnit",
+
+			heatStored = 0,
 		},
-		{
-			name = "Iron",
-			internalName = "iron",
-		},
+
 		{
 			name = "Uranium",
 			internalName = "uranium",
 		},
-		--More items will be added later (these are just placeholders)
+		
+		--More items will be added later
 	}
 end
 

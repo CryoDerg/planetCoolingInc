@@ -33,6 +33,7 @@ TODO
 		- Player stays within a radius of the center of the screen 
 		- Player moves based on actions from user: placing buildings, moving drones, interacting with tiles, etc...
 	Buildings - Functional/Decorative buildings that can be placed with materials
+		- Have building placement work off of pixels instead of tiles
 		- Add more buildings
 		- Implement a material cost to place buildings
 		- Replace radiators with a heat packager that produces heat cells that can be moved by drones
@@ -143,34 +144,11 @@ function love.mousepressed(x, y, k)
 	mDown = true
 	updateControls("M"..k)
 	if k == 2 then
-    --When clicked, check if on button. If not on button, drag the camera
-    if not clickedButton[1] then
-      dragCam = true
-		camMovedX, camMovedY, camMoved = 0, 0 ,0
-    end
+   	if not clickedButton[1] then
+      	dragCam = true
+			camMovedX, camMovedY, camMoved = 0, 0 ,0
+   	end
 	end
-
-	if k == 3 then
-		--show tile info
-		
-		local tile = grid.tiles[math.floor((mX - camX)/60)][math.floor((mY - camY)/60)]
-		print("Tile Info:")
-		print("Temp: "..tile.temp)
-		print("Hotspot: "..tostring(tile.hotspot))
-		print("Updated: "..tostring(tile.update))
-		print("Cooling: "..tostring(tile.cooling))
-		print("Building: "..tostring(tile.building))
-		print("On Electric Network: "..tostring(tile.onElectricNetwork))
-		print("Wire ID: "..tostring(tile.wireID))
-		print("On Pipe Network: "..tostring(tile.onPipeNetwork))
-		print("Pipe ID: "..tostring(tile.pipeID))
-		print("Updated Time: "..tostring(tile.updatedTime))
-		print("Conductivity: "..tostring(tile.conductivity))
-		print("X: "..tostring(tile.x))
-		print("Y: "..tostring(tile.y))
-		print("___________________________________________________________")
-	end
-
 end
 
 function love.mousereleased(x, y, k)
